@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vas_b09_entry_list" model="ir.ui.view">
+        <field name="name">vas.b09.entry.list</field>
+        <field name="model">vas.b09.entry</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="company_id"/>
+                <field name="period_from_id"/>
+                <field name="period_to_id"/>
+                <field name="code"/>
+                <field name="content_kind"/>
+                <field name="origin"/>
+                <field name="is_confirmed"/>
+                <field name="is_from_prior_year"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_b09_entry_form" model="ir.ui.view">
+        <field name="name">vas.b09.entry.form</field>
+        <field name="model">vas.b09.entry</field>
+        <field name="arch" type="xml">
+            <form string="Nội dung người điền B09">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="company_id"/>
+                            <field name="period_from_id"
+                                      domain="[('fiscalyear_id.company_id', '=', company_id)]"/>
+                            <field name="period_to_id"
+                                      domain="[('fiscalyear_id.company_id', '=', company_id)]"/>
+                            <field name="code"/>
+                            <field name="content_kind"/>
+                        </group>
+                        <group>
+                            <field name="origin"/>
+                            <field name="is_confirmed"/>
+                            <field name="is_from_prior_year"/>
+                            <field name="prior_label"/>
+                        </group>
+                    </group>
+                    <group string="Đoạn văn" invisible="content_kind != 'text'">
+                        <field name="text_value" nolabel="1" colspan="2"/>
+                    </group>
+                    <group string="Số tiền" invisible="content_kind != 'amount'">
+                        <field name="has_opening"/>
+                        <field name="amount_opening" invisible="not has_opening"/>
+                        <field name="has_closing"/>
+                        <field name="amount_closing" invisible="not has_closing"/>
+                    </group>
+                    <group string="Bảng nhiều dòng" invisible="content_kind != 'table'">
+                        <field name="row_ids" nolabel="1">
+                            <list editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="name"/>
+                                <field name="amount_opening"/>
+                                <field name="amount_closing"/>
+                            </list>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_b09_entry" model="ir.actions.act_window">
+        <field name="name">Nội dung người điền B09</field>
+        <field name="res_model">vas.b09.entry</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_vas_b09_entry"
+              name="Nội dung người điền B09"
+              parent="menu_vas_books"
+              action="action_vas_b09_entry"
+              sequence="44"/>
+</odoo>

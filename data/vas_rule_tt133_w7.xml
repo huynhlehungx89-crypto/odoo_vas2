@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- W7 R25: vốn hóa cước landed cost vào tồn kho.
+         Nguồn = stock.valuation.adjustment.lines (record mới, không change-detection).
+         Có 331 chỉ khi LC có vendor_bill_id — thiếu bill thì engine gắn cờ, không ghi. -->
+    <record id="vas_rule_tt133_r25" model="vas.rule">
+        <field name="code">R25</field>
+        <field name="name">Vốn hóa chi phí thu mua (landed cost)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">landed_cost_adjust</field>
+        <field name="sequence">45</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r25_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r25"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">product_inventory</field>
+        <field name="amount_selector">landed_cost</field>
+    </record>
+    <record id="vas_rule_tt133_r25_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r25"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">landed_counterpart</field>
+        <field name="amount_selector">landed_cost</field>
+    </record>
+
+    <!-- W7 R26: thuế GTGT trên hóa đơn cước (dòng landed đã loại khỏi R08).
+         Thuế = 0 (cước quốc tế) → sync bỏ qua im lặng, không lỗi. -->
+    <record id="vas_rule_tt133_r26" model="vas.rule">
+        <field name="code">R26</field>
+        <field name="name">Thuế GTGT hóa đơn cước (landed)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">purchase_landed_tax</field>
+        <field name="sequence">49</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r26_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r26"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">tax_input</field>
+        <field name="amount_selector">tax</field>
+    </record>
+    <record id="vas_rule_tt133_r26_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r26"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">partner_payable</field>
+        <field name="amount_selector">tax</field>
+    </record>
+</odoo>

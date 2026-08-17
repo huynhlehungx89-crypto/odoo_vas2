@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vas_gtgt_reduction_exclusion_list" model="ir.ui.view">
+        <field name="name">vas.gtgt.reduction.exclusion.list</field>
+        <field name="model">vas.gtgt.reduction.exclusion</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="annex"/>
+                <field name="code_kind"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_gtgt_reduction_exclusion_form" model="ir.ui.view">
+        <field name="name">vas.gtgt.reduction.exclusion.form</field>
+        <field name="model">vas.gtgt.reduction.exclusion</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="code_kind"/>
+                            <field name="annex"/>
+                        </group>
+                        <group>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="active"/>
+                            <field name="sequence"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_gtgt_reduction_exclusion" model="ir.actions.act_window">
+        <field name="name">Danh mục không được giảm (NQ 204)</field>
+        <field name="res_model">vas.gtgt.reduction.exclusion</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_vas_gtgt_reduction_annex_form" model="ir.ui.view">
+        <field name="name">vas.gtgt.reduction.annex.form</field>
+        <field name="model">vas.gtgt.reduction.annex</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="I. Mua vào 8%">
+                            <field name="amount_05"/>
+                            <field name="amount_06"/>
+                        </group>
+                        <group string="II–III. Bán ra / chênh lệch">
+                            <field name="amount_07"/>
+                            <field name="amount_08"/>
+                            <field name="amount_09"/>
+                        </group>
+                    </group>
+                    <field name="line_ids">
+                        <list>
+                            <field name="section"/>
+                            <field name="product_name"/>
+                            <field name="rate_before"/>
+                            <field name="rate_after"/>
+                            <field name="amount_untaxed"/>
+                            <field name="amount_tax"/>
+                        </list>
+                    </field>
+                    <field name="warning_ids">
+                        <list>
+                            <field name="warning_kind"/>
+                            <field name="product_name"/>
+                            <field name="invoice_ref"/>
+                            <field name="message"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_product_template_form_vas_nq204" model="ir.ui.view">
+        <field name="name">product.template.form.vas.nq204</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='vas_gtgt_product']" position="inside">
+                <field name="vas_vsic_code"/>
+                <field name="vas_hs_code"/>
+                <field name="vas_ttdb_code"/>
+            </xpath>
+        </field>
+    </record>
+
+    <menuitem id="menu_vas_gtgt_reduction_exclusion"
+              name="Không được giảm (NQ 204)"
+              parent="menu_vas_catalog_root"
+              action="action_vas_gtgt_reduction_exclusion"
+              sequence="81"/>
+</odoo>

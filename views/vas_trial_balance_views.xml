@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vas_trial_balance_wizard_form" model="ir.ui.view">
+        <field name="name">vas.trial.balance.wizard.form</field>
+        <field name="model">vas.trial.balance.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Bảng cân đối số phát sinh (form)">
+                <sheet>
+                    <div class="alert alert-info" role="status">
+                        Màn chính dùng khung OWL: menu «Bảng cân đối số phát sinh (F01)».
+                        Form này giữ để nghiệm thu / xuất nhanh.
+                    </div>
+                    <group>
+                        <group string="Tham số">
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="regime_id" invisible="1"/>
+                            <field name="period_from_id"
+                                     domain="[('fiscalyear_id.company_id', '=', company_id)]"/>
+                            <field name="period_to_id"
+                                     domain="[('fiscalyear_id.company_id', '=', company_id)]"/>
+                            <field name="hide_reversed"/>
+                            <field name="form_code" readonly="1"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="date_from" invisible="1"/>
+                            <field name="date_to" invisible="1"/>
+                            <field name="is_balanced" invisible="1"/>
+                        </group>
+                        <group string="Kiểm 3 cặp tổng">
+                            <field name="diff_opening"/>
+                            <field name="diff_ps"/>
+                            <field name="diff_closing"/>
+                        </group>
+                    </group>
+                    <div class="alert alert-warning" role="alert"
+                         invisible="not warning_text">
+                        <field name="warning_text" nolabel="1" readonly="1"/>
+                    </div>
+                    <div class="oe_button_box mb-2">
+                        <button name="action_compute" type="object" string="Xem bảng"
+                                class="btn-primary"/>
+                        <button name="action_export_xlsx" type="object" string="Xuất Excel"/>
+                        <button name="action_print_pdf" type="object" string="In PDF"/>
+                    </div>
+                    <field name="line_ids">
+                        <list create="0" delete="0" edit="0"
+                              decoration-bf="row_type == 'total'">
+                            <field name="account_code"/>
+                            <field name="account_name"/>
+                            <field name="opening_debit" sum="Σ Đầu Nợ"/>
+                            <field name="opening_credit" sum="Σ Đầu Có"/>
+                            <field name="ps_debit" sum="Σ PS Nợ"/>
+                            <field name="ps_credit" sum="Σ PS Có"/>
+                            <field name="closing_debit" sum="Σ Cuối Nợ"/>
+                            <field name="closing_credit" sum="Σ Cuối Có"/>
+                            <field name="row_type" column_invisible="1"/>
+                            <field name="currency_id" column_invisible="1"/>
+                            <field name="sequence" column_invisible="1"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Khung OWL — màn chính F01 -->
+    <record id="action_vas_trial_balance_client" model="ir.actions.client">
+        <field name="name">Bảng cân đối số phát sinh</field>
+        <field name="tag">vas_report_client</field>
+        <field name="path">vas-f01-trial-balance</field>
+        <field name="context">{
+            'report_model': 'vas.trial.balance.wizard',
+            'report_title': 'Bảng cân đối số phát sinh',
+        }</field>
+    </record>
+
+    <!-- Form cũ — phụ -->
+    <record id="action_vas_trial_balance" model="ir.actions.act_window">
+        <field name="name">Bảng cân đối F01 (form nội bộ)</field>
+        <field name="res_model">vas.trial.balance.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+
+    <menuitem id="menu_vas_trial_balance"
+              name="Bảng cân đối số phát sinh (F01)"
+              parent="menu_vas_books"
+              action="action_vas_trial_balance_client"
+              sequence="20"/>
+
+    <menuitem id="menu_vas_trial_balance_form"
+              name="F01 — form (nội bộ)"
+              parent="menu_vas_books"
+              action="action_vas_trial_balance"
+              sequence="21"
+              groups="base.group_no_one"/>
+</odoo>

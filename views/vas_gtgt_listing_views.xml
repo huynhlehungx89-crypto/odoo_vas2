@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vas_gtgt_listing_list" model="ir.ui.view">
+        <field name="name">vas.gtgt.listing.list</field>
+        <field name="model">vas.gtgt.listing</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="listing_type"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_gtgt_listing_form" model="ir.ui.view">
+        <field name="name">vas.gtgt.listing.form</field>
+        <field name="model">vas.gtgt.listing</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_rebuild" type="object" string="Lập lại bảng kê"
+                            class="btn-primary"/>
+                    <button name="action_open_dropped" type="object" string="Dòng rớt"/>
+                    <button name="action_reconcile_ledger" type="object"
+                            string="Đối chiếu sổ"/>
+                    <button name="action_reconcile_declaration" type="object"
+                            string="Đối chiếu tờ khai"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="listing_type"/>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="declaration_id"
+                                      domain="[('company_id', '=', company_id),
+                                               ('date_start', '=', date_start),
+                                               ('date_end', '=', date_end)]"/>
+                            <field name="show_purpose_groups" invisible="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group invisible="listing_type != 'purchase'">
+                            <field name="total_purchase_value"/>
+                            <field name="total_import_value"/>
+                            <field name="total_purchase_tax"/>
+                            <field name="total_deductible_tax"/>
+                            <field name="total_import_tax"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="drop_warning" readonly="1"
+                                  invisible="not drop_warning"/>
+                        <field name="partner_vat_warning" readonly="1"
+                                  invisible="not partner_vat_warning"/>
+                        <field name="import_flag_warning" readonly="1"
+                                  invisible="not import_flag_warning"/>
+                    </group>
+                    <notebook>
+                        <page string="Bảng kê" name="lines">
+                            <field name="line_ids">
+                                <list editable="bottom"
+                                      decoration-bf="line_kind == 'group_total'"
+                                      decoration-muted="line_kind == 'unanchored'">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="line_kind"/>
+                                    <field name="group_label"/>
+                                    <field name="invoice_number"/>
+                                    <button name="action_open_source" type="object"
+                                            string="Mở" icon="fa-external-link"
+                                            invisible="not source_res_id"/>
+                                    <field name="invoice_date"/>
+                                    <field name="partner_name"/>
+                                    <field name="partner_vat"/>
+                                    <field name="amount_untaxed" sum="Tổng GT"/>
+                                    <field name="amount_tax" sum="Tổng thuế"/>
+                                    <field name="amount_deductible"
+                                              invisible="parent.listing_type != 'purchase'"/>
+                                    <field name="is_import"
+                                              invisible="parent.listing_type != 'purchase'"/>
+                                    <field name="note"/>
+                                    <field name="source_model" column_invisible="1"/>
+                                    <field name="source_res_id" column_invisible="1"/>
+                                    <field name="group_code" column_invisible="1"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Đối chiếu" name="reconcile">
+                            <field name="reconcile_ids">
+                                <list decoration-danger="is_mismatch">
+                                    <field name="compare_kind"/>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="amount_listing"/>
+                                    <field name="amount_other"/>
+                                    <field name="difference"/>
+                                    <field name="is_mismatch"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_vas_gtgt_listing_dropped_list" model="ir.ui.view">
+        <field name="name">vas.gtgt.listing.dropped.list</field>
+        <field name="model">vas.gtgt.listing.dropped</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="move_ref"/>
+                <field name="missing_reasons"/>
+                <field name="amount_tax"/>
+                <field name="source_hint"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_gtgt_listing_reconcile_list" model="ir.ui.view">
+        <field name="name">vas.gtgt.listing.reconcile.list</field>
+        <field name="model">vas.gtgt.listing.reconcile</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="is_mismatch">
+                <field name="compare_kind"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="amount_listing"/>
+                <field name="amount_other"/>
+                <field name="difference"/>
+                <field name="is_mismatch"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_vas_gtgt_listing" model="ir.actions.act_window">
+        <field name="name">Bảng kê hóa đơn GTGT</field>
+        <field name="res_model">vas.gtgt.listing</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

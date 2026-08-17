@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="vas_gtgt_form_01" model="vas.gtgt.form.type">
+        <field name="code">01/GTGT</field>
+        <field name="name">Tờ khai thuế GTGT (khấu trừ)</field>
+    </record>
+    <record id="vas_gtgt_version_tt80" model="vas.gtgt.form.version">
+        <field name="code">TT80</field>
+        <field name="name">Mẫu 01/GTGT theo Thông tư 80/2021/TT-BTC</field>
+        <field name="form_type_id" ref="vas_gtgt_form_01"/>
+        <field name="circular_label">Thông tư 80/2021/TT-BTC</field>
+        <field name="date_start">2016-01-01</field>
+        <field name="date_end">2026-06-30</field>
+    </record>
+    <record id="vas_gtgt_version_tt89" model="vas.gtgt.form.version">
+        <field name="code">TT89</field>
+        <field name="name">Mẫu 01/GTGT theo Thông tư 89/2026/TT-BTC</field>
+        <field name="form_type_id" ref="vas_gtgt_form_01"/>
+        <field name="circular_label">Thông tư 89/2026/TT-BTC</field>
+        <field name="date_start">2026-07-01</field>
+    </record>
+    <record id="vas_gtgt_act_sxkd" model="vas.gtgt.activity">
+        <field name="code">SXKD</field>
+        <field name="name">Hoạt động sản xuất kinh doanh</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="vas_gtgt_act_dadt" model="vas.gtgt.activity">
+        <field name="code">DADT</field>
+        <field name="name">Dự án đầu tư</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="vas_tax_32b" model="vas.tax">
+        <field name="code">GTGT_32B</field>
+        <field name="name">Không tính vào giá tính thuế GTGT</field>
+        <field name="sequence">70</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rate">0</field>
+        <field name="tax_scope">output</field>
+        <field name="date_start">2026-07-01</field>
+        <field name="declaration_value_tag">32b</field>
+        <field name="match_mode">rate</field>
+        <field name="odoo_name_token">không tính vào giá</field>
+    </record>
+    <record id="vas_tax_34a" model="vas.tax">
+        <field name="code">GTGT_34A</field>
+        <field name="name">Không thuộc phạm vi PL thuế GTGT</field>
+        <field name="sequence">80</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rate">0</field>
+        <field name="tax_scope">output</field>
+        <field name="date_start">2026-07-01</field>
+        <field name="declaration_value_tag">34a</field>
+        <field name="match_mode">rate</field>
+        <field name="odoo_name_token">không thuộc phạm vi</field>
+    </record>
+    <record id="ind_tt89_21" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">21</field>
+        <field name="name">Không PS mua bán trong kỳ</field>
+        <field name="sequence">210</field>
+        <field name="column_kind">flag</field>
+        <field name="source_kind">auto_flag</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt89_22" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">22</field>
+        <field name="name">Thuế GTGT còn được khấu trừ kỳ trước chuyển sang</field>
+        <field name="sequence">220</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">carry_forward</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt89_23" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">23</field>
+        <field name="name">Giá trị HHĐV mua vào</field>
+        <field name="sequence">230</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_input_base</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt89_23a" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">23a</field>
+        <field name="name">Trong đó: hàng hóa nhập khẩu (giá trị)</field>
+        <field name="sequence">231</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_input_import_base</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt89_24" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">24</field>
+        <field name="name">Thuế GTGT HHĐV mua vào</field>
+        <field name="sequence">240</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">ledger_input_tax</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt89_24a" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">24a</field>
+        <field name="name">Trong đó: hàng hóa nhập khẩu (thuế)</field>
+        <field name="sequence">241</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">ledger_input_import_tax</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt89_25" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">25</field>
+        <field name="name">Thuế GTGT mua vào được khấu trừ kỳ này</field>
+        <field name="sequence">250</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">ledger_input_deductible</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt89_26" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">26</field>
+        <field name="name">HHĐV bán ra không chịu thuế GTGT</field>
+        <field name="sequence">260</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_output_value</field>
+        <field name="ledger_tag">26</field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt89_29" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">29</field>
+        <field name="name">HHĐV bán ra chịu thuế suất 0%</field>
+        <field name="sequence">290</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_output_value</field>
+        <field name="ledger_tag">29</field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt89_30" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">30</field>
+        <field name="name">HHĐV bán ra chịu thuế suất 5%</field>
+        <field name="sequence">300</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_output_value</field>
+        <field name="ledger_tag">30</field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt89_31" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">31</field>
+        <field name="name">Thuế GTGT 5%</field>
+        <field name="sequence">310</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">ledger_output_tax</field>
+        <field name="ledger_tag">31</field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt89_32" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">32</field>
+        <field name="name">HHĐV bán ra chịu thuế suất 10%</field>
+        <field name="sequence">320</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_output_value</field>
+        <field name="ledger_tag">32</field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt89_32a" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">32a</field>
+        <field name="name">HHĐV bán ra không kê khai, tính nộp thuế</field>
+        <field name="sequence">321</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_output_value</field>
+        <field name="ledger_tag">32a</field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt89_32b" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">32b</field>
+        <field name="name">HHĐV bán ra không tính vào giá tính thuế GTGT</field>
+        <field name="sequence">322</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_output_value</field>
+        <field name="ledger_tag">32b</field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt89_33" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">33</field>
+        <field name="name">Thuế GTGT 10%</field>
+        <field name="sequence">330</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">ledger_output_tax</field>
+        <field name="ledger_tag">33</field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt89_34a" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">34a</field>
+        <field name="name">HHĐV bán ra không thuộc phạm vi PL thuế GTGT</field>
+        <field name="sequence">340</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_output_value</field>
+        <field name="ledger_tag">34a</field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt89_27" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">27</field>
+        <field name="name">HHĐV bán ra chịu thuế GTGT (giá trị)</field>
+        <field name="sequence">350</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">formula</field>
+        <field name="ledger_tag"></field>
+        <field name="formula">[29]+[30]+[32]+[32a]-[32b]</field>
+    </record>
+    <record id="ind_tt89_28" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">28</field>
+        <field name="name">HHĐV bán ra chịu thuế GTGT (thuế)</field>
+        <field name="sequence">360</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">formula</field>
+        <field name="ledger_tag"></field>
+        <field name="formula">[31]+[33]</field>
+    </record>
+    <record id="ind_tt89_34" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">34</field>
+        <field name="name">Tổng doanh thu HHĐV bán ra</field>
+        <field name="sequence">370</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">formula</field>
+        <field name="ledger_tag"></field>
+        <field name="formula">[26]+[27]+[34a]</field>
+    </record>
+    <record id="ind_tt89_35" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">35</field>
+        <field name="name">Tổng thuế GTGT HHĐV bán ra</field>
+        <field name="sequence">380</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">formula</field>
+        <field name="ledger_tag"></field>
+        <field name="formula">[28]</field>
+    </record>
+    <record id="ind_tt89_36" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">36</field>
+        <field name="name">Thuế GTGT phát sinh trong kỳ</field>
+        <field name="sequence">390</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">formula</field>
+        <field name="ledger_tag"></field>
+        <field name="formula">[35]-[25]</field>
+    </record>
+    <record id="ind_tt89_37" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">37</field>
+        <field name="name">Điều chỉnh giảm thuế còn được khấu trừ kỳ trước</field>
+        <field name="sequence">400</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">manual</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt89_38" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">38</field>
+        <field name="name">Điều chỉnh tăng thuế còn được khấu trừ kỳ trước</field>
+        <field name="sequence">410</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">manual</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt89_39a" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">39a</field>
+        <field name="name">Thuế GTGT nhận bàn giao được khấu trừ trong kỳ</field>
+        <field name="sequence">420</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">manual</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt89_40a" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">40a</field>
+        <field name="name">Thuế GTGT phải nộp HĐ SXKD trong kỳ</field>
+        <field name="sequence">430</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">formula</field>
+        <field name="ledger_tag"></field>
+        <field name="formula">[36]-[22]+[37]-[38]-[39a];max0</field>
+    </record>
+    <record id="ind_tt89_40b" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">40b</field>
+        <field name="name">Thuế GTGT ĐAĐT bù trừ với phải nộp SXKD</field>
+        <field name="sequence">440</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">manual</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt89_40" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">40</field>
+        <field name="name">Thuế GTGT còn phải nộp trong kỳ</field>
+        <field name="sequence">450</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">formula</field>
+        <field name="ledger_tag"></field>
+        <field name="formula">[40a]-[40b]</field>
+    </record>
+    <record id="ind_tt89_41" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">41</field>
+        <field name="name">Thuế GTGT chưa khấu trừ hết kỳ này</field>
+        <field name="sequence">460</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">formula</field>
+        <field name="ledger_tag"></field>
+        <field name="formula">[36]-[22]+[37]-[38]-[39a];neg_as_positive</field>
+    </record>
+    <record id="ind_tt89_42" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">42</field>
+        <field name="name">Thuế GTGT đề nghị hoàn</field>
+        <field name="sequence">470</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">manual</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt89_43" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt89"/>
+        <field name="code">43</field>
+        <field name="name">Thuế GTGT còn được khấu trừ chuyển kỳ sau</field>
+        <field name="sequence">480</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">formula</field>
+        <field name="ledger_tag"></field>
+        <field name="formula">[41]-[42]</field>
+    </record>
+    <record id="ind_tt80_21" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">21</field>
+        <field name="name">Không PS mua bán trong kỳ</field>
+        <field name="sequence">210</field>
+        <field name="column_kind">flag</field>
+        <field name="source_kind">auto_flag</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt80_22" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">22</field>
+        <field name="name">Thuế GTGT còn được khấu trừ kỳ trước chuyển sang</field>
+        <field name="sequence">220</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">carry_forward</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt80_23" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">23</field>
+        <field name="name">Giá trị HHĐV mua vào</field>
+        <field name="sequence">230</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_input_base</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt80_23a" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">23a</field>
+        <field name="name">Trong đó: hàng hóa nhập khẩu (giá trị)</field>
+        <field name="sequence">231</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_input_import_base</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt80_24" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">24</field>
+        <field name="name">Thuế GTGT HHĐV mua vào</field>
+        <field name="sequence">240</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">ledger_input_tax</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt80_24a" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">24a</field>
+        <field name="name">Trong đó: hàng hóa nhập khẩu (thuế)</field>
+        <field name="sequence">241</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">ledger_input_import_tax</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt80_25" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">25</field>
+        <field name="name">Thuế GTGT mua vào được khấu trừ kỳ này</field>
+        <field name="sequence">250</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">ledger_input_deductible</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt80_26" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">26</field>
+        <field name="name">HHĐV bán ra không chịu thuế GTGT</field>
+        <field name="sequence">260</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_output_value</field>
+        <field name="ledger_tag">26</field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt80_29" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">29</field>
+        <field name="name">HHĐV bán ra chịu thuế suất 0%</field>
+        <field name="sequence">290</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_output_value</field>
+        <field name="ledger_tag">29</field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt80_30" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">30</field>
+        <field name="name">HHĐV bán ra chịu thuế suất 5%</field>
+        <field name="sequence">300</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_output_value</field>
+        <field name="ledger_tag">30</field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt80_31" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">31</field>
+        <field name="name">Thuế GTGT 5%</field>
+        <field name="sequence">310</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">ledger_output_tax</field>
+        <field name="ledger_tag">31</field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt80_32" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">32</field>
+        <field name="name">HHĐV bán ra chịu thuế suất 10%</field>
+        <field name="sequence">320</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_output_value</field>
+        <field name="ledger_tag">32</field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt80_32a" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">32a</field>
+        <field name="name">HHĐV bán ra không kê khai, tính nộp thuế</field>
+        <field name="sequence">321</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_output_value</field>
+        <field name="ledger_tag">32a</field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt80_33" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">33</field>
+        <field name="name">Thuế GTGT 10%</field>
+        <field name="sequence">330</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">ledger_output_tax</field>
+        <field name="ledger_tag">33</field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt80_27" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">27</field>
+        <field name="name">HHĐV bán ra chịu thuế GTGT (giá trị)</field>
+        <field name="sequence">350</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">formula</field>
+        <field name="ledger_tag"></field>
+        <field name="formula">[29]+[30]+[32]+[32a]</field>
+    </record>
+    <record id="ind_tt80_28" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">28</field>
+        <field name="name">HHĐV bán ra chịu thuế GTGT (thuế)</field>
+        <field name="sequence">360</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">formula</field>
+        <field name="ledger_tag"></field>
+        <field name="formula">[31]+[33]</field>
+    </record>
+    <record id="ind_tt80_34" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">34</field>
+        <field name="name">Tổng doanh thu HHĐV bán ra</field>
+        <field name="sequence">370</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">formula</field>
+        <field name="ledger_tag"></field>
+        <field name="formula">[26]+[27]</field>
+    </record>
+    <record id="ind_tt80_35" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">35</field>
+        <field name="name">Tổng thuế GTGT HHĐV bán ra</field>
+        <field name="sequence">380</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">formula</field>
+        <field name="ledger_tag"></field>
+        <field name="formula">[28]</field>
+    </record>
+    <record id="ind_tt80_36" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">36</field>
+        <field name="name">Thuế GTGT phát sinh trong kỳ</field>
+        <field name="sequence">390</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">formula</field>
+        <field name="ledger_tag"></field>
+        <field name="formula">[35]-[25]</field>
+    </record>
+    <record id="ind_tt80_37" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">37</field>
+        <field name="name">Điều chỉnh giảm thuế còn được khấu trừ kỳ trước</field>
+        <field name="sequence">400</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">manual</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt80_38" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">38</field>
+        <field name="name">Điều chỉnh tăng thuế còn được khấu trừ kỳ trước</field>
+        <field name="sequence">410</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">manual</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt80_39a" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">39a</field>
+        <field name="name">Thuế GTGT nhận bàn giao được khấu trừ trong kỳ</field>
+        <field name="sequence">420</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">manual</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt80_40a" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">40a</field>
+        <field name="name">Thuế GTGT phải nộp HĐ SXKD trong kỳ</field>
+        <field name="sequence">430</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">formula</field>
+        <field name="ledger_tag"></field>
+        <field name="formula">[36]-[22]+[37]-[38]-[39a];max0</field>
+    </record>
+    <record id="ind_tt80_40b" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">40b</field>
+        <field name="name">Thuế GTGT ĐAĐT bù trừ với phải nộp SXKD</field>
+        <field name="sequence">440</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">manual</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt80_40" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">40</field>
+        <field name="name">Thuế GTGT còn phải nộp trong kỳ</field>
+        <field name="sequence">450</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">formula</field>
+        <field name="ledger_tag"></field>
+        <field name="formula">[40a]-[40b]</field>
+    </record>
+    <record id="ind_tt80_41" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">41</field>
+        <field name="name">Thuế GTGT chưa khấu trừ hết kỳ này</field>
+        <field name="sequence">460</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">formula</field>
+        <field name="ledger_tag"></field>
+        <field name="formula">[36]-[22]+[37]-[38]-[39a];neg_as_positive</field>
+    </record>
+    <record id="ind_tt80_42" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">42</field>
+        <field name="name">Thuế GTGT đề nghị hoàn</field>
+        <field name="sequence">470</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">manual</field>
+        <field name="ledger_tag"></field>
+        <field name="formula"></field>
+    </record>
+    <record id="ind_tt80_43" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_tt80"/>
+        <field name="code">43</field>
+        <field name="name">Thuế GTGT còn được khấu trừ chuyển kỳ sau</field>
+        <field name="sequence">480</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">formula</field>
+        <field name="ledger_tag"></field>
+        <field name="formula">[41]-[42]</field>
+    </record>
+</odoo>

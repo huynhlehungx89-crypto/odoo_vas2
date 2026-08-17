@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- U3: công ty demo bấm thử — idempotent (có marker W10-DEMO-SEED thì bỏ qua) -->
+    <function model="res.company" name="_vas_w10_ensure_click_demo"/>
+</odoo>

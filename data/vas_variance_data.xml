@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_vas_variance_sheet" model="ir.sequence">
+        <field name="name">Phiếu xử lý vượt định mức</field>
+        <field name="code">vas.variance.sheet</field>
+        <field name="prefix">PV/%(year)s/</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

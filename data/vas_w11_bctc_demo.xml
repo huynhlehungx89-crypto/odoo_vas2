@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <function model="res.company" name="_vas_w11_ensure_bctc_demo"/>
+</odoo>

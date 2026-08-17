@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vas_account_ledger_wizard_form" model="ir.ui.view">
+        <field name="name">vas.account.ledger.wizard.form</field>
+        <field name="model">vas.account.ledger.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Sổ chi tiết tài khoản (form nội bộ)">
+                <sheet>
+                    <div class="alert alert-info" role="status">
+                        Màn chính dùng khung OWL: menu «Sổ chi tiết tài khoản».
+                        Form này chỉ giữ nội bộ (PDF/QWeb / nghiệm thu).
+                    </div>
+                    <group>
+                        <group string="Tham số">
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="regime_id" invisible="1"/>
+                            <field name="account_id"/>
+                            <field name="period_from_id"
+                                     domain="[('fiscalyear_id.company_id', '=', company_id)]"/>
+                            <field name="period_to_id"
+                                     domain="[('fiscalyear_id.company_id', '=', company_id)]"/>
+                            <field name="hide_reversed"/>
+                            <field name="partner_id"
+                                     invisible="layout != 'ar_ap'"
+                                     placeholder="Tất cả đối tượng"/>
+                            <field name="pos_session_res_id"
+                                     placeholder="0 = mọi phiên"/>
+                            <field name="layout" readonly="1"/>
+                            <field name="form_code" readonly="1"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="date_from" invisible="1"/>
+                            <field name="date_to" invisible="1"/>
+                        </group>
+                        <group string="Đầu sổ">
+                            <div class="text-muted" colspan="2">
+                                Mẫu <field name="form_code" class="oe_inline" readonly="1"/> —
+                                đơn vị: <field name="company_id" class="oe_inline" readonly="1" nolabel="1"/>;
+                                niên độ theo từ kỳ → đến kỳ.
+                                Cột «Thời hạn chiết khấu» (S12) để trống — VAS chưa theo dõi.
+                            </div>
+                        </group>
+                    </group>
+                    <div class="oe_button_box mb-2">
+                        <button name="action_compute" type="object" string="Xem sổ"
+                                class="btn-primary"/>
+                        <button name="action_export_xlsx" type="object" string="Xuất Excel"/>
+                        <button name="action_print_pdf" type="object" string="In PDF"/>
+                    </div>
+                    <field name="line_ids">
+                        <list create="0" delete="0" edit="0"
+                              decoration-bf="row_type in ('opening', 'total_ps', 'closing')">
+                            <field name="book_sequence" optional="hide"/>
+                            <field name="partner_id" column_invisible="parent.layout != 'ar_ap'"/>
+                            <field name="pos_session_name" optional="show"/>
+                            <field name="row_type"/>
+                            <field name="date"/>
+                            <field name="move_name"/>
+                            <field name="move_date"/>
+                            <field name="narration"/>
+                            <field name="discount_deadline"
+                                      column_invisible="parent.layout != 'ar_ap'"/>
+                            <field name="counterpart_code"/>
+                            <field name="debit"/>
+                            <field name="credit"/>
+                            <field name="balance_debit"/>
+                            <field name="balance_credit"/>
+                            <field name="currency_id" column_invisible="1"/>
+                            <field name="sequence" column_invisible="1"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Khung OWL — màn chính sổ chi tiết -->
+    <record id="action_vas_account_ledger_client" model="ir.actions.client">
+        <field name="name">Sổ chi tiết tài khoản</field>
+        <field name="tag">vas_report_client</field>
+        <field name="path">vas-account-ledger</field>
+        <field name="context">{
+            'report_model': 'vas.account.ledger.wizard',
+            'report_title': 'Sổ chi tiết tài khoản',
+            'requires_account': True,
+        }</field>
+    </record>
+
+    <!-- Form nội bộ — ẩn khỏi menu user -->
+    <record id="action_vas_account_ledger" model="ir.actions.act_window">
+        <field name="name">Sổ chi tiết (form nội bộ)</field>
+        <field name="res_model">vas.account.ledger.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+
+    <menuitem id="menu_vas_books"
+              name="Sổ &amp; Báo cáo"
+              parent="menu_connecta_vas_root"
+              sequence="20"/>
+
+    <menuitem id="menu_vas_account_ledger"
+              name="Sổ chi tiết tài khoản"
+              parent="menu_vas_books"
+              action="action_vas_account_ledger_client"
+              sequence="10"/>
+
+    <menuitem id="menu_vas_account_ledger_form"
+              name="Sổ chi tiết — form (nội bộ)"
+              parent="menu_vas_books"
+              action="action_vas_account_ledger"
+              sequence="11"
+              groups="base.group_no_one"/>
+</odoo>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="connecta_vas.VasDashboard">
+        <div class="o_action o_vas_dashboard">
+            <Layout display="{controlPanel: false}">
+                <div class="o_vas_dash_toolbar d-flex justify-content-between align-items-center px-3 py-2 border-bottom flex-wrap gap-2">
+                    <h2 class="m-0 fs-4">Tổng quan</h2>
+                    <div class="d-flex align-items-center gap-2">
+                        <label class="mb-0 text-muted small" for="vas_dash_period">Kỳ</label>
+                        <select id="vas_dash_period" class="form-select form-select-sm o_vas_dash_period"
+                                t-on-change="onPeriodChange"
+                                t-att-disabled="state.loading">
+                            <t t-foreach="state.periods" t-as="p" t-key="p.id">
+                                <option t-att-value="p.id"
+                                        t-att-selected="p.id === state.periodId"
+                                        t-esc="p.name"/>
+                            </t>
+                        </select>
+                    </div>
+                </div>
+                <div class="o_content p-3">
+                    <t t-if="state.loading">
+                        <div class="text-muted">Đang tải tổng quan…</div>
+                    </t>
+                    <t t-elif="state.error">
+                        <div class="alert alert-danger" t-esc="state.error"/>
+                    </t>
+                    <t t-elif="state.data">
+                        <t t-set="tiles" t-value="state.data.tiles"/>
+                        <div class="o_vas_dash_grid">
+                            <!-- Hàng 1 -->
+                            <div class="o_vas_dash_tile" t-att-class="{'o_vas_dash_empty': tiles.finance.empty}">
+                                <h3 class="o_vas_dash_tile_title" t-esc="tiles.finance.title"/>
+                                <t t-if="tiles.finance.empty">
+                                    <p class="o_vas_dash_empty_msg" t-esc="tiles.finance.empty_message"/>
+                                </t>
+                                <t t-else="">
+                                    <div class="o_vas_dash_kv"><span>Tiền mặt (111)</span><strong t-esc="formatMoney(tiles.finance.cash_111)"/></div>
+                                    <div class="o_vas_dash_kv"><span>Tiền gửi (112)</span><strong t-esc="formatMoney(tiles.finance.bank_112)"/></div>
+                                    <div class="o_vas_dash_kv"><span>Tổng tiền</span><strong t-esc="formatMoney(tiles.finance.total_cash)"/></div>
+                                    <div class="o_vas_dash_kv"><span>Hàng tồn kho</span><strong t-esc="formatMoney(tiles.finance.inventory)"/></div>
+                                </t>
+                            </div>
+
+                            <div class="o_vas_dash_tile" t-att-class="{'o_vas_dash_empty': tiles.ar.empty}">
+                                <h3 class="o_vas_dash_tile_title" t-esc="tiles.ar.title"/>
+                                <t t-if="tiles.ar.empty">
+                                    <p class="o_vas_dash_empty_msg" t-esc="tiles.ar.empty_message"/>
+                                </t>
+                                <t t-else="">
+                                    <div class="o_vas_dash_kv"><span>Tổng</span><strong t-esc="formatMoney(tiles.ar.total)"/></div>
+                                    <t t-if="tiles.ar.aging_available and tiles.ar.aging">
+                                        <t t-foreach="tiles.ar.aging.columns" t-as="col" t-key="col.key">
+                                            <div class="o_vas_dash_kv">
+                                                <span t-att-title="col.hint or ''" t-esc="col.label"/>
+                                                <strong t-esc="formatMoney(tiles.ar.aging.buckets[col.key])"/>
+                                            </div>
+                                        </t>
+                                    </t>
+                                </t>
+                                <t t-foreach="tiles.ar.pending || []" t-as="note" t-key="note_index">
+                                    <p class="o_vas_dash_pending small text-muted mt-2" t-esc="note"/>
+                                </t>
+                            </div>
+
+                            <div class="o_vas_dash_tile" t-att-class="{'o_vas_dash_empty': tiles.ap.empty}">
+                                <h3 class="o_vas_dash_tile_title" t-esc="tiles.ap.title"/>
+                                <t t-if="tiles.ap.empty">
+                                    <p class="o_vas_dash_empty_msg" t-esc="tiles.ap.empty_message"/>
+                                </t>
+                                <t t-else="">
+                                    <div class="o_vas_dash_kv"><span>Tổng</span><strong t-esc="formatMoney(tiles.ap.total)"/></div>
+                                    <t t-if="tiles.ap.aging_available and tiles.ap.aging">
+                                        <t t-foreach="tiles.ap.aging.columns" t-as="col" t-key="col.key">
+                                            <div class="o_vas_dash_kv">
+                                                <span t-att-title="col.hint or ''" t-esc="col.label"/>
+                                                <strong t-esc="formatMoney(tiles.ap.aging.buckets[col.key])"/>
+                                            </div>
+                                        </t>
+                                    </t>
+                                </t>
+                                <t t-foreach="tiles.ap.pending || []" t-as="note" t-key="note_index">
+                                    <p class="o_vas_dash_pending small text-muted mt-2" t-esc="note"/>
+                                </t>
+                            </div>
+
+                            <!-- Hàng 2 -->
+                            <div class="o_vas_dash_tile o_vas_dash_span2" t-att-class="{'o_vas_dash_empty': tiles.pnl.empty}">
+                                <h3 class="o_vas_dash_tile_title" t-esc="tiles.pnl.title"/>
+                                <t t-if="tiles.pnl.empty">
+                                    <p class="o_vas_dash_empty_msg" t-esc="tiles.pnl.empty_message"/>
+                                </t>
+                                <t t-else="">
+                                    <div class="o_vas_dash_metrics">
+                                        <div><span class="text-muted">Doanh thu</span><div class="fs-5" t-esc="formatMoney(tiles.pnl.revenue)"/></div>
+                                        <div><span class="text-muted">Chi phí</span><div class="fs-5" t-esc="formatMoney(tiles.pnl.expense)"/></div>
+                                        <div><span class="text-muted">Lợi nhuận</span><div class="fs-5" t-esc="formatMoney(tiles.pnl.profit)"/></div>
+                                    </div>
+                                    <div class="o_vas_dash_chart_wrap" t-if="state.chartReady and tiles.pnl.months and tiles.pnl.months.length">
+                                        <canvas t-ref="pnlChart"/>
+                                    </div>
+                                    <p t-elif="!state.chartReady" class="o_vas_dash_pending small text-muted mt-2">
+                                        Biểu đồ cột: thư viện Chart.js chưa sẵn sàng — chỉ hiện số.
+                                    </p>
+                                </t>
+                            </div>
+
+                            <div class="o_vas_dash_tile" t-att-class="{'o_vas_dash_empty': tiles.todos.empty}">
+                                <h3 class="o_vas_dash_tile_title" t-esc="tiles.todos.title"/>
+                                <t t-if="tiles.todos.empty">
+                                    <p class="o_vas_dash_empty_msg" t-esc="tiles.todos.empty_message"/>
+                                </t>
+                                <t t-else="">
+                                    <ul class="o_vas_dash_todo_list list-unstyled mb-3">
+                                        <t t-foreach="tiles.todos.items" t-as="item" t-key="item.key">
+                                            <li class="d-flex justify-content-between align-items-center py-1 border-bottom">
+                                                <span t-esc="item.label"/>
+                                                <span t-att-class="item.done ? 'text-success' : 'text-warning'"
+                                                      t-esc="item.status_label"/>
+                                            </li>
+                                        </t>
+                                    </ul>
+                                    <button type="button" class="btn btn-primary btn-sm"
+                                            t-on-click="onOpenGeneral">
+                                        Mở quy trình Tổng hợp
+                                    </button>
+                                </t>
+                            </div>
+
+                            <!-- Hàng 3 -->
+                            <div class="o_vas_dash_tile o_vas_dash_span2" t-att-class="{'o_vas_dash_empty': tiles.cashflow.empty}">
+                                <h3 class="o_vas_dash_tile_title" t-esc="tiles.cashflow.title"/>
+                                <t t-if="tiles.cashflow.empty">
+                                    <p class="o_vas_dash_empty_msg" t-esc="tiles.cashflow.empty_message"/>
+                                </t>
+                                <t t-else="">
+                                    <div class="o_vas_dash_metrics">
+                                        <div><span class="text-muted">Tổng thu</span><div class="fs-5" t-esc="formatMoney(tiles.cashflow.inflow)"/></div>
+                                        <div><span class="text-muted">Tổng chi</span><div class="fs-5" t-esc="formatMoney(tiles.cashflow.outflow)"/></div>
+                                        <div><span class="text-muted">Tồn cuối kỳ</span><div class="fs-5" t-esc="formatMoney(tiles.cashflow.closing)"/></div>
+                                    </div>
+                                    <div class="o_vas_dash_chart_wrap" t-if="state.chartReady and tiles.cashflow.months and tiles.cashflow.months.length">
+                                        <canvas t-ref="cashChart"/>
+                                    </div>
+                                </t>
+                            </div>
+
+                            <div class="o_vas_dash_tile" t-att-class="{'o_vas_dash_empty': tiles.cost_structure.empty}">
+                                <h3 class="o_vas_dash_tile_title" t-esc="tiles.cost_structure.title"/>
+                                <t t-if="tiles.cost_structure.empty">
+                                    <p class="o_vas_dash_empty_msg" t-esc="tiles.cost_structure.empty_message"/>
+                                </t>
+                                <t t-else="">
+                                    <div class="o_vas_dash_chart_wrap o_vas_dash_chart_pie"
+                                         t-if="state.chartReady and tiles.cost_structure.slices and tiles.cost_structure.slices.length">
+                                        <canvas t-ref="costChart"/>
+                                    </div>
+                                    <ul class="list-unstyled mt-2 mb-0">
+                                        <t t-foreach="tiles.cost_structure.slices" t-as="s" t-key="s.id">
+                                            <li class="o_vas_dash_kv">
+                                                <span t-esc="s.label"/>
+                                                <strong t-esc="formatMoney(s.amount)"/>
+                                            </li>
+                                        </t>
+                                    </ul>
+                                </t>
+                                <t t-foreach="tiles.cost_structure.pending || []" t-as="note" t-key="note_index">
+                                    <p class="o_vas_dash_pending small text-muted mt-2" t-esc="note"/>
+                                </t>
+                            </div>
+                        </div>
+                        <div class="text-muted small mt-2" t-if="state.data.elapsed_seconds !== undefined">
+                            Thời gian dựng: <t t-esc="state.data.elapsed_seconds"/> giây
+                        </div>
+                    </t>
+                </div>
+            </Layout>
+        </div>
+    </t>
+</templates>

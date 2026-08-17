@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Phụ lục 1 TT45 — nhóm cấp 1 + một số dòng đại diện (min/max năm) -->
+    <record id="vas_asset_group_a" model="vas.asset.group">
+        <field name="code">A</field>
+        <field name="name">Máy móc, thiết bị động lực</field>
+    </record>
+    <record id="vas_asset_group_a1" model="vas.asset.group">
+        <field name="code">A.1</field>
+        <field name="name">Máy phát động lực</field>
+        <field name="parent_id" ref="vas_asset_group_a"/>
+        <field name="min_years">8</field>
+        <field name="max_years">15</field>
+    </record>
+    <record id="vas_asset_group_a4" model="vas.asset.group">
+        <field name="code">A.4</field>
+        <field name="name">Máy móc, thiết bị động lực khác</field>
+        <field name="parent_id" ref="vas_asset_group_a"/>
+        <field name="min_years">6</field>
+        <field name="max_years">15</field>
+    </record>
+
+    <record id="vas_asset_group_b" model="vas.asset.group">
+        <field name="code">B</field>
+        <field name="name">Máy móc, thiết bị công tác</field>
+    </record>
+    <record id="vas_asset_group_b1" model="vas.asset.group">
+        <field name="code">B.1</field>
+        <field name="name">Máy công cụ</field>
+        <field name="parent_id" ref="vas_asset_group_b"/>
+        <field name="min_years">7</field>
+        <field name="max_years">15</field>
+    </record>
+    <record id="vas_asset_group_b9" model="vas.asset.group">
+        <field name="code">B.9</field>
+        <field name="name">Thiết bị linh kiện / điện tử / cơ khí chính xác</field>
+        <field name="parent_id" ref="vas_asset_group_b"/>
+        <field name="min_years">5</field>
+        <field name="max_years">15</field>
+    </record>
+    <record id="vas_asset_group_b16" model="vas.asset.group">
+        <field name="code">B.16</field>
+        <field name="name">Máy móc, thiết bị viễn thông, tin học, truyền hình</field>
+        <field name="parent_id" ref="vas_asset_group_b"/>
+        <field name="min_years">3</field>
+        <field name="max_years">15</field>
+    </record>
+
+    <record id="vas_asset_group_c" model="vas.asset.group">
+        <field name="code">C</field>
+        <field name="name">Dụng cụ làm việc đo lường, thí nghiệm</field>
+    </record>
+    <record id="vas_asset_group_c1" model="vas.asset.group">
+        <field name="code">C.1</field>
+        <field name="name">Thiết bị đo lường cơ / âm / nhiệt</field>
+        <field name="parent_id" ref="vas_asset_group_c"/>
+        <field name="min_years">5</field>
+        <field name="max_years">10</field>
+    </record>
+
+    <record id="vas_asset_group_d" model="vas.asset.group">
+        <field name="code">D</field>
+        <field name="name">Thiết bị và phương tiện vận tải</field>
+    </record>
+    <record id="vas_asset_group_d1" model="vas.asset.group">
+        <field name="code">D.1</field>
+        <field name="name">Phương tiện vận tải đường bộ</field>
+        <field name="parent_id" ref="vas_asset_group_d"/>
+        <field name="min_years">6</field>
+        <field name="max_years">10</field>
+    </record>
+
+    <record id="vas_asset_group_e" model="vas.asset.group">
+        <field name="code">E</field>
+        <field name="name">Dụng cụ quản lý</field>
+    </record>
+    <record id="vas_asset_group_e1" model="vas.asset.group">
+        <field name="code">E.1</field>
+        <field name="name">Thiết bị tính toán, đo lường</field>
+        <field name="parent_id" ref="vas_asset_group_e"/>
+        <field name="min_years">5</field>
+        <field name="max_years">8</field>
+    </record>
+    <record id="vas_asset_group_e2" model="vas.asset.group">
+        <field name="code">E.2</field>
+        <field name="name">Máy móc, thiết bị thông tin, điện tử và phần mềm tin học phục vụ quản lý</field>
+        <field name="parent_id" ref="vas_asset_group_e"/>
+        <field name="min_years">3</field>
+        <field name="max_years">8</field>
+    </record>
+
+    <record id="vas_asset_group_g" model="vas.asset.group">
+        <field name="code">G</field>
+        <field name="name">Nhà cửa, vật kiến trúc</field>
+    </record>
+    <record id="vas_asset_group_g1" model="vas.asset.group">
+        <field name="code">G.1</field>
+        <field name="name">Nhà cửa loại kiên cố</field>
+        <field name="parent_id" ref="vas_asset_group_g"/>
+        <field name="min_years">25</field>
+        <field name="max_years">50</field>
+    </record>
+
+    <record id="vas_asset_group_h" model="vas.asset.group">
+        <field name="code">H</field>
+        <field name="name">Súc vật, vườn cây lâu năm</field>
+    </record>
+    <record id="vas_asset_group_h1" model="vas.asset.group">
+        <field name="code">H.1</field>
+        <field name="name">Các loại súc vật</field>
+        <field name="parent_id" ref="vas_asset_group_h"/>
+        <field name="min_years">4</field>
+        <field name="max_years">15</field>
+    </record>
+
+    <record id="vas_asset_group_i" model="vas.asset.group">
+        <field name="code">I</field>
+        <field name="name">TSCĐ hữu hình khác chưa quy định</field>
+        <field name="min_years">4</field>
+        <field name="max_years">25</field>
+    </record>
+    <record id="vas_asset_group_k" model="vas.asset.group">
+        <field name="code">K</field>
+        <field name="name">TSCĐ vô hình khác</field>
+        <field name="min_years">2</field>
+        <field name="max_years">20</field>
+    </record>
+</odoo>

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vas_move_list" model="ir.ui.view">
+        <field name="name">vas.move.list</field>
+        <field name="model">vas.move</field>
+        <field name="arch" type="xml">
+            <list>
+                <header>
+                    <button name="action_sync_now"
+                            type="object"
+                            string="Đồng bộ ngay"
+                            display="always"
+                            class="btn-secondary"/>
+                </header>
+                <field name="date"/>
+                <field name="name"/>
+                <field name="origin_ref" optional="show"/>
+                <field name="journal_id"/>
+                <field name="move_kind"/>
+                <field name="vas_asset_id" optional="hide"/>
+                <field name="vas_loan_id" optional="hide"/>
+                <field name="ref"/>
+                <field name="source_ref" optional="show" string="Tham chiếu nguồn"/>
+                <field name="state"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_move_form" model="ir.ui.view">
+        <field name="name">vas.move.form</field>
+        <field name="model">vas.move</field>
+        <field name="arch" type="xml">
+            <form string="Bút toán">
+                <header>
+                    <button name="action_post"
+                            string="Ghi sổ"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'draft'"
+                            data-hotkey="q"/>
+                    <button name="action_reverse"
+                            string="Đảo bút toán"
+                            type="object"
+                            invisible="state != 'posted'"
+                            data-hotkey="r"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,posted,reversed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date" readonly="state != 'draft'"/>
+                            <field name="journal_id" readonly="state != 'draft'"/>
+                            <field name="regime_id" readonly="state != 'draft'"/>
+                            <field name="period_id" readonly="1"/>
+                            <field name="move_kind" readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="ref" readonly="state not in ('draft', 'posted')"/>
+                            <field name="origin_ref" readonly="1"/>
+                            <field name="currency_id" readonly="state != 'draft'" groups="base.group_multi_currency"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="state != 'draft'"/>
+                            <field name="is_reversal" readonly="1"/>
+                            <field name="reversal_move_id" readonly="1"/>
+                            <field name="source_model" readonly="state != 'draft'"/>
+                            <field name="source_res_id" readonly="state != 'draft'"/>
+                            <field name="source_ref" readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Dòng bút toán" name="lines">
+                            <field name="line_ids" readonly="state != 'draft'">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="account_id"/>
+                                    <field name="cost_item_id" optional="show"/>
+                                    <field name="cost_object_id" optional="hide"/>
+                                    <field name="name"/>
+                                    <field name="partner_id" optional="show"/>
+                                    <field name="pos_session_name" optional="hide"/>
+                                    <field name="currency_id" optional="hide" groups="base.group_multi_currency"/>
+                                    <field name="amount_currency" optional="hide" groups="base.group_multi_currency"/>
+                                    <field name="debit" sum="Tổng Nợ"/>
+                                    <field name="credit" sum="Tổng Có"/>
+                                    <field name="tax_id" optional="hide"/>
+                                    <field name="tax_status" optional="hide"/>
+                                    <field name="company_id" column_invisible="1"/>
+                                    <field name="company_currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Thông tin khác" name="other">
+                            <group>
+                                <field name="narration" placeholder="Thêm ghi chú..."/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_move" model="ir.actions.act_window">
+        <field name="name">Bút toán</field>
+        <field name="res_model">vas.move</field>
+        <field name="view_mode">list,form</field>
+        <!-- Mặc định ẨN bản đã đảo + bút toán đảo (chỉ lớp list). Tắt filter
+             "Ẩn đã đảo/điều chỉnh" trên search để xem đủ khi kiểm toán. -->
+        <field name="context">{
+            'search_default_hide_reversed_adjustments': 1,
+            'search_default_filter_current_period': 1,
+        }</field>
+    </record>
+
+    <record id="view_vas_move_search" model="ir.ui.view">
+        <field name="name">vas.move.search</field>
+        <field name="model">vas.move</field>
+        <field name="arch" type="xml">
+            <search string="Bút toán">
+                <field name="name"/>
+                <field name="origin_ref"/>
+                <field name="source_ref"/>
+                <field name="ref"/>
+                <field name="journal_id"/>
+                <field name="period_id"/>
+                <filter string="Đã ghi sổ" name="posted" domain="[('state','=','posted')]"/>
+                <filter string="Nháp" name="draft" domain="[('state','=','draft')]"/>
+                <separator/>
+                <!-- Công tắc hiển thị: BẬT (mặc định) = chỉ còn hiệu lực;
+                     TẮT = hiện cả bản đã đảo + bút toán đảo. Không đụng số liệu. -->
+                <filter string="Ẩn đã đảo/điều chỉnh"
+                        name="hide_reversed_adjustments"
+                        domain="[('state', '!=', 'reversed'), ('is_reversal', '=', False)]"/>
+                <filter string="Đã đảo" name="reversed" domain="[('state', '=', 'reversed')]"/>
+                <filter string="Bút toán đảo" name="is_reversal" domain="[('is_reversal', '=', True)]"/>
+                <filter string="Nguồn hủy (kỳ khóa)" name="source_cancel_pending"
+                        domain="[('source_cancel_pending', '=', True)]"/>
+                <filter string="Chưa ghi sổ — thiếu kỳ" name="period_missing_pending"
+                        domain="[('period_missing_pending', '=', True)]"/>
+                <separator/>
+                <!-- Bộ lọc kỳ mặc định chuẩn Odoo (thẻ bỏ được). -->
+                <filter string="Kỳ hiện hành"
+                        name="filter_current_period"
+                        domain="[
+                            ('period_id.date_start', '&lt;=', context_today().strftime('%Y-%m-%d')),
+                            ('period_id.date_end', '&gt;=', context_today().strftime('%Y-%m-%d')),
+                        ]"/>
+                <separator/>
+                <filter string="Có chứng từ gốc" name="has_origin" domain="[('origin_ref','!=',False)]"/>
+                <filter string="Dùng TK mặc định" name="default_account"
+                        domain="[('vas_has_default_account','=',True)]"/>
+                <filter string="Khoản mục chưa phân loại" name="unclassified_cost"
+                        domain="[('vas_has_unclassified_cost','=',True)]"/>
+                <group>
+                    <filter string="Chứng từ gốc" name="group_origin_ref" context="{'group_by': 'origin_ref'}"/>
+                    <filter string="Loại bút toán" name="group_move_kind" context="{'group_by': 'move_kind'}"/>
+                    <filter string="Tài sản" name="group_asset" context="{'group_by': 'vas_asset_id'}"/>
+                    <filter string="Khế ước vay" name="group_loan" context="{'group_by': 'vas_loan_id'}"/>
+                    <filter string="Kỳ" name="group_period" context="{'group_by': 'period_id'}"/>
+                    <filter string="Ngày" name="group_date" context="{'group_by': 'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_vas_move_depreciation" model="ir.actions.act_window">
+        <field name="name">Bút toán khấu hao</field>
+        <field name="res_model">vas.move</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('move_kind', '=', 'depreciation')]</field>
+        <field name="context">{
+            'search_default_hide_reversed_adjustments': 1,
+            'search_default_group_asset': 1,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Chưa có bút toán khấu hao</p>
+            <p>Lọc theo <code>move_kind = depreciation</code>, gom theo thẻ tài sản.</p>
+        </field>
+    </record>
+
+    <record id="action_vas_move_loan_interest" model="ir.actions.act_window">
+        <field name="name">Bút toán ghi lãi vay</field>
+        <field name="res_model">vas.move</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('move_kind', '=', 'loan_interest')]</field>
+        <field name="context">{
+            'search_default_hide_reversed_adjustments': 1,
+            'search_default_group_loan': 1,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Chưa có bút toán ghi lãi</p>
+            <p>Lọc theo <code>move_kind = loan_interest</code>, gom theo khế ước.</p>
+        </field>
+    </record>
+
+    <!-- Dòng bút toán — nút thông minh danh mục TK -->
+    <record id="view_vas_move_line_list" model="ir.ui.view">
+        <field name="name">vas.move.line.list</field>
+        <field name="model">vas.move.line</field>
+        <field name="arch" type="xml">
+            <list string="Dòng bút toán VAS" create="0" delete="0">
+                <field name="date"/>
+                <field name="move_id"/>
+                <field name="account_id"/>
+                <field name="name"/>
+                <field name="partner_id" optional="show"/>
+                <field name="debit" sum="Tổng Nợ"/>
+                <field name="credit" sum="Tổng Có"/>
+                <field name="period_id" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_move_line_search" model="ir.ui.view">
+        <field name="name">vas.move.line.search</field>
+        <field name="model">vas.move.line</field>
+        <field name="arch" type="xml">
+            <search string="Dòng bút toán">
+                <field name="move_id"/>
+                <field name="account_id"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="period_id"/>
+                <separator/>
+                <filter string="Ẩn đã đảo/điều chỉnh"
+                        name="hide_reversed_adjustments"
+                        domain="[('move_id.state', '!=', 'reversed'), ('move_id.is_reversal', '=', False)]"/>
+                <filter string="Kỳ hiện hành"
+                        name="filter_current_period"
+                        domain="[
+                            ('period_id.date_start', '&lt;=', context_today().strftime('%Y-%m-%d')),
+                            ('period_id.date_end', '&gt;=', context_today().strftime('%Y-%m-%d')),
+                        ]"/>
+                <group>
+                    <filter string="Kỳ" name="group_period" context="{'group_by': 'period_id'}"/>
+                    <filter string="Ngày" name="group_date" context="{'group_by': 'date'}"/>
+                    <filter string="Đối tác" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <menuitem id="menu_vas_move"
+              name="Bút toán"
+              parent="menu_vas_ops"
+              action="action_vas_move"
+              sequence="10"/>
+</odoo>

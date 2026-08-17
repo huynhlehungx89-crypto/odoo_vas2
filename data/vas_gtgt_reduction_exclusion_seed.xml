@@ -1,0 +1,2031 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Danh mục HH/DV KHÔNG được giảm GTGT — NĐ 174/2025 Phụ lục I+II.
+         Hiệu lực: 01/07/2025 → 31/12/2026 (NQ 204 + NĐ 174).
+         Sinh từ OCR + nhóm cấp cao; gia hạn/đổi danh mục → chỉ sửa dữ liệu. -->
+    <record id="excl_vsic_06" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">10</field>
+        <field name="code">06</field>
+        <field name="name">Sản phẩm khai khoáng — dầu khí (nhóm)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_07" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">20</field>
+        <field name="code">07</field>
+        <field name="name">Quặng kim loại và tinh quặng kim loại (nhóm)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_08" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">30</field>
+        <field name="code">08</field>
+        <field name="name">Sản phẩm khai khoáng khác (nhóm)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_24" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">40</field>
+        <field name="code">24</field>
+        <field name="name">Sản phẩm kim loại (nhóm)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_61" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">50</field>
+        <field name="code">61</field>
+        <field name="name">Viễn thông (nhóm)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_64" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">60</field>
+        <field name="code">64</field>
+        <field name="name">Dịch vụ tài chính (trừ BH và quỹ hưu trí) (nhóm)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_65" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">70</field>
+        <field name="code">65</field>
+        <field name="name">Bảo hiểm, tái BH và quỹ hưu trí (nhóm)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_66" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">80</field>
+        <field name="code">66</field>
+        <field name="name">Hoạt động hỗ trợ dịch vụ tài chính (nhóm)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_68" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">90</field>
+        <field name="code">68</field>
+        <field name="name">Dịch vụ kinh doanh bất động sản (nhóm)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_09" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">100</field>
+        <field name="code">09</field>
+        <field name="name">Hoạt động dịch vụ hỗ trợ khai khoáng</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_10" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">110</field>
+        <field name="code">10</field>
+        <field name="name">Sản xuất thực phẩm</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_11" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">120</field>
+        <field name="code">11</field>
+        <field name="name">Sản xuất đồ uống</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_12" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">130</field>
+        <field name="code">12</field>
+        <field name="name">Sản xuất sản phẩm thuốc lá</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_13" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">140</field>
+        <field name="code">13</field>
+        <field name="name">Sản xuất sản phẩm dệt</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_14" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">150</field>
+        <field name="code">14</field>
+        <field name="name">Sản xuất trang phục</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_15" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">160</field>
+        <field name="code">15</field>
+        <field name="name">Sản xuất da và các sản phẩm có liên quan</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_16" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">170</field>
+        <field name="code">16</field>
+        <field name="name">Chế biến gỗ và sản xuất sản phẩm từ gỗ, tre, nứa</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_17" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">180</field>
+        <field name="code">17</field>
+        <field name="name">Sản xuất giấy và sản phẩm từ giấy</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_18" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">190</field>
+        <field name="code">18</field>
+        <field name="name">In, sao chép bản ghi các loại</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_20" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">200</field>
+        <field name="code">20</field>
+        <field name="name">Sản xuất hóa chất và sản phẩm hóa chất</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_21" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">210</field>
+        <field name="code">21</field>
+        <field name="name">Sản xuất thuốc, hóa dược và dược liệu</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_061" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">220</field>
+        <field name="code">061</field>
+        <field name="name">Khai thác dầu thô</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_062" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">230</field>
+        <field name="code">062</field>
+        <field name="name">Khai thác khí đốt tự nhiên</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_071" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">240</field>
+        <field name="code">071</field>
+        <field name="name">Khai thác quặng sắt</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_072" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">250</field>
+        <field name="code">072</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_073" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">260</field>
+        <field name="code">073</field>
+        <field name="name">Khai thác quặng uranium và quặng thorium</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_081" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">270</field>
+        <field name="code">081</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_106" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">280</field>
+        <field name="code">106</field>
+        <field name="name">Sản xuất sản phẩm bột mì và bột khác</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_125" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">290</field>
+        <field name="code">125</field>
+        <field name="name">Sản xuất sản phẩm thuốc lá</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_174" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">300</field>
+        <field name="code">174</field>
+        <field name="name">Chưa xác định — mã 174 (Phụ lục I NĐ 174)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_204" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">310</field>
+        <field name="code">204</field>
+        <field name="name">Chưa xác định — mã 204 (Phụ lục I NĐ 174)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_662" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">320</field>
+        <field name="code">662</field>
+        <field name="name">Hoạt động hỗ trợ bảo hiểm và quỹ hưu trí</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_663" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">330</field>
+        <field name="code">663</field>
+        <field name="name">Hoạt động của quỹ</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_681" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">340</field>
+        <field name="code">681</field>
+        <field name="name">Kinh doanh bất động sản</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0610" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">350</field>
+        <field name="code">0610</field>
+        <field name="name">Khai thác dầu thô (mã 0610)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0620" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">360</field>
+        <field name="code">0620</field>
+        <field name="name">Khai thác khí đốt tự nhiên (mã 0620)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0710" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">370</field>
+        <field name="code">0710</field>
+        <field name="name">Khai thác quặng sắt (mã 0710)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0721" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">380</field>
+        <field name="code">0721</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 0721)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0722" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">390</field>
+        <field name="code">0722</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 0722)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0730" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">400</field>
+        <field name="code">0730</field>
+        <field name="name">Khai thác quặng uranium và quặng thorium (mã 0730)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0810" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">410</field>
+        <field name="code">0810</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét (mã 0810)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_2008" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">420</field>
+        <field name="code">2008</field>
+        <field name="name">Sản xuất hóa chất và sản phẩm hóa chất (mã 2008)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_2014" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">430</field>
+        <field name="code">2014</field>
+        <field name="name">Sản xuất hóa chất cơ bản (mã 2014)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_2016" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">440</field>
+        <field name="code">2016</field>
+        <field name="name">Sản xuất hóa chất cơ bản (mã 2016)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_2019" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">450</field>
+        <field name="code">2019</field>
+        <field name="name">Sản xuất hóa chất cơ bản (mã 2019)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_2022" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">460</field>
+        <field name="code">2022</field>
+        <field name="name">Sản xuất sản phẩm hóa chất khác (mã 2022)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_2024" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">470</field>
+        <field name="code">2024</field>
+        <field name="name">Sản xuất sản phẩm hóa chất khác (mã 2024)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_2025" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">480</field>
+        <field name="code">2025</field>
+        <field name="name">Sản xuất sản phẩm hóa chất khác (mã 2025)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_2026" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">490</field>
+        <field name="code">2026</field>
+        <field name="name">Sản xuất sản phẩm hóa chất khác (mã 2026)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_2394" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">500</field>
+        <field name="code">2394</field>
+        <field name="name">Sản xuất sản phẩm từ khoáng phi kim loại khác (mã 2394)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6619" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">510</field>
+        <field name="code">6619</field>
+        <field name="name">Hoạt động hỗ trợ dịch vụ tài chính (trừ bảo hiểm) (mã 6619)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6621" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">520</field>
+        <field name="code">6621</field>
+        <field name="name">Hoạt động hỗ trợ bảo hiểm và quỹ hưu trí (mã 6621)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6630" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">530</field>
+        <field name="code">6630</field>
+        <field name="name">Hoạt động của quỹ (mã 6630)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6810" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">540</field>
+        <field name="code">6810</field>
+        <field name="name">Kinh doanh bất động sản (mã 6810)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6820" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">550</field>
+        <field name="code">6820</field>
+        <field name="name">Tư vấn, môi giới, đấu giá bất động sản (mã 6820)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6821" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">560</field>
+        <field name="code">6821</field>
+        <field name="name">Tư vấn, môi giới, đấu giá bất động sản (mã 6821)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_06100" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">570</field>
+        <field name="code">06100</field>
+        <field name="name">Khai thác dầu thô (mã 06100)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_07100" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">580</field>
+        <field name="code">07100</field>
+        <field name="name">Khai thác quặng sắt (mã 07100)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_07210" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">590</field>
+        <field name="code">07210</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 07210)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_07221" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">600</field>
+        <field name="code">07221</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 07221)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_07229" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">610</field>
+        <field name="code">07229</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 07229)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_07300" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">620</field>
+        <field name="code">07300</field>
+        <field name="name">Khai thác quặng uranium và quặng thorium (mã 07300)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_08101" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">630</field>
+        <field name="code">08101</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét (mã 08101)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_08102" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">640</field>
+        <field name="code">08102</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét (mã 08102)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_08103" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">650</field>
+        <field name="code">08103</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét (mã 08103)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_23960" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">660</field>
+        <field name="code">23960</field>
+        <field name="name">Sản xuất sản phẩm từ khoáng phi kim loại khác (mã 23960)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_66190" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">670</field>
+        <field name="code">66190</field>
+        <field name="name">Hoạt động hỗ trợ dịch vụ tài chính (trừ bảo hiểm) (mã 66190)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_68101" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">680</field>
+        <field name="code">68101</field>
+        <field name="name">Kinh doanh bất động sản (mã 68101)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_68102" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">690</field>
+        <field name="code">68102</field>
+        <field name="name">Kinh doanh bất động sản (mã 68102)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_68103" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">700</field>
+        <field name="code">68103</field>
+        <field name="name">Kinh doanh bất động sản (mã 68103)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_68104" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">710</field>
+        <field name="code">68104</field>
+        <field name="name">Kinh doanh bất động sản (mã 68104)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_68109" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">720</field>
+        <field name="code">68109</field>
+        <field name="name">Kinh doanh bất động sản (mã 68109)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_68201" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">730</field>
+        <field name="code">68201</field>
+        <field name="name">Tư vấn, môi giới, đấu giá bất động sản (mã 68201)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_68202" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">740</field>
+        <field name="code">68202</field>
+        <field name="name">Tư vấn, môi giới, đấu giá bất động sản (mã 68202)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_061001" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">750</field>
+        <field name="code">061001</field>
+        <field name="name">Khai thác dầu thô (mã 061001)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_062000" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">760</field>
+        <field name="code">062000</field>
+        <field name="name">Khai thác khí đốt tự nhiên (mã 062000)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_062001" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">770</field>
+        <field name="code">062001</field>
+        <field name="name">Khai thác khí đốt tự nhiên (mã 062001)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_071000" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">780</field>
+        <field name="code">071000</field>
+        <field name="name">Khai thác quặng sắt (mã 071000)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_072210" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">790</field>
+        <field name="code">072210</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 072210)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_072291" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">800</field>
+        <field name="code">072291</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 072291)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_072292" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">810</field>
+        <field name="code">072292</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 072292)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_072293" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">820</field>
+        <field name="code">072293</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 072293)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_072294" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">830</field>
+        <field name="code">072294</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 072294)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_072295" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">840</field>
+        <field name="code">072295</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 072295)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_072296" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">850</field>
+        <field name="code">072296</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 072296)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_072299" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">860</field>
+        <field name="code">072299</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 072299)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_073000" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">870</field>
+        <field name="code">073000</field>
+        <field name="name">Khai thác quặng uranium và quặng thorium (mã 073000)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_081011" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">880</field>
+        <field name="code">081011</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét (mã 081011)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_081012" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">890</field>
+        <field name="code">081012</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét (mã 081012)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_081013" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">900</field>
+        <field name="code">081013</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét (mã 081013)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_081021" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">910</field>
+        <field name="code">081021</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét (mã 081021)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_081022" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">920</field>
+        <field name="code">081022</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét (mã 081022)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_081023" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">930</field>
+        <field name="code">081023</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét (mã 081023)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_081031" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">940</field>
+        <field name="code">081031</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét (mã 081031)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_081032" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">950</field>
+        <field name="code">081032</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét (mã 081032)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_661901" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">960</field>
+        <field name="code">661901</field>
+        <field name="name">Hoạt động hỗ trợ dịch vụ tài chính (trừ bảo hiểm) (mã 661901)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_661902" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">970</field>
+        <field name="code">661902</field>
+        <field name="name">Hoạt động hỗ trợ dịch vụ tài chính (trừ bảo hiểm) (mã 661902)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_661903" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">980</field>
+        <field name="code">661903</field>
+        <field name="name">Hoạt động hỗ trợ dịch vụ tài chính (trừ bảo hiểm) (mã 661903)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_661904" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">990</field>
+        <field name="code">661904</field>
+        <field name="name">Hoạt động hỗ trợ dịch vụ tài chính (trừ bảo hiểm) (mã 661904)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_663000" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1000</field>
+        <field name="code">663000</field>
+        <field name="name">Hoạt động của quỹ (mã 663000)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_681011" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1010</field>
+        <field name="code">681011</field>
+        <field name="name">Kinh doanh bất động sản (mã 681011)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_681012" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1020</field>
+        <field name="code">681012</field>
+        <field name="name">Kinh doanh bất động sản (mã 681012)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_681013" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1030</field>
+        <field name="code">681013</field>
+        <field name="name">Kinh doanh bất động sản (mã 681013)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_681021" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1040</field>
+        <field name="code">681021</field>
+        <field name="name">Kinh doanh bất động sản (mã 681021)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_681033" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1050</field>
+        <field name="code">681033</field>
+        <field name="name">Kinh doanh bất động sản (mã 681033)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_681041" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1060</field>
+        <field name="code">681041</field>
+        <field name="name">Kinh doanh bất động sản (mã 681041)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_681042" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1070</field>
+        <field name="code">681042</field>
+        <field name="name">Kinh doanh bất động sản (mã 681042)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_681043" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1080</field>
+        <field name="code">681043</field>
+        <field name="name">Kinh doanh bất động sản (mã 681043)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_681091" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1090</field>
+        <field name="code">681091</field>
+        <field name="name">Kinh doanh bất động sản (mã 681091)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_681092" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1100</field>
+        <field name="code">681092</field>
+        <field name="name">Kinh doanh bất động sản (mã 681092)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_682010" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1110</field>
+        <field name="code">682010</field>
+        <field name="name">Tư vấn, môi giới, đấu giá bất động sản (mã 682010)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_682020" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1120</field>
+        <field name="code">682020</field>
+        <field name="name">Tư vấn, môi giới, đấu giá bất động sản (mã 682020)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_692003" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1130</field>
+        <field name="code">692003</field>
+        <field name="name">Chưa xác định — mã VSIC 692003 (Phụ lục I NĐ 174)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0610010" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1140</field>
+        <field name="code">0610010</field>
+        <field name="name">Khai thác dầu thô (mã 0610010)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0620001" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1150</field>
+        <field name="code">0620001</field>
+        <field name="name">Khai thác khí đốt tự nhiên (mã 0620001)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0620002" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1160</field>
+        <field name="code">0620002</field>
+        <field name="name">Khai thác khí đốt tự nhiên (mã 0620002)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0710000" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1170</field>
+        <field name="code">0710000</field>
+        <field name="name">Khai thác quặng sắt (mã 0710000)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0722100" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1180</field>
+        <field name="code">0722100</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 0722100)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0722911" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1190</field>
+        <field name="code">0722911</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 0722911)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0722912" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1200</field>
+        <field name="code">0722912</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 0722912)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0722913" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1210</field>
+        <field name="code">0722913</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 0722913)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0722914" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1220</field>
+        <field name="code">0722914</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 0722914)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0722915" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1230</field>
+        <field name="code">0722915</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 0722915)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0722921" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1240</field>
+        <field name="code">0722921</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 0722921)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0722922" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1250</field>
+        <field name="code">0722922</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 0722922)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0722923" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1260</field>
+        <field name="code">0722923</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 0722923)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0722930" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1270</field>
+        <field name="code">0722930</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 0722930)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0722942" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1280</field>
+        <field name="code">0722942</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 0722942)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0722943" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1290</field>
+        <field name="code">0722943</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 0722943)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0722950" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1300</field>
+        <field name="code">0722950</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 0722950)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0722990" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1310</field>
+        <field name="code">0722990</field>
+        <field name="name">Khai thác quặng kim loại khác trừ quặng sắt (mã 0722990)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0730001" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1320</field>
+        <field name="code">0730001</field>
+        <field name="name">Khai thác quặng uranium và quặng thorium (mã 0730001)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0730002" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1330</field>
+        <field name="code">0730002</field>
+        <field name="name">Khai thác quặng uranium và quặng thorium (mã 0730002)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0730009" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1340</field>
+        <field name="code">0730009</field>
+        <field name="name">Khai thác quặng uranium và quặng thorium (mã 0730009)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0810121" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1350</field>
+        <field name="code">0810121</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét (mã 0810121)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0810122" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1360</field>
+        <field name="code">0810122</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét (mã 0810122)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0810131" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1370</field>
+        <field name="code">0810131</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét (mã 0810131)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0810132" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1380</field>
+        <field name="code">0810132</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét (mã 0810132)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0810210" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1390</field>
+        <field name="code">0810210</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét (mã 0810210)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0810221" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1400</field>
+        <field name="code">0810221</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét (mã 0810221)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0810222" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1410</field>
+        <field name="code">0810222</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét (mã 0810222)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0810230" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1420</field>
+        <field name="code">0810230</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét (mã 0810230)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_0810310" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1430</field>
+        <field name="code">0810310</field>
+        <field name="name">Khai thác đá, cát, sỏi, đất sét (mã 0810310)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6391001" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1440</field>
+        <field name="code">6391001</field>
+        <field name="name">Hoạt động dịch vụ thông tin khác (mã 6391001)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6612001" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1450</field>
+        <field name="code">6612001</field>
+        <field name="name">Hoạt động hỗ trợ dịch vụ tài chính (trừ bảo hiểm) (mã 6612001)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6612002" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1460</field>
+        <field name="code">6612002</field>
+        <field name="name">Hoạt động hỗ trợ dịch vụ tài chính (trừ bảo hiểm) (mã 6612002)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6619010" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1470</field>
+        <field name="code">6619010</field>
+        <field name="name">Hoạt động hỗ trợ dịch vụ tài chính (trừ bảo hiểm) (mã 6619010)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6619021" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1480</field>
+        <field name="code">6619021</field>
+        <field name="name">Hoạt động hỗ trợ dịch vụ tài chính (trừ bảo hiểm) (mã 6619021)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6619022" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1490</field>
+        <field name="code">6619022</field>
+        <field name="name">Hoạt động hỗ trợ dịch vụ tài chính (trừ bảo hiểm) (mã 6619022)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6619029" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1500</field>
+        <field name="code">6619029</field>
+        <field name="name">Hoạt động hỗ trợ dịch vụ tài chính (trừ bảo hiểm) (mã 6619029)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6619031" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1510</field>
+        <field name="code">6619031</field>
+        <field name="name">Hoạt động hỗ trợ dịch vụ tài chính (trừ bảo hiểm) (mã 6619031)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6619032" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1520</field>
+        <field name="code">6619032</field>
+        <field name="name">Hoạt động hỗ trợ dịch vụ tài chính (trừ bảo hiểm) (mã 6619032)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6619041" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1530</field>
+        <field name="code">6619041</field>
+        <field name="name">Hoạt động hỗ trợ dịch vụ tài chính (trừ bảo hiểm) (mã 6619041)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6619043" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1540</field>
+        <field name="code">6619043</field>
+        <field name="name">Hoạt động hỗ trợ dịch vụ tài chính (trừ bảo hiểm) (mã 6619043)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6622000" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1550</field>
+        <field name="code">6622000</field>
+        <field name="name">Hoạt động hỗ trợ bảo hiểm và quỹ hưu trí (mã 6622000)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6629001" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1560</field>
+        <field name="code">6629001</field>
+        <field name="name">Hoạt động hỗ trợ bảo hiểm và quỹ hưu trí (mã 6629001)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6629009" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1570</field>
+        <field name="code">6629009</field>
+        <field name="name">Hoạt động hỗ trợ bảo hiểm và quỹ hưu trí (mã 6629009)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6630001" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1580</field>
+        <field name="code">6630001</field>
+        <field name="name">Hoạt động của quỹ (mã 6630001)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6810120" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1590</field>
+        <field name="code">6810120</field>
+        <field name="name">Kinh doanh bất động sản (mã 6810120)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6810130" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1600</field>
+        <field name="code">6810130</field>
+        <field name="name">Kinh doanh bất động sản (mã 6810130)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6810210" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1610</field>
+        <field name="code">6810210</field>
+        <field name="name">Kinh doanh bất động sản (mã 6810210)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6810330" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1620</field>
+        <field name="code">6810330</field>
+        <field name="name">Kinh doanh bất động sản (mã 6810330)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6810410" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1630</field>
+        <field name="code">6810410</field>
+        <field name="name">Kinh doanh bất động sản (mã 6810410)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6810420" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1640</field>
+        <field name="code">6810420</field>
+        <field name="name">Kinh doanh bất động sản (mã 6810420)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6810912" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1650</field>
+        <field name="code">6810912</field>
+        <field name="name">Kinh doanh bất động sản (mã 6810912)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6810913" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1660</field>
+        <field name="code">6810913</field>
+        <field name="name">Kinh doanh bất động sản (mã 6810913)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6810915" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1670</field>
+        <field name="code">6810915</field>
+        <field name="name">Kinh doanh bất động sản (mã 6810915)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6810921" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1680</field>
+        <field name="code">6810921</field>
+        <field name="name">Kinh doanh bất động sản (mã 6810921)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6810923" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1690</field>
+        <field name="code">6810923</field>
+        <field name="name">Kinh doanh bất động sản (mã 6810923)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6820101" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1700</field>
+        <field name="code">6820101</field>
+        <field name="name">Tư vấn, môi giới, đấu giá bất động sản (mã 6820101)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6820102" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1710</field>
+        <field name="code">6820102</field>
+        <field name="name">Tư vấn, môi giới, đấu giá bất động sản (mã 6820102)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6820103" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1720</field>
+        <field name="code">6820103</field>
+        <field name="name">Tư vấn, môi giới, đấu giá bất động sản (mã 6820103)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6820104" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1730</field>
+        <field name="code">6820104</field>
+        <field name="name">Tư vấn, môi giới, đấu giá bất động sản (mã 6820104)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_vsic_6820200" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1740</field>
+        <field name="code">6820200</field>
+        <field name="name">Tư vấn, môi giới, đấu giá bất động sản (mã 6820200)</field>
+        <field name="code_kind">vsic</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2507_00_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1750</field>
+        <field name="code">2507.00.00</field>
+        <field name="name">Hàng nhập khẩu — Kaolin và đất sét kaolin khác (HS 2507.00.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2509_00_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1760</field>
+        <field name="code">2509.00.00</field>
+        <field name="name">Hàng nhập khẩu — Đá phấn (HS 2509.00.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2514_00_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1770</field>
+        <field name="code">2514.00.00</field>
+        <field name="name">Hàng nhập khẩu — Đá phiến (HS 2514.00.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2517_10_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1780</field>
+        <field name="code">2517.10.00</field>
+        <field name="name">Hàng nhập khẩu — Sỏi, đá cuội, đá dăm; macadam (HS 2517.10.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2517_20_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1790</field>
+        <field name="code">2517.20.00</field>
+        <field name="name">Hàng nhập khẩu — Sỏi, đá cuội, đá dăm; macadam (HS 2517.20.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2517_30_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1800</field>
+        <field name="code">2517.30.00</field>
+        <field name="name">Hàng nhập khẩu — Sỏi, đá cuội, đá dăm; macadam (HS 2517.30.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2517_41_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1810</field>
+        <field name="code">2517.41.00</field>
+        <field name="name">Hàng nhập khẩu — Sỏi, đá cuội, đá dăm; macadam (HS 2517.41.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2517_49_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1820</field>
+        <field name="code">2517.49.00</field>
+        <field name="name">Hàng nhập khẩu — Sỏi, đá cuội, đá dăm; macadam (HS 2517.49.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2520_10_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1830</field>
+        <field name="code">2520.10.00</field>
+        <field name="name">Hàng nhập khẩu — Thạch cao, anhydrit, vữa (HS 2520.10.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2521_00_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1840</field>
+        <field name="code">2521.00.00</field>
+        <field name="name">Hàng nhập khẩu — Đá vôi làm vôi hoặc xi măng (HS 2521.00.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2601_11" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1850</field>
+        <field name="code">2601.11</field>
+        <field name="name">Hàng nhập khẩu — Quặng sắt và tinh quặng sắt (HS 2601.11)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2601_12" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1860</field>
+        <field name="code">2601.12</field>
+        <field name="name">Hàng nhập khẩu — Quặng sắt và tinh quặng sắt (HS 2601.12)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2601_20" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1870</field>
+        <field name="code">2601.20</field>
+        <field name="name">Hàng nhập khẩu — Quặng sắt và tinh quặng sắt (HS 2601.20)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2602_00_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1880</field>
+        <field name="code">2602.00.00</field>
+        <field name="name">Hàng nhập khẩu — Quặng mangan (HS 2602.00.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2603_00_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1890</field>
+        <field name="code">2603.00.00</field>
+        <field name="name">Hàng nhập khẩu — Quặng đồng (HS 2603.00.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2604_00_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1900</field>
+        <field name="code">2604.00.00</field>
+        <field name="name">Hàng nhập khẩu — Quặng niken (HS 2604.00.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2605_00_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1910</field>
+        <field name="code">2605.00.00</field>
+        <field name="name">Hàng nhập khẩu — Quặng coban (HS 2605.00.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2606_00_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1920</field>
+        <field name="code">2606.00.00</field>
+        <field name="name">Hàng nhập khẩu — Quặng nhôm (HS 2606.00.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2607_00_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1930</field>
+        <field name="code">2607.00.00</field>
+        <field name="name">Hàng nhập khẩu — Quặng chì (HS 2607.00.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2608_00_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1940</field>
+        <field name="code">2608.00.00</field>
+        <field name="name">Hàng nhập khẩu — Quặng kẽm (HS 2608.00.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2609_00_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1950</field>
+        <field name="code">2609.00.00</field>
+        <field name="name">Hàng nhập khẩu — Quặng thiếc (HS 2609.00.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2610_00_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1960</field>
+        <field name="code">2610.00.00</field>
+        <field name="name">Hàng nhập khẩu — Quặng crom (HS 2610.00.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2611_00_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1970</field>
+        <field name="code">2611.00.00</field>
+        <field name="name">Hàng nhập khẩu — Quặng vonfram (HS 2611.00.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2612_20_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1980</field>
+        <field name="code">2612.20.00</field>
+        <field name="name">Hàng nhập khẩu — Quặng uranium hoặc thorium (HS 2612.20.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2614_00_10" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">1990</field>
+        <field name="code">2614.00.10</field>
+        <field name="name">Hàng nhập khẩu — Quặng titan (HS 2614.00.10)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2614_00_90" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2000</field>
+        <field name="code">2614.00.90</field>
+        <field name="name">Hàng nhập khẩu — Quặng titan (HS 2614.00.90)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2615_10_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2010</field>
+        <field name="code">2615.10.00</field>
+        <field name="name">Hàng nhập khẩu — Quặng niobi, tantali, vanadi hoặc zirconi (HS 2615.10.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2615_90_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2020</field>
+        <field name="code">2615.90.00</field>
+        <field name="name">Hàng nhập khẩu — Quặng niobi, tantali, vanadi hoặc zirconi (HS 2615.90.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2616_10_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2030</field>
+        <field name="code">2616.10.00</field>
+        <field name="name">Hàng nhập khẩu — Quặng kim loại quý và tinh quặng (HS 2616.10.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2616_90_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2040</field>
+        <field name="code">2616.90.00</field>
+        <field name="name">Hàng nhập khẩu — Quặng kim loại quý và tinh quặng (HS 2616.90.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2617_10_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2050</field>
+        <field name="code">2617.10.00</field>
+        <field name="name">Hàng nhập khẩu — Quặng và tinh quặng khác (HS 2617.10.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2617_90_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2060</field>
+        <field name="code">2617.90.00</field>
+        <field name="name">Hàng nhập khẩu — Quặng và tinh quặng khác (HS 2617.90.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2711_11_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2070</field>
+        <field name="code">2711.11.00</field>
+        <field name="name">Hàng nhập khẩu — Khí dầu mỏ và hydrocarbon khí khác (HS 2711.11.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2711_21" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2080</field>
+        <field name="code">2711.21</field>
+        <field name="name">Hàng nhập khẩu — Khí dầu mỏ và hydrocarbon khí khác (HS 2711.21)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_hs_2714_10_00" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2090</field>
+        <field name="code">2714.10.00</field>
+        <field name="name">Hàng nhập khẩu — Bitum và asphan tự nhiên; đá bitum (HS 2714.10.00)</field>
+        <field name="code_kind">hs</field>
+        <field name="annex">I</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_ttdb_tobacco" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2100</field>
+        <field name="code">TTDB_TOBACCO</field>
+        <field name="name">Thuốc lá / chế phẩm từ cây thuốc lá</field>
+        <field name="code_kind">ttdb</field>
+        <field name="annex">II</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_ttdb_alcohol" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2110</field>
+        <field name="code">TTDB_ALCOHOL</field>
+        <field name="name">Rượu</field>
+        <field name="code_kind">ttdb</field>
+        <field name="annex">II</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_ttdb_beer" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2120</field>
+        <field name="code">TTDB_BEER</field>
+        <field name="name">Bia</field>
+        <field name="code_kind">ttdb</field>
+        <field name="annex">II</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_ttdb_car" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2130</field>
+        <field name="code">TTDB_CAR</field>
+        <field name="name">Xe ô tô dưới 24 chỗ / pick-up (TTĐB)</field>
+        <field name="code_kind">ttdb</field>
+        <field name="annex">II</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_ttdb_moto" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2140</field>
+        <field name="code">TTDB_MOTO</field>
+        <field name="name">Xe mô tô dung tích trên 125 cm³</field>
+        <field name="code_kind">ttdb</field>
+        <field name="annex">II</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_ttdb_aircraft" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2150</field>
+        <field name="code">TTDB_AIRCRAFT</field>
+        <field name="name">Tàu bay / máy bay / trực thăng / tàu lượn / du thuyền</field>
+        <field name="code_kind">ttdb</field>
+        <field name="annex">II</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_ttdb_ac" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2160</field>
+        <field name="code">TTDB_AC</field>
+        <field name="name">Điều hòa nhiệt độ thuộc diện TTĐB</field>
+        <field name="code_kind">ttdb</field>
+        <field name="annex">II</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_ttdb_playing_cards" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2170</field>
+        <field name="code">TTDB_PLAYING_CARDS</field>
+        <field name="name">Bài lá</field>
+        <field name="code_kind">ttdb</field>
+        <field name="annex">II</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_ttdb_votive" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2180</field>
+        <field name="code">TTDB_VOTIVE</field>
+        <field name="name">Vàng mã, hàng mã (trừ đồ chơi / đồ dùng dạy học theo PL II)</field>
+        <field name="code_kind">ttdb</field>
+        <field name="annex">II</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_ttdb_softdrink_sugar" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2190</field>
+        <field name="code">TTDB_SOFTDRINK_SUGAR</field>
+        <field name="name">Nước giải khát đường >5g/100ml (từ 01/01/2026)</field>
+        <field name="code_kind">ttdb</field>
+        <field name="annex">II</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_ttdb_discotheque" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2200</field>
+        <field name="code">TTDB_DISCotheque</field>
+        <field name="name">Kinh doanh vũ trường</field>
+        <field name="code_kind">ttdb</field>
+        <field name="annex">II</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_ttdb_massage_karaoke" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2210</field>
+        <field name="code">TTDB_MASSAGE_KARAOKE</field>
+        <field name="name">Kinh doanh massage, karaoke</field>
+        <field name="code_kind">ttdb</field>
+        <field name="annex">II</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_ttdb_casino" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2220</field>
+        <field name="code">TTDB_CASINO</field>
+        <field name="name">Casino / trò chơi điện tử có thưởng</field>
+        <field name="code_kind">ttdb</field>
+        <field name="annex">II</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_ttdb_betting" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2230</field>
+        <field name="code">TTDB_BETTING</field>
+        <field name="name">Kinh doanh đặt cược</field>
+        <field name="code_kind">ttdb</field>
+        <field name="annex">II</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_ttdb_golf" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2240</field>
+        <field name="code">TTDB_GOLF</field>
+        <field name="name">Kinh doanh golf</field>
+        <field name="code_kind">ttdb</field>
+        <field name="annex">II</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+    <record id="excl_ttdb_lottery" model="vas.gtgt.reduction.exclusion">
+        <field name="sequence">2250</field>
+        <field name="code">TTDB_LOTTERY</field>
+        <field name="name">Kinh doanh xổ số</field>
+        <field name="code_kind">ttdb</field>
+        <field name="annex">II</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+    </record>
+</odoo>

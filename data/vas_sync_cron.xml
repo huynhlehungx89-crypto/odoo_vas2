@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_vas_sync" model="ir.cron">
+        <field name="name">Connecta VAS: đồng bộ định khoản</field>
+        <field name="model_id" ref="model_vas_rule"/>
+        <field name="state">code</field>
+        <field name="code">model.env['vas.sync'].cron_sync_all()</field>
+        <field name="interval_number">12</field>
+        <field name="interval_type">hours</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

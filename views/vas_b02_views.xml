@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vas_b02_wizard_form" model="ir.ui.view">
+        <field name="name">vas.b02.wizard.form</field>
+        <field name="model">vas.b02.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Lập Báo cáo KQKD (B02)">
+                <group>
+                    <field name="company_id"/>
+                    <field name="regime_id"/>
+                    <field name="period_from_id"
+                              domain="[('fiscalyear_id.company_id', '=', company_id)]"/>
+                    <field name="period_to_id"
+                              domain="[('fiscalyear_id.company_id', '=', company_id)]"/>
+                    <field name="hide_reversed"/>
+                </group>
+                <footer>
+                    <button name="action_generate" type="object" string="Lập báo cáo"
+                            class="btn-primary"/>
+                    <button string="Hủy" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_b02_generate" model="ir.actions.act_window">
+        <field name="name">Lập B02</field>
+        <field name="res_model">vas.b02.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="action_vas_b02_snapshots" model="ir.actions.act_window">
+        <field name="name">Bản B02 đã lập</field>
+        <field name="res_model">vas.report.snapshot</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('form_code', '=', 'B02-DNN')]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="action_vas_b02_client" model="ir.actions.client">
+        <field name="name">Báo cáo kết quả kinh doanh</field>
+        <field name="tag">vas_report_client</field>
+        <field name="path">vas-b02</field>
+        <field name="context">{
+            'report_model': 'vas.b02.wizard',
+            'report_title': 'Báo cáo kết quả kinh doanh',
+        }</field>
+    </record>
+
+    <menuitem id="menu_vas_b02"
+              name="Báo cáo KQKD (B02)"
+              parent="menu_vas_books"
+              action="action_vas_b02_client"
+              sequence="40"/>
+
+    <menuitem id="menu_vas_b02_generate"
+              name="Lập B02 mới"
+              parent="menu_vas_books"
+              action="action_vas_b02_generate"
+              sequence="41"/>
+
+    <menuitem id="menu_vas_b02_snapshots"
+              name="Bản B02 đã lập"
+              parent="menu_vas_books"
+              action="action_vas_b02_snapshots"
+              sequence="42"/>
+</odoo>

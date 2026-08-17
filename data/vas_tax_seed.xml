@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!--
+      Danh mục thuế GTGT — chỉ tiêu 01/GTGT theo TT 80/2021 Phụ lục II
+      (PDF «2021_969 + 970_80-2021-TT-BTC.pdf» trang 18).
+
+      Cột giá trị HHĐV / cột tiền thuế — tách bạch.
+      Ô thuế để trống (không ghi 0) khi mức không phát sinh tiền thuế.
+      Mức 8% NQ 204: giảm từ 10% → trỏ [32]/[33] mẫu chính + phụ lục NQ204.
+    -->
+    <record id="vas_tax_exempt" model="vas.tax">
+        <field name="code">GTGT_EXEMPT</field>
+        <field name="name">Không chịu thuế GTGT</field>
+        <field name="sequence">10</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rate">0</field>
+        <field name="tax_scope">both</field>
+        <field name="date_start">2016-01-01</field>
+        <field name="declaration_value_tag">26</field>
+        <!-- declaration_tax_tag: trống có chủ đích — không phát sinh tiền thuế -->
+        <field name="match_mode">empty_line</field>
+    </record>
+    <record id="vas_tax_non_taxable" model="vas.tax">
+        <field name="code">GTGT_NON_TAXABLE</field>
+        <field name="name">Không tính thuế GTGT</field>
+        <field name="sequence">20</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rate">0</field>
+        <field name="tax_scope">both</field>
+        <field name="date_start">2016-01-01</field>
+        <field name="declaration_value_tag">32a</field>
+        <!-- declaration_tax_tag: trống có chủ đích — không phát sinh tiền thuế -->
+        <field name="match_mode">rate</field>
+        <field name="odoo_name_token">Không tính</field>
+    </record>
+    <record id="vas_tax_0" model="vas.tax">
+        <field name="code">GTGT_0</field>
+        <field name="name">Thuế suất 0%</field>
+        <field name="sequence">30</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rate">0</field>
+        <field name="tax_scope">both</field>
+        <field name="date_start">2016-01-01</field>
+        <field name="declaration_value_tag">29</field>
+        <!-- declaration_tax_tag: trống có chủ đích — mẫu chỉ có cột giá trị [29] -->
+        <field name="match_mode">rate</field>
+    </record>
+    <record id="vas_tax_5" model="vas.tax">
+        <field name="code">GTGT_5</field>
+        <field name="name">Thuế suất 5%</field>
+        <field name="sequence">40</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rate">5</field>
+        <field name="tax_scope">both</field>
+        <field name="date_start">2016-01-01</field>
+        <field name="declaration_value_tag">30</field>
+        <field name="declaration_tax_tag">31</field>
+        <field name="match_mode">rate</field>
+    </record>
+    <record id="vas_tax_8" model="vas.tax">
+        <field name="code">GTGT_8</field>
+        <field name="name">Thuế suất 8% (NQ 204/2025/QH15)</field>
+        <field name="sequence">50</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rate">8</field>
+        <field name="tax_scope">both</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="date_end">2026-12-31</field>
+        <field name="declaration_value_tag">32</field>
+        <field name="declaration_tax_tag">33</field>
+        <field name="declaration_annex_tag">NQ204</field>
+        <field name="match_mode">rate</field>
+    </record>
+    <record id="vas_tax_10" model="vas.tax">
+        <field name="code">GTGT_10</field>
+        <field name="name">Thuế suất 10%</field>
+        <field name="sequence">60</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rate">10</field>
+        <field name="tax_scope">both</field>
+        <field name="date_start">2016-01-01</field>
+        <field name="declaration_value_tag">32</field>
+        <field name="declaration_tax_tag">33</field>
+        <field name="match_mode">rate</field>
+    </record>
+</odoo>

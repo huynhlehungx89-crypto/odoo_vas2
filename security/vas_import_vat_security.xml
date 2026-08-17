@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Multi-company record rule for vas.import.vat -->
+    <record id="vas_import_vat_comp_rule" model="ir.rule">
+        <field name="name">vas.import.vat multi-company</field>
+        <field name="model_id" ref="model_vas_import_vat"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+</odoo>

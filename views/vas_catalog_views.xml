@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ========== vas.regime ========== -->
+    <record id="view_vas_regime_list" model="ir.ui.view">
+        <field name="name">vas.regime.list</field>
+        <field name="model">vas.regime</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_regime_form" model="ir.ui.view">
+        <field name="name">vas.regime.form</field>
+        <field name="model">vas.regime</field>
+        <field name="arch" type="xml">
+            <form string="Chế độ kế toán">
+                <sheet>
+                    <widget name="web_ribbon" title="Đã lưu trữ" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="vd. Thông tư 133/2016"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code" placeholder="vd. TT133"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_regime" model="ir.actions.act_window">
+        <field name="name">Chế độ kế toán</field>
+        <field name="res_model">vas.regime</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ========== vas.account ========== -->
+    <record id="view_vas_account_list" model="ir.ui.view">
+        <field name="name">vas.account.list</field>
+        <field name="model">vas.account</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="regime_id"/>
+                <field name="account_type"/>
+                <field name="ending_balance_policy" optional="show"/>
+                <field name="parent_id"/>
+                <field name="reconcile"/>
+                <field name="currency_id" optional="hide" groups="base.group_multi_currency"/>
+                <field name="active" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_account_form" model="ir.ui.view">
+        <field name="name">vas.account.form</field>
+        <field name="model">vas.account</field>
+        <field name="arch" type="xml">
+            <form string="Tài khoản">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_vas_move_lines"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-book">
+                            <div class="o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="vas_balance" widget="monetary"/>
+                                </span>
+                                <span class="o_stat_text">Số dư sổ VAS</span>
+                            </div>
+                        </button>
+                    </div>
+                    <field name="currency_id_balance" invisible="1"/>
+                    <field name="vas_balance_period_id" invisible="1"/>
+                    <widget name="web_ribbon" title="Đã lưu trữ" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="vd. Hàng hóa"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code" placeholder="vd. 156"/>
+                            <field name="regime_id"/>
+                            <field name="account_type"/>
+                            <field name="ending_balance_policy"/>
+                            <field name="parent_id"/>
+                        </group>
+                        <group>
+                            <field name="reconcile"/>
+                            <field name="currency_id" groups="base.group_multi_currency"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_account" model="ir.actions.act_window">
+        <field name="name">Danh mục tài khoản</field>
+        <field name="res_model">vas.account</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ========== vas.journal ========== -->
+    <record id="view_vas_journal_list" model="ir.ui.view">
+        <field name="name">vas.journal.list</field>
+        <field name="model">vas.journal</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="type"/>
+                <field name="regime_id"/>
+                <field name="sequence_id" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_journal_form" model="ir.ui.view">
+        <field name="name">vas.journal.form</field>
+        <field name="model">vas.journal</field>
+        <field name="arch" type="xml">
+            <form string="Sổ nhật ký">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="vd. Sổ bán hàng"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code" placeholder="vd. BH"/>
+                            <field name="type"/>
+                            <field name="regime_id"/>
+                        </group>
+                        <group>
+                            <field name="sequence_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_journal" model="ir.actions.act_window">
+        <field name="name">Sổ nhật ký</field>
+        <field name="res_model">vas.journal</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ========== vas.fiscalyear ========== -->
+    <record id="view_vas_fiscalyear_list" model="ir.ui.view">
+        <field name="name">vas.fiscalyear.list</field>
+        <field name="model">vas.fiscalyear</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_fiscalyear_form" model="ir.ui.view">
+        <field name="name">vas.fiscalyear.form</field>
+        <field name="model">vas.fiscalyear</field>
+        <field name="arch" type="xml">
+            <form string="Năm tài chính">
+                <header>
+                    <button name="action_generate_periods"
+                            string="Sinh kỳ kế toán"
+                            type="object"
+                            class="btn-primary"
+                            invisible="not date_from or not date_to"/>
+                    <button name="action_rebuild_monthly_periods"
+                            string="Tạo lại kỳ tháng"
+                            type="object"
+                            invisible="not date_from or not date_to"
+                            confirm="Xóa các kỳ hiện có của năm này và tạo lại 12 kỳ tháng. Bút toán đã ghi sổ được giữ và gán lại kỳ theo ngày."/>
+                    <button name="action_assign_orphan_moves"
+                            string="Gán bút toán mồ côi"
+                            type="object"
+                            invisible="not period_ids"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="vd. 2026"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                        <group>
+                            <field name="state"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_fiscalyear" model="ir.actions.act_window">
+        <field name="name">Năm tài chính</field>
+        <field name="res_model">vas.fiscalyear</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ========== vas.period ========== -->
+    <record id="view_vas_period_list" model="ir.ui.view">
+        <field name="name">vas.period.list</field>
+        <field name="model">vas.period</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="quarter"/>
+                <field name="fiscalyear_id"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_period_form" model="ir.ui.view">
+        <field name="name">vas.period.form</field>
+        <field name="model">vas.period</field>
+        <field name="arch" type="xml">
+            <form string="Kỳ kế toán">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="vd. 01/2026"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="fiscalyear_id"/>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                        </group>
+                        <group>
+                            <field name="quarter"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_period" model="ir.actions.act_window">
+        <field name="name">Kỳ kế toán</field>
+        <field name="res_model">vas.period</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ========== Menus ========== -->
+    <menuitem id="menu_connecta_vas_root"
+              name="Connecta VAS"
+              sequence="45"/>
+
+    <menuitem id="menu_vas_config"
+              name="Cấu hình"
+              parent="menu_connecta_vas_root"
+              sequence="90"/>
+
+    <menuitem id="menu_vas_catalog_root"
+              name="Danh mục &amp; Số dư đầu kỳ"
+              parent="menu_connecta_vas_root"
+              sequence="30"/>
+
+    <menuitem id="menu_vas_regime"
+              name="Chế độ kế toán"
+              parent="menu_vas_config"
+              action="action_vas_regime"
+              sequence="10"/>
+
+    <menuitem id="menu_vas_account"
+              name="Danh mục tài khoản"
+              parent="menu_vas_catalog_root"
+              action="action_vas_account"
+              sequence="20"/>
+
+    <menuitem id="menu_vas_journal"
+              name="Sổ nhật ký"
+              parent="menu_vas_catalog_root"
+              action="action_vas_journal"
+              sequence="30"/>
+
+    <menuitem id="menu_vas_fiscalyear"
+              name="Năm tài chính"
+              parent="menu_vas_config"
+              action="action_vas_fiscalyear"
+              sequence="40"/>
+
+    <menuitem id="menu_vas_period"
+              name="Kỳ kế toán"
+              parent="menu_vas_config"
+              action="action_vas_period"
+              sequence="50"/>
+</odoo>

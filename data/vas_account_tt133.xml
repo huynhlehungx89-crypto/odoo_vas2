@@ -1,0 +1,1197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Chart of Accounts TT133 — Chatgpt_SO_DO_LUONG_NGHIEP_VU_HACH_TOAN_TT133.xlsx / Danh_Muc_TK -->
+    <!-- account_type from column C Nhóm tài khoản (text). reconcile guessed for 131/136/138/141/331/334/336/338/341 -->
+    <record id="vas_account_tt133_111" model="vas.account">
+        <field name="code">111</field>
+        <field name="name">Tiền mặt</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_112" model="vas.account">
+        <field name="code">112</field>
+        <field name="name">Tiền gửi Ngân hàng</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_121" model="vas.account">
+        <field name="code">121</field>
+        <field name="name">Chứng khoán kinh doanh</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_128" model="vas.account">
+        <field name="code">128</field>
+        <field name="name">Đầu tư nắm giữ đến ngày đáo hạn</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_131" model="vas.account">
+        <field name="code">131</field>
+        <field name="name">Phải thu của khách hàng</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_133" model="vas.account">
+        <field name="code">133</field>
+        <field name="name">Thuế GTGT được khấu trừ</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_136" model="vas.account">
+        <field name="code">136</field>
+        <field name="name">Phải thu nội bộ</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_138" model="vas.account">
+        <field name="code">138</field>
+        <field name="name">Phải thu khác</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_141" model="vas.account">
+        <field name="code">141</field>
+        <field name="name">Tạm ứng</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_151" model="vas.account">
+        <field name="code">151</field>
+        <field name="name">Hàng mua đang đi đường</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_152" model="vas.account">
+        <field name="code">152</field>
+        <field name="name">Nguyên liệu, vật liệu</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_153" model="vas.account">
+        <field name="code">153</field>
+        <field name="name">Công cụ, dụng cụ</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_154" model="vas.account">
+        <field name="code">154</field>
+        <field name="name">Chi phí sản xuất, kinh doanh dở dang</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_155" model="vas.account">
+        <field name="code">155</field>
+        <field name="name">Thành phẩm</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_156" model="vas.account">
+        <field name="code">156</field>
+        <field name="name">Hàng hóa</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_157" model="vas.account">
+        <field name="code">157</field>
+        <field name="name">Hàng gửi đi bán</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_211" model="vas.account">
+        <field name="code">211</field>
+        <field name="name">Tài sản cố định</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_214" model="vas.account">
+        <field name="code">214</field>
+        <field name="name">Hao mòn tài sản cố định</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_217" model="vas.account">
+        <field name="code">217</field>
+        <field name="name">Bất động sản đầu tư</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_228" model="vas.account">
+        <field name="code">228</field>
+        <field name="name">Đầu tư góp vốn vào đơn vị khác</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_229" model="vas.account">
+        <field name="code">229</field>
+        <field name="name">Dự phòng tổn thất tài sản</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_241" model="vas.account">
+        <field name="code">241</field>
+        <field name="name">Xây dựng cơ bản dở dang</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_242" model="vas.account">
+        <field name="code">242</field>
+        <field name="name">Chi phí trả trước</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_331" model="vas.account">
+        <field name="code">331</field>
+        <field name="name">Phải trả cho người bán</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="reconcile" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_333" model="vas.account">
+        <field name="code">333</field>
+        <field name="name">Thuế và các khoản phải nộp Nhà nước</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_334" model="vas.account">
+        <field name="code">334</field>
+        <field name="name">Phải trả người lao động</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="reconcile" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_335" model="vas.account">
+        <field name="code">335</field>
+        <field name="name">Chi phí phải trả</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">liability</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_336" model="vas.account">
+        <field name="code">336</field>
+        <field name="name">Phải trả nội bộ</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">liability</field>
+        <field name="reconcile" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_338" model="vas.account">
+        <field name="code">338</field>
+        <field name="name">Phải trả, phải nộp khác</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="reconcile" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_341" model="vas.account">
+        <field name="code">341</field>
+        <field name="name">Vay và nợ thuê tài chính</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">liability</field>
+        <field name="reconcile" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_352" model="vas.account">
+        <field name="code">352</field>
+        <field name="name">Dự phòng phải trả</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">liability</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_353" model="vas.account">
+        <field name="code">353</field>
+        <field name="name">Quỹ khen thưởng, phúc lợi</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">liability</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_356" model="vas.account">
+        <field name="code">356</field>
+        <field name="name">Quỹ phát triển khoa học và công nghệ</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">liability</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_411" model="vas.account">
+        <field name="code">411</field>
+        <field name="name">Vốn đầu tư của chủ sở hữu</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">equity</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_413" model="vas.account">
+        <field name="code">413</field>
+        <field name="name">Chênh lệch tỷ giá hối đoái</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">none</field>
+        <field name="account_type">equity</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_418" model="vas.account">
+        <field name="code">418</field>
+        <field name="name">Các quỹ thuộc vốn chủ sở hữu</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">equity</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_419" model="vas.account">
+        <field name="code">419</field>
+        <field name="name">Cổ phiếu quỹ</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">equity</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_421" model="vas.account">
+        <field name="code">421</field>
+        <field name="name">Lợi nhuận sau thuế chưa phân phối</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">equity</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_511" model="vas.account">
+        <field name="code">511</field>
+        <field name="name">Doanh thu bán hàng và cung cấp dịch vụ</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">none</field>
+        <field name="account_type">income</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_515" model="vas.account">
+        <field name="code">515</field>
+        <field name="name">Doanh thu hoạt động tài chính</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">none</field>
+        <field name="account_type">income</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_611" model="vas.account">
+        <field name="code">611</field>
+        <field name="name">Mua hàng</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">none</field>
+        <field name="account_type">expense</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_631" model="vas.account">
+        <field name="code">631</field>
+        <field name="name">Giá thành sản xuất</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">none</field>
+        <field name="account_type">expense</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_632" model="vas.account">
+        <field name="code">632</field>
+        <field name="name">Giá vốn hàng bán</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">none</field>
+        <field name="account_type">expense</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_635" model="vas.account">
+        <field name="code">635</field>
+        <field name="name">Chi phí tài chính</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">none</field>
+        <field name="account_type">expense</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_642" model="vas.account">
+        <field name="code">642</field>
+        <field name="name">Chi phí quản lý kinh doanh</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">none</field>
+        <field name="account_type">expense</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_711" model="vas.account">
+        <field name="code">711</field>
+        <field name="name">Thu nhập khác</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">none</field>
+        <field name="account_type">other_income</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_811" model="vas.account">
+        <field name="code">811</field>
+        <field name="name">Chi phí khác</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">none</field>
+        <field name="account_type">other_expense</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_821" model="vas.account">
+        <field name="code">821</field>
+        <field name="name">Chi phí thuế thu nhập doanh nghiệp</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">none</field>
+        <field name="account_type">other_expense</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_911" model="vas.account">
+        <field name="code">911</field>
+        <field name="name">Xác định kết quả kinh doanh</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">none</field>
+        <field name="account_type">pl</field>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_1111" model="vas.account">
+        <field name="code">1111</field>
+        <field name="name">Tiền Việt Nam</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_111"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_1112" model="vas.account">
+        <field name="code">1112</field>
+        <field name="name">Ngoại tệ</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_111"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_1121" model="vas.account">
+        <field name="code">1121</field>
+        <field name="name">Tiền Việt Nam</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_112"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_1122" model="vas.account">
+        <field name="code">1122</field>
+        <field name="name">Ngoại tệ</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_112"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_1281" model="vas.account">
+        <field name="code">1281</field>
+        <field name="name">Tiền gửi có kỳ hạn</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_128"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <!-- Mẫu tiểu khoản con dưới 1281 — B01a 122 đọc theo mã con (C1), không lấy số dư 1281 cha -->
+    <record id="vas_account_tt133_12811" model="vas.account">
+        <field name="code">12811</field>
+        <field name="name">Tiền gửi có kỳ hạn (mẫu)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_1281"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_1288" model="vas.account">
+        <field name="code">1288</field>
+        <field name="name">Các khoản đầu tư khác nắm giữ đến ngày đáo hạn</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_128"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_1331" model="vas.account">
+        <field name="code">1331</field>
+        <field name="name">Thuế GTGT được khấu trừ của hàng hóa, dịch vụ</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_133"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_1332" model="vas.account">
+        <field name="code">1332</field>
+        <field name="name">Thuế GTGT được khấu trừ của tài sản cố định</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_133"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_1361" model="vas.account">
+        <field name="code">1361</field>
+        <field name="name">Vốn kinh doanh ở đơn vị trực thuộc</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_136"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_1368" model="vas.account">
+        <field name="code">1368</field>
+        <field name="name">Phải thu nội bộ khác</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_136"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_1381" model="vas.account">
+        <field name="code">1381</field>
+        <field name="name">Tài sản thiếu chờ xử lý</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_138"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_1386" model="vas.account">
+        <field name="code">1386</field>
+        <field name="name">Cầm cố, thế chấp, ký quỹ, ký cược</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_138"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_1388" model="vas.account">
+        <field name="code">1388</field>
+        <field name="name">Phải thu khác</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_138"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_2111" model="vas.account">
+        <field name="code">2111</field>
+        <field name="name">TSCĐ hữu hình</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_211"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_2112" model="vas.account">
+        <field name="code">2112</field>
+        <field name="name">TSCĐ thuê tài chính</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_211"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_2113" model="vas.account">
+        <field name="code">2113</field>
+        <field name="name">TSCĐ vô hình</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_211"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_2141" model="vas.account">
+        <field name="code">2141</field>
+        <field name="name">Hao mòn TSCĐ hữu hình</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_214"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_2142" model="vas.account">
+        <field name="code">2142</field>
+        <field name="name">Hao mòn TSCĐ thuê tài chính</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_214"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_2143" model="vas.account">
+        <field name="code">2143</field>
+        <field name="name">Hao mòn TSCĐ vô hình</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_214"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_2147" model="vas.account">
+        <field name="code">2147</field>
+        <field name="name">Hao mòn bất động sản đầu tư</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_214"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_2281" model="vas.account">
+        <field name="code">2281</field>
+        <field name="name">Đầu tư vào công ty liên doanh, liên kết</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_228"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_2288" model="vas.account">
+        <field name="code">2288</field>
+        <field name="name">Đầu tư khác</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_228"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_2291" model="vas.account">
+        <field name="code">2291</field>
+        <field name="name">Dự phòng giảm giá chứng khoán kinh doanh</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_229"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_2292" model="vas.account">
+        <field name="code">2292</field>
+        <field name="name">Dự phòng tổn thất đầu tư vào đơn vị khác</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_229"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_2293" model="vas.account">
+        <field name="code">2293</field>
+        <field name="name">Dự phòng phải thu khó đòi</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_229"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_2294" model="vas.account">
+        <field name="code">2294</field>
+        <field name="name">Dự phòng giảm giá hàng tồn kho</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_229"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_2411" model="vas.account">
+        <field name="code">2411</field>
+        <field name="name">Mua sắm TSCĐ</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_241"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_2412" model="vas.account">
+        <field name="code">2412</field>
+        <field name="name">Xây dựng cơ bản</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_241"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_2413" model="vas.account">
+        <field name="code">2413</field>
+        <field name="name">Sửa chữa lớn TSCĐ</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit</field>
+        <field name="account_type">asset</field>
+        <field name="parent_id" ref="vas_account_tt133_241"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3331" model="vas.account">
+        <field name="code">3331</field>
+        <field name="name">Thuế giá trị gia tăng phải nộp</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_333"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3332" model="vas.account">
+        <field name="code">3332</field>
+        <field name="name">Thuế tiêu thụ đặc biệt</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_333"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3333" model="vas.account">
+        <field name="code">3333</field>
+        <field name="name">Thuế xuất, nhập khẩu</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_333"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3334" model="vas.account">
+        <field name="code">3334</field>
+        <field name="name">Thuế thu nhập doanh nghiệp</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_333"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3335" model="vas.account">
+        <field name="code">3335</field>
+        <field name="name">Thuế thu nhập cá nhân</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_333"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3336" model="vas.account">
+        <field name="code">3336</field>
+        <field name="name">Thuế tài nguyên</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_333"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3337" model="vas.account">
+        <field name="code">3337</field>
+        <field name="name">Thuế nhà đất, tiền thuê đất</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_333"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3338" model="vas.account">
+        <field name="code">3338</field>
+        <field name="name">Thuế bảo vệ môi trường và các loại thuế khác</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_333"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3339" model="vas.account">
+        <field name="code">3339</field>
+        <field name="name">Phí, lệ phí và các khoản phải nộp khác</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_333"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3361" model="vas.account">
+        <field name="code">3361</field>
+        <field name="name">Phải trả nội bộ về vốn kinh doanh</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_336"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3368" model="vas.account">
+        <field name="code">3368</field>
+        <field name="name">Phải trả nội bộ khác</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_336"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3381" model="vas.account">
+        <field name="code">3381</field>
+        <field name="name">Tài sản thừa chờ giải quyết</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_338"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3382" model="vas.account">
+        <field name="code">3382</field>
+        <field name="name">Kinh phí công đoàn</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_338"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3383" model="vas.account">
+        <field name="code">3383</field>
+        <field name="name">Bảo hiểm xã hội</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_338"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3384" model="vas.account">
+        <field name="code">3384</field>
+        <field name="name">Bảo hiểm y tế</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_338"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3385" model="vas.account">
+        <field name="code">3385</field>
+        <field name="name">Bảo hiểm thất nghiệp</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_338"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3386" model="vas.account">
+        <field name="code">3386</field>
+        <field name="name">Nhận ký quỹ, ký cược</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_338"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3387" model="vas.account">
+        <field name="code">3387</field>
+        <field name="name">Doanh thu chưa thực hiện</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_338"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3388" model="vas.account">
+        <field name="code">3388</field>
+        <field name="name">Phải trả, phải nộp khác</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_338"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3411" model="vas.account">
+        <field name="code">3411</field>
+        <field name="name">Các khoản đi vay</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_341"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3412" model="vas.account">
+        <field name="code">3412</field>
+        <field name="name">Nợ thuê tài chính</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_341"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3521" model="vas.account">
+        <field name="code">3521</field>
+        <field name="name">Dự phòng bảo hành sản phẩm, hàng hóa</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_352"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3522" model="vas.account">
+        <field name="code">3522</field>
+        <field name="name">Dự phòng bảo hành công trình xây dựng</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_352"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3524" model="vas.account">
+        <field name="code">3524</field>
+        <field name="name">Dự phòng phải trả khác</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_352"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3531" model="vas.account">
+        <field name="code">3531</field>
+        <field name="name">Quỹ khen thưởng</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_353"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3532" model="vas.account">
+        <field name="code">3532</field>
+        <field name="name">Quỹ phúc lợi</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_353"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3533" model="vas.account">
+        <field name="code">3533</field>
+        <field name="name">Quỹ phúc lợi đã hình thành TSCĐ</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_353"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3534" model="vas.account">
+        <field name="code">3534</field>
+        <field name="name">Quỹ thưởng ban quản lý điều hành công ty</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_353"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3561" model="vas.account">
+        <field name="code">3561</field>
+        <field name="name">Quỹ phát triển khoa học và công nghệ</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_356"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_3562" model="vas.account">
+        <field name="code">3562</field>
+        <field name="name">Quỹ phát triển khoa học và công nghệ đã hình thành TSCĐ</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_356"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_4111" model="vas.account">
+        <field name="code">4111</field>
+        <field name="name">Vốn góp của chủ sở hữu</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">equity</field>
+        <field name="parent_id" ref="vas_account_tt133_411"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_4112" model="vas.account">
+        <field name="code">4112</field>
+        <field name="name">Thặng dư vốn cổ phần</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">equity</field>
+        <field name="parent_id" ref="vas_account_tt133_411"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_4118" model="vas.account">
+        <field name="code">4118</field>
+        <field name="name">Vốn khác</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">credit</field>
+        <field name="account_type">equity</field>
+        <field name="parent_id" ref="vas_account_tt133_411"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_4211" model="vas.account">
+        <field name="code">4211</field>
+        <field name="name">Lợi nhuận sau thuế chưa phân phối năm trước</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">equity</field>
+        <field name="parent_id" ref="vas_account_tt133_421"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_4212" model="vas.account">
+        <field name="code">4212</field>
+        <field name="name">Lợi nhuận sau thuế chưa phân phối năm nay</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">equity</field>
+        <field name="parent_id" ref="vas_account_tt133_421"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_5111" model="vas.account">
+        <field name="code">5111</field>
+        <field name="name">Doanh thu bán hàng hóa</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">none</field>
+        <field name="account_type">income</field>
+        <field name="parent_id" ref="vas_account_tt133_511"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_5112" model="vas.account">
+        <field name="code">5112</field>
+        <field name="name">Doanh thu bán thành phẩm</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">none</field>
+        <field name="account_type">income</field>
+        <field name="parent_id" ref="vas_account_tt133_511"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_5113" model="vas.account">
+        <field name="code">5113</field>
+        <field name="name">Doanh thu cung cấp dịch vụ</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">none</field>
+        <field name="account_type">income</field>
+        <field name="parent_id" ref="vas_account_tt133_511"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_5118" model="vas.account">
+        <field name="code">5118</field>
+        <field name="name">Doanh thu khác</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">none</field>
+        <field name="account_type">income</field>
+        <field name="parent_id" ref="vas_account_tt133_511"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_6421" model="vas.account">
+        <field name="code">6421</field>
+        <field name="name">Chi phí bán hàng</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">none</field>
+        <field name="account_type">expense</field>
+        <field name="parent_id" ref="vas_account_tt133_642"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_6422" model="vas.account">
+        <field name="code">6422</field>
+        <field name="name">Chi phí quản lý doanh nghiệp</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">none</field>
+        <field name="account_type">expense</field>
+        <field name="parent_id" ref="vas_account_tt133_642"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_33311" model="vas.account">
+        <field name="code">33311</field>
+        <field name="name">Thuế GTGT đầu ra</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_3331"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_33312" model="vas.account">
+        <field name="code">33312</field>
+        <field name="name">Thuế GTGT hàng nhập khẩu</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_3331"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_33381" model="vas.account">
+        <field name="code">33381</field>
+        <field name="name">Thuế bảo vệ môi trường</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_3338"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_account_tt133_33382" model="vas.account">
+        <field name="code">33382</field>
+        <field name="name">Các loại thuế khác</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="ending_balance_policy">debit_or_credit</field>
+        <field name="account_type">liability</field>
+        <field name="parent_id" ref="vas_account_tt133_3338"/>
+        <field name="reconcile" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

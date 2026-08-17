@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- HM5 — kỳ: nút nghiệp vụ -->
+    <record id="view_vas_costing_period_form_stage3" model="ir.ui.view">
+        <field name="name">vas.costing.period.form.stage3</field>
+        <field name="model">vas.costing.period</field>
+        <field name="inherit_id" ref="view_vas_costing_period_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_receive_allocation" type="object"
+                        string="Nhận kết quả phân bổ"
+                        invisible="state != 'draft'"/>
+                <button name="action_compute_costing" type="object"
+                        string="Tính giá thành" class="btn-primary"
+                        invisible="state not in ('draft', 'computed')"/>
+                <button name="action_submit_approval" type="object"
+                        string="Gửi duyệt"
+                        invisible="state != 'computed'"/>
+                <button name="action_approve" type="object"
+                        string="Duyệt" class="btn-primary"
+                        invisible="state != 'pending_approval'"
+                        groups="connecta_vas.group_vas_costing_approver,base.group_system"/>
+                <button name="action_reject" type="object"
+                        string="Từ chối"
+                        invisible="state != 'pending_approval'"/>
+                <button name="action_confirm_defer_unconfigured" type="object"
+                        string="Xác nhận để lại kỳ sau"
+                        invisible="state not in ('draft', 'computed')"/>
+                <button name="action_post_provisional_fg" type="object"
+                        string="Ghi tạm thành phẩm" class="btn-primary"
+                        invisible="state in ('posted', 'locked') or posting_mode != 'immediate'"/>
+                <button name="action_post_costing" type="object"
+                        string="Ghi 154 sang 155" class="btn-primary"
+                        invisible="state != 'approved' or posting_mode == 'immediate'"/>
+                <button name="action_post_costing" type="object"
+                        string="Ghi bù giá thành" class="btn-primary"
+                        invisible="state != 'approved' or posting_mode != 'immediate'"/>
+                <button name="action_lock_period" type="object"
+                        string="Khóa kỳ"
+                        invisible="state != 'posted'"/>
+                <button name="action_open_s18" type="object"
+                        string="Thẻ S18"/>
+                <button name="action_view_provisional_lots" type="object"
+                        string="Lô đã ghi tạm"
+                        invisible="posting_mode != 'immediate'"/>
+            </xpath>
+            <xpath expr="//header" position="after">
+                <div class="oe_button_box" name="button_box">
+                    <button name="action_view_approval_history" type="object"
+                            class="oe_stat_button" icon="fa-check">
+                        <span>Lịch sử duyệt</span>
+                    </button>
+                </div>
+            </xpath>
+            <xpath expr="//sheet/group/group[1]/field[@name='method']" position="after">
+                <field name="posting_mode" readonly="1"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Chức năng lùi">
+                    <group>
+                        <button name="action_withdraw_approval_request" type="object"
+                                string="Rút yêu cầu duyệt"
+                                invisible="state != 'pending_approval'"/>
+                        <button name="action_revoke_approval" type="object"
+                                string="Thu hồi duyệt"
+                                invisible="state != 'approved'"/>
+                        <button name="action_invalidate_computation" type="object"
+                                string="Hủy kết quả tính"
+                                invisible="state != 'computed'"/>
+                        <button name="action_unreceive_allocation" type="object"
+                                string="Hoàn tác nhận phân bổ"
+                                invisible="state != 'draft'"/>
+                        <button name="action_reverse_posting" type="object"
+                                string="Đảo bút toán 154→155"
+                                invisible="state != 'posted'"/>
+                    </group>
+                    <field name="compute_warnings" readonly="1"
+                             placeholder="Cảnh báo khi tính (nếu có)"/>
+                    <field name="posting_move_id" readonly="1"/>
+                    <field name="current_result_id" readonly="1"/>
+                    <field name="total_cost" readonly="1"/>
+                </page>
+                <page string="Phiên bản kết quả">
+                    <field name="result_version_ids" readonly="1">
+                        <list>
+                            <field name="name"/>
+                            <field name="version"/>
+                            <field name="effectiveness"/>
+                            <field name="total_cost"/>
+                            <field name="fingerprint"/>
+                            <field name="invalidation_door"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- HM6 — dở dang đầu kỳ -->
+    <record id="view_vas_opening_wip_list" model="ir.ui.view">
+        <field name="name">vas.opening.wip.list</field>
+        <field name="model">vas.opening.wip</field>
+        <field name="arch" type="xml">
+            <list string="Dở dang đầu kỳ">
+                <field name="name"/>
+                <field name="date" widget="date"/>
+                <field name="state"/>
+                <field name="amount_diff"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_vas_opening_wip_form" model="ir.ui.view">
+        <field name="name">vas.opening.wip.form</field>
+        <field name="model">vas.opening.wip</field>
+        <field name="arch" type="xml">
+            <form string="Dở dang đầu kỳ">
+                <header>
+                    <button name="action_check_four_groups" type="object"
+                            string="Kiểm bốn nhóm" class="btn-primary"/>
+                    <button name="action_lock" type="object" string="Khóa số dư đầu kỳ"/>
+                    <button name="action_clear_lines" type="object" string="Xóa hết dòng"/>
+                    <button name="action_export_csv" type="object" string="Xuất Excel"/>
+                    <button name="action_copy_from_prior_period" type="object"
+                            string="Lấy số từ kỳ trước"/>
+                    <button name="action_validate_detail_level" type="object"
+                            string="Kiểm mức chi tiết"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="date" widget="date"/>
+                            <field name="detail_by_item"/>
+                            <field name="detail_level"/>
+                            <field name="group_b_manual_amount"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Lưới bốn nhóm">
+                            <field name="amount_group1"/>
+                            <field name="amount_group2"/>
+                            <field name="amount_group3"/>
+                            <field name="amount_group4"/>
+                            <field name="amount_balance_154"/>
+                            <field name="amount_diff"/>
+                        </group>
+                    </group>
+                    <field name="line_ids">
+                        <list editable="bottom">
+                            <field name="cost_object_id"/>
+                            <field name="cost_item_id"
+                                     optional="show"/>
+                            <field name="wip_account_id"/>
+                            <field name="amount"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_vas_opening_wip" model="ir.actions.act_window">
+        <field name="name">Dở dang đầu kỳ</field>
+        <field name="res_model">vas.opening.wip</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- HM7 — dở dang cuối kỳ -->
+    <record id="view_vas_closing_wip_form" model="ir.ui.view">
+        <field name="name">vas.closing.wip.form</field>
+        <field name="model">vas.closing.wip</field>
+        <field name="arch" type="xml">
+            <form string="Dở dang cuối kỳ">
+                <header>
+                    <button name="action_regen_suggestion" type="object"
+                            string="Tạo lại số gợi ý" class="btn-primary"/>
+                    <button name="action_confirm" type="object" string="Xác nhận"/>
+                    <button name="action_reopen" type="object" string="Mở lại"/>
+                    <button name="action_view_history" type="object" string="Xem lịch sử"/>
+                    <field name="state" widget="statusbar"
+                             statusbar_visible="draft,suggested,pending_confirm,confirmed,needs_review"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-warning" role="alert"
+                         invisible="state == 'confirmed'">
+                        Số hệ thống gợi ý — chưa được kế toán xác nhận
+                        (trừ khi trạng thái Đã xác nhận).
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="kind"/>
+                            <field name="period_id"
+                                     invisible="kind != 'period_end'"
+                                     required="kind == 'period_end'"/>
+                            <field name="report_date" widget="date"
+                                     invisible="kind != 'report_date'"/>
+                            <field name="confirm_version"
+                                     invisible="kind != 'report_date'"/>
+                            <field name="delta_after_regen"/>
+                            <field name="reopen_reason"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <div class="text-muted">
+                        Số xác nhận = Số hệ thống gợi ý + Số điều chỉnh
+                    </div>
+                    <field name="line_ids">
+                        <list editable="bottom">
+                            <field name="cost_object_id"/>
+                            <field name="cost_item_id"/>
+                            <field name="amount_suggested" readonly="1"/>
+                            <field name="amount_adjustment"/>
+                            <field name="amount_confirmed" readonly="1"/>
+                            <field name="reason_adjustment"/>
+                            <field name="confirmer_id" optional="hide"/>
+                            <field name="confirm_date" optional="hide"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_vas_closing_wip" model="ir.actions.act_window">
+        <field name="name">Dở dang cuối kỳ</field>
+        <field name="res_model">vas.closing.wip</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- HM11 — thẻ S18 -->
+    <record id="view_vas_costing_result_s18_form" model="ir.ui.view">
+        <field name="name">vas.costing.result.version.s18</field>
+        <field name="model">vas.costing.result.version</field>
+        <field name="arch" type="xml">
+            <form string="Thẻ tính giá thành S18-DNN" create="0" delete="0">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Thẻ S18-DNN</h1>
+                        <h2><field name="name" readonly="1"/></h2>
+                    </div>
+                    <group>
+                        <group string="Bốn dòng">
+                            <field name="opening_wip" string="Dở dang đầu kỳ" readonly="1"/>
+                            <field name="amount_direct" string="Chi phí trực tiếp" readonly="1"/>
+                            <field name="amount_overhead" string="Chi phí chung đã nhận" readonly="1"/>
+                            <field name="amount_reduction" string="Khoản giảm" readonly="1"/>
+                            <field name="closing_wip" string="Dở dang cuối kỳ" readonly="1"/>
+                            <field name="total_cost" string="Giá thành trong kỳ" readonly="1"/>
+                        </group>
+                        <group string="Duyệt (chỉ hiển thị — không có nút duyệt)">
+                            <field name="version" readonly="1"/>
+                            <field name="effectiveness" readonly="1"/>
+                            <field name="fingerprint" readonly="1"
+                                     help="Dấu vân tay dữ liệu — chỉ phát hiện lệch ở mốc kiểm, không tức thời."/>
+                        </group>
+                    </group>
+                    <field name="line_ids" readonly="1">
+                        <list>
+                            <field name="cost_object_id"/>
+                            <field name="opening_wip"/>
+                            <field name="amount_direct"/>
+                            <field name="amount_overhead"/>
+                            <field name="amount_reduction"/>
+                            <field name="closing_wip"/>
+                            <field name="total_cost"/>
+                            <field name="amount_delivered"/>
+                            <field name="amount_undelivered"/>
+                            <field name="stock_fg_receipt_value" optional="hide"/>
+                        </list>
+                    </field>
+                    <field name="approval_ids" readonly="1">
+                        <list>
+                            <field name="decision"/>
+                            <field name="submitter_id"/>
+                            <field name="reviewer_id"/>
+                            <field name="action_date"/>
+                            <field name="effectiveness"/>
+                            <field name="total_cost"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- parent_run_id trên lượt -->
+    <record id="view_vas_allocation_run_form_b2" model="ir.ui.view">
+        <field name="name">vas.allocation.run.form.b2</field>
+        <field name="model">vas.allocation.run</field>
+        <field name="inherit_id" ref="view_vas_allocation_run_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='money_source']" position="after">
+                <field name="parent_run_id"
+                         invisible="round_number != '2'"
+                         required="round_number == '2'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Dở dang ĐK/CK: chuyển sang lưu đồ Nghiệp vụ › Sản xuất & Giá thành -->
+
+    <!-- Wizard lý do Từ chối / Hoàn tác nhận / Để lại kỳ sau -->
+    <record id="view_vas_costing_reason_wizard_form" model="ir.ui.view">
+        <field name="name">vas.costing.reason.wizard.form</field>
+        <field name="model">vas.costing.reason.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Nhập lý do">
+                <group>
+                    <field name="period_id" readonly="1"
+                             invisible="action_kind == 'variance_reverse'"/>
+                    <field name="variance_sheet_id" readonly="1"
+                             invisible="action_kind != 'variance_reverse'"/>
+                    <field name="action_kind" readonly="1"/>
+                    <field name="reason" placeholder="Nhập lý do (bắt buộc)"/>
+                </group>
+                <footer>
+                    <button name="action_confirm" type="object" string="Xác nhận"
+                            class="btn-primary"/>
+                    <button string="Hủy" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vas_gtgt_direct_industry_list" model="ir.ui.view">
+        <field name="name">vas.gtgt.direct.industry.list</field>
+        <field name="model">vas.gtgt.direct.industry</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="rate_percent"/>
+                <field name="declaration_revenue_tag"/>
+                <field name="is_gold"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_vas_gtgt_direct_industry" model="ir.actions.act_window">
+        <field name="name">Nhóm ngành GTGT trực tiếp</field>
+        <field name="res_model">vas.gtgt.direct.industry</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <record id="view_vas_gtgt_tax_method_list" model="ir.ui.view">
+        <field name="name">vas.gtgt.tax.method.list</field>
+        <field name="model">vas.gtgt.tax.method</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="method"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="note"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_vas_gtgt_tax_method" model="ir.actions.act_window">
+        <field name="name">Phương pháp tính thuế GTGT</field>
+        <field name="res_model">vas.gtgt.tax.method</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <record id="view_vas_gtgt_form_type_list" model="ir.ui.view">
+        <field name="name">vas.gtgt.form.type.list</field>
+        <field name="model">vas.gtgt.form.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="tax_method"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_product_template_form_vas_direct" model="ir.ui.view">
+        <field name="name">product.template.form.vas.direct</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='vas_gtgt_product']" position="inside">
+                <field name="vas_gtgt_direct_industry_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <menuitem id="menu_vas_gtgt_direct_industry"
+              name="Nhóm ngành trực tiếp"
+              parent="menu_vas_catalog_root"
+              action="action_vas_gtgt_direct_industry"
+              sequence="82"/>
+    <menuitem id="menu_vas_gtgt_tax_method"
+              name="Phương pháp tính thuế GTGT"
+              parent="menu_vas_config"
+              action="action_vas_gtgt_tax_method"
+              sequence="61"/>
+</odoo>

@@ -1,0 +1,148 @@
+/* Khung báo cáo VAS — look kế toán (tham khảo thông số native, SCSS riêng). */
+
+.o_vas_report {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #f8f9fa; /* nền view xám nhạt */
+
+    .o_vas_report_layout {
+        height: 100%;
+        background: #f8f9fa;
+    }
+
+    /* ── Control panel: PDF|XLSX trái — bộ lọc phải ── */
+    .o_vas_report_toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 0.75rem;
+        padding: 0.5rem 1rem;
+        border-bottom: 1px solid #dee2e6;
+        background: #fff;
+    }
+
+    .o_vas_account_select {
+        min-width: 14rem;
+        max-width: 22rem;
+    }
+
+    .o_vas_report_content {
+        overflow: auto;
+        flex: 1 1 auto;
+        padding: 1rem;
+    }
+
+    /* Cảnh báo: khối riêng full-width phía trên tờ giấy, không nhét cột hẹp */
+    .o_vas_report_warning {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 0 1rem;
+        padding: 0.75rem 1rem;
+        white-space: pre-wrap;
+        word-break: break-word;
+        box-sizing: border-box;
+    }
+
+    /* ── Trang giấy ── */
+    .o_vas_report_paper {
+        background: #fff;
+        border: 1px solid #d3d3d3;
+        border-radius: 0.25rem;
+        padding: 24px;
+        margin: 0 auto;
+        min-width: 800px;
+        width: fit-content;
+        max-width: 100%;
+    }
+
+    .o_vas_report_header h3 {
+        font-size: 1.05rem;
+        letter-spacing: 0.02em;
+        font-weight: 700;
+    }
+
+    .o_vas_report_scroll {
+        overflow-x: auto;
+    }
+
+    /* ── Bảng ── */
+    .o_vas_report_table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: 0.8rem;
+        background: #fff;
+        table-layout: auto;
+
+        thead th {
+            white-space: nowrap;
+            vertical-align: middle;
+            text-align: center;
+            font-weight: 600;
+            padding: 0.35rem 0.85rem;
+            border-bottom: 1px solid #cfcfcf;
+            color: #6c757d;
+        }
+
+        tbody td {
+            padding: 0.25rem 0.85rem;
+            border-bottom: 1px solid #ececec;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        /* Cột chỉ tiêu cho phép xuống dòng khi dài */
+        tbody td:nth-child(2) {
+            white-space: normal;
+            min-width: 14rem;
+        }
+
+        tbody tr:hover > td {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        /* Section / nhóm cấp cao: thanh xám full-width */
+        tr.o_vas_section > td {
+            background: #e9ecef;
+            font-weight: 700;
+        }
+
+        tr.o_vas_unfolded > td {
+            font-weight: 700;
+            border-bottom-color: #cfcfcf;
+        }
+
+        tr.o_vas_report_total > td {
+            font-weight: 700;
+            border-top: 1px solid #adb5bd;
+            background: #f8f9fa;
+        }
+
+        .o_vas_muted {
+            color: #adb5bd;
+        }
+
+        .o_vas_negative {
+            color: #dc3545;
+        }
+
+        .btn_foldable {
+            width: 1rem;
+            color: #6c757d;
+            line-height: 1;
+            vertical-align: middle;
+
+            &:hover {
+                color: #0d6efd;
+            }
+        }
+
+        .btn_foldable_empty {
+            display: inline-block;
+            width: 1rem;
+        }
+    }
+}

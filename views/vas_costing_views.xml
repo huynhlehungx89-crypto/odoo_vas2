@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ========== HM2 — Khoản mục chi phí ========== -->
+    <record id="view_vas_cost_item_list" model="ir.ui.view">
+        <field name="name">vas.cost.item.list</field>
+        <field name="model">vas.cost.item</field>
+        <field name="arch" type="xml">
+            <list string="Khoản mục chi phí">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="parent_id"/>
+                <field name="account_id"/>
+                <field name="factor_group"/>
+                <field name="is_aggregate_node"/>
+                <field name="has_direct_history"
+                         string="Lịch sử trực tiếp"
+                         optional="show"/>
+                <field name="direct_history_line_count" optional="hide"/>
+                <field name="direct_history_amount" optional="hide" sum="Tổng"/>
+                <field name="is_system"/>
+                <field name="active"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_cost_item_form" model="ir.ui.view">
+        <field name="name">vas.cost.item.form</field>
+        <field name="model">vas.cost.item</field>
+        <field name="arch" type="xml">
+            <form string="Khoản mục chi phí">
+                <header>
+                    <button name="action_open_direct_history_lines"
+                            type="object"
+                            string="Xem bút toán lịch sử trực tiếp"
+                            invisible="not has_direct_history"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Ngừng dùng" bg_color="text-bg-danger" invisible="active"/>
+                    <widget name="web_ribbon" title="Hệ thống" bg_color="text-bg-info" invisible="not is_system"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="vd. Chi phí sản xuất chung"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="parent_id"/>
+                            <field name="account_id"/>
+                            <field name="factor_group"
+                                     required="not is_aggregate_node"/>
+                            <field name="is_aggregate_node"/>
+                            <field name="has_direct_history" invisible="not is_aggregate_node"/>
+                            <field name="direct_history_line_count" invisible="not has_direct_history"/>
+                            <field name="direct_history_amount" invisible="not has_direct_history"/>
+                            <field name="is_system" readonly="1"/>
+                            <field name="active"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="company_currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="note" placeholder="Diễn giải"/>
+                        </group>
+                    </group>
+                    <div class="alert alert-info" role="alert" invisible="not is_aggregate_node">
+                        Nút tổng hợp: không nhận bút toán mới, nhưng vẫn có thể có phát sinh
+                        lịch sử từ thời nó còn là lá.
+                        Số tại nút cha = số lịch sử trỏ trực tiếp vào cha + số của toàn bộ các con
+                        (mỗi dòng bút toán chỉ cộng đúng một lần).
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_cost_item" model="ir.actions.act_window">
+        <field name="name">Khoản mục chi phí</field>
+        <field name="res_model">vas.cost.item</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ========== HM3 — Đối tượng tập hợp chi phí ========== -->
+    <record id="view_vas_cost_object_list" model="ir.ui.view">
+        <field name="name">vas.cost.object.list</field>
+        <field name="model">vas.cost.object</field>
+        <field name="arch" type="xml">
+            <list string="Đối tượng tập hợp chi phí">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="object_type"/>
+                <field name="parent_id"/>
+                <field name="source_label_snapshot" string="Nguồn nối"/>
+                <field name="source_status"/>
+                <field name="wip_account_id"/>
+                <field name="active"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_cost_object_form" model="ir.ui.view">
+        <field name="name">vas.cost.object.form</field>
+        <field name="model">vas.cost.object</field>
+        <field name="arch" type="xml">
+            <form string="Đối tượng tập hợp chi phí">
+                <header>
+                    <button name="action_refresh_source_label"
+                            type="object"
+                            string="Làm mới bản chụp nhãn"
+                            invisible="object_type == 'workshop' or (not source_model and not source_res_id)"/>
+                    <button name="action_sync_catalog_check"
+                            type="object"
+                            string="Đồng bộ kiểm tra danh mục"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Ngừng dùng" bg_color="text-bg-danger" invisible="active"/>
+                    <widget name="web_ribbon" title="Nguồn không còn tồn tại" bg_color="text-bg-warning" invisible="source_status != 'orphan'"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="vd. Thùng carton 3 lớp"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="object_type"/>
+                            <field name="parent_id"/>
+                            <field name="wip_account_id"/>
+                            <field name="active"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="ui_product_id"
+                                     invisible="object_type != 'product'"
+                                     options="{'no_create': True}"/>
+                            <field name="source_label_snapshot" readonly="1"
+                                     invisible="object_type == 'workshop'"/>
+                            <field name="source_status" readonly="1"
+                                     invisible="object_type == 'workshop'"/>
+                            <!-- Máy đọc — ẩn khỏi người dùng -->
+                            <field name="source_model" invisible="1"/>
+                            <field name="source_res_id" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_vas_cost_object_search" model="ir.ui.view">
+        <field name="name">vas.cost.object.search</field>
+        <field name="model">vas.cost.object</field>
+        <field name="arch" type="xml">
+            <search string="Đối tượng tập hợp chi phí">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="source_label_snapshot"/>
+                <filter name="filter_orphan"
+                        string="Nguồn không còn tồn tại"
+                        domain="[('source_status', '=', 'orphan')]"/>
+                <filter name="filter_active"
+                        string="Đang dùng"
+                        domain="[('active', '=', True)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_vas_cost_object" model="ir.actions.act_window">
+        <field name="name">Đối tượng tập hợp chi phí</field>
+        <field name="res_model">vas.cost.object</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_vas_cost_object_search"/>
+    </record>
+
+    <!-- ========== HM4 — Kỳ tính giá thành ========== -->
+    <record id="view_vas_costing_period_list" model="ir.ui.view">
+        <field name="name">vas.costing.period.list</field>
+        <field name="model">vas.costing.period</field>
+        <field name="arch" type="xml">
+            <list string="Kỳ tính giá thành" action="action_open_m5" type="object">
+                <field name="name"/>
+                <field name="date_from" widget="date"/>
+                <field name="date_to" widget="date"/>
+                <field name="method"/>
+                <field name="state"/>
+                <field name="m5_has_result" column_invisible="1"/>
+                <!-- invisible khi chưa có kết quả → ô trống (không hiện 0 giả); có kết quả thì hiện cả số 0 thật -->
+                <field name="m5_opening_wip" sum="Tổng" invisible="not m5_has_result"/>
+                <field name="m5_period_incurred" sum="Tổng" invisible="not m5_has_result"/>
+                <field name="m5_cost_reduction" sum="Tổng" invisible="not m5_has_result"/>
+                <field name="m5_closing_wip" sum="Tổng" invisible="not m5_has_result"/>
+                <field name="m5_total_cost" sum="Tổng" invisible="not m5_has_result"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_costing_period_form" model="ir.ui.view">
+        <field name="name">vas.costing.period.form</field>
+        <field name="model">vas.costing.period</field>
+        <field name="arch" type="xml">
+            <form string="Kỳ tính giá thành">
+                <header>
+                    <field name="state" widget="statusbar"
+                             statusbar_visible="draft,computed,pending_approval,approved,posted,locked"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="vd. 01/01/2026 – 31/01/2026"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date_from" widget="date"/>
+                            <field name="date_to" widget="date"/>
+                            <field name="method"/>
+                            <field name="method_implemented" invisible="1"/>
+                            <div class="text-muted" invisible="method != 'stepwise'">
+                                Phân bước — chưa triển khai (không tạo được kỳ chạy thật).
+                            </div>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="opening_wip" readonly="1"/>
+                            <field name="period_incurred" readonly="1"/>
+                            <field name="cost_reduction" readonly="1"/>
+                            <field name="closing_wip" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Đối tượng trong kỳ">
+                            <field name="cost_object_ids"
+                                     readonly="state != 'draft'"
+                                     widget="many2many"
+                                     options="{'no_create': True}">
+                                <list>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="object_type"/>
+                                    <field name="wip_account_id"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_costing_period" model="ir.actions.act_window">
+        <field name="name">Kỳ tính giá thành</field>
+        <field name="res_model">vas.costing.period</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_vas_costing_m5" model="ir.actions.client">
+        <field name="name">Kết quả kỳ tính giá thành</field>
+        <field name="tag">vas_costing_m5</field>
+        <field name="path">vas-costing-m5</field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_vas_costing_root"
+              name="Giá thành"
+              parent="menu_vas_config"
+              sequence="50"/>
+    <!-- Khoản mục / đối tượng / kỳ tính: chuyển sang lưu đồ Nghiệp vụ › Sản xuất & Giá thành -->
+</odoo>

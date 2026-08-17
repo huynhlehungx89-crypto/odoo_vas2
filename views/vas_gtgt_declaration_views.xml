@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Đăng ký tờ khai -->
+    <record id="view_vas_gtgt_registration_list" model="ir.ui.view">
+        <field name="name">vas.gtgt.registration.list</field>
+        <field name="model">vas.gtgt.registration</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="form_type_id"/>
+                <field name="period_kind"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_vas_gtgt_registration" model="ir.actions.act_window">
+        <field name="name">Đăng ký tờ khai GTGT</field>
+        <field name="res_model">vas.gtgt.registration</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- Danh sách tờ khai -->
+    <record id="view_vas_gtgt_declaration_list" model="ir.ui.view">
+        <field name="name">vas.gtgt.declaration.list</field>
+        <field name="model">vas.gtgt.declaration</field>
+        <field name="arch" type="xml">
+            <list>
+                <header>
+                    <button name="action_open_gtgt_registration" type="object"
+                            string="Đăng ký tờ khai sử dụng"/>
+                    <button name="action_open_gtgt_tax_method" type="object"
+                            string="Phương pháp tính thuế GTGT"/>
+                </header>
+                <field name="date_start" string="Kỳ từ"/>
+                <field name="date_end" string="Kỳ đến"/>
+                <field name="period_kind"/>
+                <field name="form_type_id"/>
+                <field name="circular_label" string="Văn bản áp dụng"/>
+                <field name="activity_id"/>
+                <field name="state"/>
+                <field name="reject_reason" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_vas_gtgt_declaration_search" model="ir.ui.view">
+        <field name="name">vas.gtgt.declaration.search</field>
+        <field name="model">vas.gtgt.declaration</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="form_type_id"/>
+                <field name="activity_id"/>
+                <field name="circular_label"/>
+                <filter name="draft" string="Nháp" domain="[('state','=','draft')]"/>
+                <filter name="prepared" string="Đã lập" domain="[('state','=','prepared')]"/>
+                <group>
+                    <filter name="group_period" string="Kỳ"
+                            context="{'group_by': 'date_start'}"/>
+                    <filter name="group_state" string="Trạng thái"
+                            context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_vas_gtgt_declaration_form" model="ir.ui.view">
+        <field name="name">vas.gtgt.declaration.form</field>
+        <field name="model">vas.gtgt.declaration</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_recompute_amounts" type="object"
+                            string="Lập lại số" class="btn-primary"
+                            invisible="state in ('filed','accepted')"/>
+                    <button name="action_prepare" type="object"
+                            string="Đánh dấu đã lập"
+                            invisible="state != 'draft'"/>
+                    <button name="action_set_state_draft" type="object"
+                            string="Về nháp"
+                            invisible="state == 'draft'"/>
+                    <button name="action_set_state_filed" type="object"
+                            string="Đã nộp"
+                            invisible="state not in ('prepared','draft')"/>
+                    <button name="action_set_state_accepted" type="object"
+                            string="CQT chấp nhận"
+                            invisible="state != 'filed'"/>
+                    <button name="action_set_state_rejected" type="object"
+                            string="Từ chối"
+                            invisible="state not in ('filed','prepared')"/>
+                    <button name="action_create_supplementary" type="object"
+                            string="Khai bổ sung"
+                            class="btn-secondary"
+                            invisible="state not in ('filed','accepted') or declaration_round != 0"/>
+                    <button name="action_rebuild_explanation" type="object"
+                            string="Lập giải trình"
+                            invisible="not base_declaration_id or state in ('filed','accepted')"/>
+                    <button name="action_apply_discovery_adjustments" type="object"
+                            string="Đẩy [37]/[38] kỳ phát hiện"
+                            invisible="not discovery_declaration_id or not declaration_round"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,prepared,filed,accepted"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-warning" role="alert"
+                         invisible="not tax_balance_warning">
+                        <field name="tax_balance_warning" nolabel="1"/>
+                    </div>
+                    <div class="alert alert-warning" role="alert"
+                         invisible="not reduction_warning_text">
+                        <field name="reduction_warning_text" nolabel="1"/>
+                    </div>
+                    <div class="alert alert-info" role="status">
+                        <field name="registration_hint" nolabel="1"/>
+                    </div>
+                    <group>
+                        <group string="Kỳ tính thuế [01b]">
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="form_type_id"/>
+                            <field name="period_kind"/>
+                            <field name="year"/>
+                            <field name="month" invisible="period_kind != 'month'"/>
+                            <field name="quarter" invisible="period_kind != 'quarter'"/>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="activity_id"/>
+                            <field name="declaration_round"/>
+                            <field name="is_first_filing"/>
+                            <field name="date_prepared"/>
+                            <field name="base_declaration_id" readonly="1"
+                                      invisible="not base_declaration_id"/>
+                            <field name="is_amount_locked" invisible="1"/>
+                        </group>
+                        <group string="Văn bản / phiên bản mẫu">
+                            <field name="form_version_id" readonly="1"/>
+                            <field name="circular_label" readonly="1"/>
+                            <field name="amount_22"/>
+                            <field name="amount_22_manual"/>
+                            <field name="reject_reason"
+                                      invisible="state != 'rejected'"/>
+                        </group>
+                    </group>
+                    <group string="Kỳ điều chỉnh (KHBS)" invisible="not declaration_round">
+                        <group>
+                            <field name="adjust_choice"/>
+                            <field name="adjust_choice_overridden"/>
+                            <field name="discovery_declaration_id"/>
+                            <field name="delta_43"/>
+                            <field name="delta_40"/>
+                        </group>
+                        <group>
+                            <field name="adjust_reason_auto" readonly="1"/>
+                            <field name="adjust_reason_user"/>
+                            <field name="late_interest_note" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Người nộp thuế / đại lý / địa bàn">
+                        <group>
+                            <field name="taxpayer_name"/>
+                            <field name="taxpayer_vat"/>
+                            <field name="agent_name"/>
+                            <field name="agent_vat"/>
+                            <field name="agent_contract"/>
+                        </group>
+                        <group>
+                            <field name="branch_name"/>
+                            <field name="branch_vat"/>
+                            <field name="branch_address"/>
+                            <field name="branch_ward"/>
+                            <field name="branch_province"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Tờ khai" name="declaration_face">
+                            <field name="line_ids">
+                                <list editable="bottom" create="0" delete="0">
+                                    <field name="sequence" column_invisible="1"/>
+                                    <field name="code" readonly="1"/>
+                                    <field name="name" readonly="1"/>
+                                    <field name="column_kind" readonly="1"/>
+                                    <field name="is_computed" string="Máy"/>
+                                    <field name="amount" readonly="is_computed"
+                                             decoration-muted="is_computed"
+                                             decoration-bf="not is_computed"/>
+                                    <field name="source_kind" optional="hide"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Bảng kê bán ra" name="listing_sale">
+                            <field name="sale_listing_id" invisible="1"/>
+                            <div class="mb-2">
+                                <button name="action_open_sale_listing" type="object"
+                                        string="Mở bảng kê bán ra"
+                                        class="btn-link"
+                                        invisible="not sale_listing_id"/>
+                            </div>
+                            <field name="sale_listing_line_ids" nolabel="1">
+                                <list create="0" delete="0"
+                                      decoration-bf="line_kind == 'group_total'"
+                                      decoration-muted="line_kind == 'unanchored'">
+                                    <field name="sequence" column_invisible="1"/>
+                                    <field name="line_kind"/>
+                                    <field name="group_label"/>
+                                    <field name="invoice_number"/>
+                                    <field name="invoice_date"/>
+                                    <field name="partner_name"/>
+                                    <field name="partner_vat"/>
+                                    <field name="amount_untaxed" sum="Tổng GT"/>
+                                    <field name="amount_tax" sum="Tổng thuế"/>
+                                    <field name="note"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Bảng kê mua vào" name="listing_purchase">
+                            <field name="purchase_listing_id" invisible="1"/>
+                            <div class="mb-2">
+                                <button name="action_open_purchase_listing" type="object"
+                                        string="Mở bảng kê mua vào"
+                                        class="btn-link"
+                                        invisible="not purchase_listing_id"/>
+                            </div>
+                            <field name="purchase_listing_line_ids" nolabel="1">
+                                <list create="0" delete="0"
+                                      decoration-bf="line_kind == 'group_total'"
+                                      decoration-muted="line_kind == 'unanchored'">
+                                    <field name="sequence" column_invisible="1"/>
+                                    <field name="line_kind"/>
+                                    <field name="group_label"/>
+                                    <field name="invoice_number"/>
+                                    <field name="invoice_date"/>
+                                    <field name="partner_name"/>
+                                    <field name="partner_vat"/>
+                                    <field name="amount_untaxed" sum="Tổng GT"/>
+                                    <field name="amount_tax" sum="Tổng thuế"/>
+                                    <field name="amount_deductible"/>
+                                    <field name="is_import"/>
+                                    <field name="note"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Phân loại thuế đầu vào" name="input_tax"
+                              invisible="not show_input_tax_tab">
+                            <field name="show_input_tax_tab" invisible="1"/>
+                            <field name="input_tax_line_ids" nolabel="1">
+                                <list create="0" delete="0">
+                                    <field name="date"/>
+                                    <field name="move_id"/>
+                                    <field name="partner_id"/>
+                                    <field name="deduction_base_untaxed" string="Giá trị"/>
+                                    <field name="debit" string="Tiền thuế"/>
+                                    <field name="use_purpose"/>
+                                    <field name="deduction_check"/>
+                                    <field name="deduction_rule_id" optional="show"/>
+                                    <field name="deductible_amount"/>
+                                    <field name="company_currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Giải trình 01-1/KHBS"
+                              invisible="not explanation_ids and not declaration_round">
+                            <field name="explanation_ids" readonly="1">
+                                <list>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="amount_old"/>
+                                    <field name="amount_new"/>
+                                    <field name="difference"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Các lần bổ sung"
+                              invisible="declaration_round != 0">
+                            <field name="supplementary_ids" readonly="1">
+                                <list>
+                                    <field name="declaration_round"/>
+                                    <field name="date_prepared"/>
+                                    <field name="state"/>
+                                    <field name="delta_43"/>
+                                    <field name="delta_40"/>
+                                    <field name="adjust_choice"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Phụ lục giảm thuế NQ 204"
+                              name="nq204_annex"
+                              invisible="not show_reduction_annex">
+                            <field name="show_reduction_annex" invisible="1"/>
+                            <field name="reduction_annex_id" invisible="1"/>
+                            <field name="reduction_annex_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="amount_05"/>
+                                    <field name="amount_06"/>
+                                    <field name="amount_07"/>
+                                    <field name="amount_08"/>
+                                    <field name="amount_09"/>
+                                    <field name="has_eligible_sales"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <group string="I. Mua vào 8%">
+                                            <field name="amount_05"/>
+                                            <field name="amount_06"/>
+                                        </group>
+                                        <group string="II–III. Bán ra">
+                                            <field name="amount_07"/>
+                                            <field name="amount_08"/>
+                                            <field name="amount_09"/>
+                                        </group>
+                                    </group>
+                                    <field name="line_ids">
+                                        <list>
+                                            <field name="section"/>
+                                            <field name="product_name"/>
+                                            <field name="rate_before"/>
+                                            <field name="rate_after"/>
+                                            <field name="amount_untaxed"/>
+                                            <field name="amount_tax"/>
+                                        </list>
+                                    </field>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_gtgt_declaration" model="ir.actions.act_window">
+        <field name="name">Tờ khai 01/GTGT</field>
+        <field name="res_model">vas.gtgt.declaration</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_group_period': 1}</field>
+    </record>
+
+    <!-- Phiên bản / chỉ tiêu (cấu hình) -->
+    <record id="view_vas_gtgt_form_version_list" model="ir.ui.view">
+        <field name="name">vas.gtgt.form.version.list</field>
+        <field name="model">vas.gtgt.form.version</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="circular_label"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="form_type_id"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_vas_gtgt_form_version" model="ir.actions.act_window">
+        <field name="name">Phiên bản mẫu GTGT</field>
+        <field name="res_model">vas.gtgt.form.version</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_product_template_vas_car_exception" model="ir.ui.view">
+        <field name="name">product.template.vas.car.exception</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='general_information']" position="inside">
+                <group string="VAS — Thuế GTGT" name="vas_gtgt_product">
+                    <field name="vas_passenger_car_business_exception"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <menuitem id="menu_vas_gtgt_registration"
+              name="Đăng ký tờ khai sử dụng"
+              parent="menu_vas_config"
+              action="action_vas_gtgt_registration"
+              sequence="60"/>
+    <menuitem id="menu_vas_gtgt_declaration"
+              name="Tờ khai 01/GTGT"
+              parent="menu_vas_ops_tax"
+              action="action_vas_gtgt_declaration"
+              sequence="20"/>
+    <menuitem id="menu_vas_gtgt_form_version"
+              name="Phiên bản mẫu GTGT"
+              parent="menu_vas_catalog_root"
+              action="action_vas_gtgt_form_version"
+              sequence="80"/>
+</odoo>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- R24 — chênh lệch tỷ giá ĐÃ THỰC HIỆN (chỉ phần chênh 515/635).
+         Sync chọn đúng biến thể theo AR/AP × lãi/lỗ; không dựa condition domain
+         trên account.partial.reconcile. -->
+
+    <!-- V07 lãi: Nợ tiền / Có 515 -->
+    <record id="vas_rule_tt133_r24a" model="vas.rule">
+        <field name="code">R24a</field>
+        <field name="name">Lãi tỷ giá thu công nợ (AR)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">forex_realized</field>
+        <field name="sequence">240</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r24a_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r24a"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">bank_cash</field>
+        <field name="amount_selector">forex_diff</field>
+    </record>
+    <record id="vas_rule_tt133_r24a_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r24a"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">finance_income</field>
+        <field name="amount_selector">forex_diff</field>
+    </record>
+
+    <!-- V07 lỗ: Nợ 635 / Có 131 -->
+    <record id="vas_rule_tt133_r24b" model="vas.rule">
+        <field name="code">R24b</field>
+        <field name="name">Lỗ tỷ giá thu công nợ (AR)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">forex_realized</field>
+        <field name="sequence">241</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r24b_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r24b"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">finance_expense</field>
+        <field name="amount_selector">forex_diff</field>
+    </record>
+    <record id="vas_rule_tt133_r24b_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r24b"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">partner_receivable</field>
+        <field name="amount_selector">forex_diff</field>
+    </record>
+
+    <!-- V08/M12 lỗ: Nợ 635 / Có tiền -->
+    <record id="vas_rule_tt133_r24c" model="vas.rule">
+        <field name="code">R24c</field>
+        <field name="name">Lỗ tỷ giá trả công nợ (AP)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">forex_realized</field>
+        <field name="sequence">242</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r24c_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r24c"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">finance_expense</field>
+        <field name="amount_selector">forex_diff</field>
+    </record>
+    <record id="vas_rule_tt133_r24c_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r24c"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">bank_cash</field>
+        <field name="amount_selector">forex_diff</field>
+    </record>
+
+    <!-- V08/M12 lãi: Nợ 331 / Có 515 -->
+    <record id="vas_rule_tt133_r24d" model="vas.rule">
+        <field name="code">R24d</field>
+        <field name="name">Lãi tỷ giá trả công nợ (AP)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">forex_realized</field>
+        <field name="sequence">243</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r24d_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r24d"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">partner_payable</field>
+        <field name="amount_selector">forex_diff</field>
+    </record>
+    <record id="vas_rule_tt133_r24d_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r24d"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">finance_income</field>
+        <field name="amount_selector">forex_diff</field>
+    </record>
+</odoo>

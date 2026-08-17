@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ==================================================================
+         TRỤC 2 — QUYẾT TOÁN TẠM ỨNG (workbook T04) + chi Paid By = Company
+
+         R19  (đã có, GIỮ NGUYÊN) chi tạm ứng : Nợ 141 / Có 111,112
+         R19c quyết toán CÓ tạm ứng gốc      : Nợ CP + Nợ 1331 / Có 141 + Có 334
+                                           (CHỈ payment_mode=own_account)
+         R19d quyết toán KHÔNG có tạm ứng gốc: Nợ CP + Nợ 1331 / Có 334
+                                           (CHỈ payment_mode=own_account)
+         R19g chi phí Paid By = Company      : Nợ CP + Nợ 1331 / Có 111·112
+                                           (payment_mode=company_account;
+                                            journal lấy từ phiếu chi Odoo gắn)
+         R19e thu hồi tiền thừa              : Nợ 111/112 / Có 141 (inbound)
+         R19f trả nợ người lao động          : Nợ 334 / Có 111,112
+           — nhãn tay employee_debt_payment HOẶC Register Payment
+             (không nhãn, gắn hr.expense own_account)
+
+         R19c / R19d / R19g cùng sự kiện `advance_settlement`, phân biệt bằng
+         `condition` trên payment_mode + vas_advance_payment_id. Ba domain rời
+         nhau nên mỗi hr.expense khớp đúng một rule.
+         ================================================================== -->
+
+    <record id="vas_rule_tt133_r19c" model="vas.rule">
+        <field name="code">R19c</field>
+        <field name="name">Quyết toán tạm ứng</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">advance_settlement</field>
+        <field name="condition">[("payment_mode", "=", "own_account"), ("vas_advance_payment_id", "!=", False)]</field>
+        <field name="sequence">70</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r19c_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r19c"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">product_expense</field>
+        <field name="amount_selector">untaxed</field>
+    </record>
+    <record id="vas_rule_tt133_r19c_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r19c"/>
+        <field name="sequence">20</field>
+        <field name="side">debit</field>
+        <field name="account_selector">tax_input</field>
+        <field name="amount_selector">tax</field>
+    </record>
+    <record id="vas_rule_tt133_r19c_l3" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r19c"/>
+        <field name="sequence">30</field>
+        <field name="side">credit</field>
+        <field name="account_selector">employee_advance</field>
+        <field name="amount_selector">advance_applied</field>
+    </record>
+    <!-- Chi không hết thì chân này = 0 và engine bỏ qua; chỉ chi vượt mới có. -->
+    <record id="vas_rule_tt133_r19c_l4" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r19c"/>
+        <field name="sequence">40</field>
+        <field name="side">credit</field>
+        <field name="account_selector">employee_payable</field>
+        <field name="amount_selector">advance_excess</field>
+    </record>
+
+    <record id="vas_rule_tt133_r19d" model="vas.rule">
+        <field name="code">R19d</field>
+        <field name="name">Chi phí nhân viên tự ứng</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">advance_settlement</field>
+        <field name="condition">[("payment_mode", "=", "own_account"), ("vas_advance_payment_id", "=", False)]</field>
+        <field name="sequence">72</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r19d_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r19d"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">product_expense</field>
+        <field name="amount_selector">untaxed</field>
+    </record>
+    <record id="vas_rule_tt133_r19d_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r19d"/>
+        <field name="sequence">20</field>
+        <field name="side">debit</field>
+        <field name="account_selector">tax_input</field>
+        <field name="amount_selector">tax</field>
+    </record>
+    <record id="vas_rule_tt133_r19d_l3" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r19d"/>
+        <field name="sequence">30</field>
+        <field name="side">credit</field>
+        <field name="account_selector">employee_payable</field>
+        <field name="amount_selector">total</field>
+    </record>
+
+    <!-- R19g: công ty tự chi (thẻ công ty). Giống R08 trả ngay, không đụng 141/334. -->
+    <record id="vas_rule_tt133_r19g" model="vas.rule">
+        <field name="code">R19g</field>
+        <field name="name">Chi phí công ty trả thẳng</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">advance_settlement</field>
+        <field name="condition">[("payment_mode", "=", "company_account")]</field>
+        <field name="sequence">73</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r19g_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r19g"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">product_expense</field>
+        <field name="amount_selector">untaxed</field>
+    </record>
+    <record id="vas_rule_tt133_r19g_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r19g"/>
+        <field name="sequence">20</field>
+        <field name="side">debit</field>
+        <field name="account_selector">tax_input</field>
+        <field name="amount_selector">tax</field>
+    </record>
+    <record id="vas_rule_tt133_r19g_l3" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r19g"/>
+        <field name="sequence">30</field>
+        <field name="side">credit</field>
+        <field name="account_selector">bank_cash</field>
+        <field name="amount_selector">total</field>
+    </record>
+
+    <!-- R19b (đã có) cũng ra Nợ 111/112 / Có 141 khi phiếu THU gắn nhãn
+         "Tạm ứng nhân viên". R19e không thay R19b mà thêm nhãn riêng cho đúng
+         nghiệp vụ: gắn "Tạm ứng nhân viên" lên một phiếu THU đọc rất ngược.
+         Hai rule không chồng lấn vì lọc theo hai nhãn khác nhau. -->
+    <record id="vas_rule_tt133_r19e" model="vas.rule">
+        <field name="code">R19e</field>
+        <field name="name">Thu hồi tạm ứng chi không hết</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">advance_refund</field>
+        <field name="condition">[("payment_type", "=", "inbound")]</field>
+        <field name="sequence">74</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r19e_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r19e"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">bank_cash</field>
+        <field name="amount_selector">paid</field>
+    </record>
+    <record id="vas_rule_tt133_r19e_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r19e"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">employee_advance</field>
+        <field name="amount_selector">paid</field>
+    </record>
+
+    <record id="vas_rule_tt133_r19f" model="vas.rule">
+        <field name="code">R19f</field>
+        <field name="name">Trả nợ người lao động</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">employee_debt_payment</field>
+        <field name="sequence">76</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r19f_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r19f"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">employee_payable</field>
+        <field name="amount_selector">paid</field>
+    </record>
+    <record id="vas_rule_tt133_r19f_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r19f"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">bank_cash</field>
+        <field name="amount_selector">paid</field>
+    </record>
+</odoo>

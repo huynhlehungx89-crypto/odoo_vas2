@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Phương pháp trên loại tờ -->
+    <record id="vas_gtgt_form_01" model="vas.gtgt.form.type">
+        <field name="tax_method">deduction</field>
+    </record>
+    <record id="vas_gtgt_form_03" model="vas.gtgt.form.type">
+        <field name="code">03/GTGT</field>
+        <field name="name">Tờ khai GTGT (trực tiếp trên GTGT — vàng bạc đá quý)</field>
+        <field name="tax_method">direct</field>
+    </record>
+    <record id="vas_gtgt_form_04" model="vas.gtgt.form.type">
+        <field name="code">04/GTGT</field>
+        <field name="name">Tờ khai GTGT (trực tiếp trên doanh thu)</field>
+        <field name="tax_method">direct</field>
+    </record>
+
+    <!-- Bốn nhóm ngành mẫu 04 + nhóm vàng mẫu 03 -->
+    <record id="vas_gtgt_ind_dist" model="vas.gtgt.direct.industry">
+        <field name="code">DIST</field>
+        <field name="name">Phân phối, cung cấp hàng hóa</field>
+        <field name="rate_percent">1</field>
+        <field name="sequence">10</field>
+        <field name="date_start">2026-07-01</field>
+        <field name="declaration_revenue_tag">22</field>
+    </record>
+    <record id="vas_gtgt_ind_svc" model="vas.gtgt.direct.industry">
+        <field name="code">SVC</field>
+        <field name="name">Dịch vụ, xây dựng không bao thầu NVL</field>
+        <field name="rate_percent">5</field>
+        <field name="sequence">20</field>
+        <field name="date_start">2026-07-01</field>
+        <field name="declaration_revenue_tag">24</field>
+    </record>
+    <record id="vas_gtgt_ind_mfg" model="vas.gtgt.direct.industry">
+        <field name="code">MFG</field>
+        <field name="name">Sản xuất, vận tải, dịch vụ gắn HH, XD bao thầu NVL</field>
+        <field name="rate_percent">3</field>
+        <field name="sequence">30</field>
+        <field name="date_start">2026-07-01</field>
+        <field name="declaration_revenue_tag">26</field>
+    </record>
+    <record id="vas_gtgt_ind_other" model="vas.gtgt.direct.industry">
+        <field name="code">OTHER</field>
+        <field name="name">Hoạt động kinh doanh khác</field>
+        <field name="rate_percent">2</field>
+        <field name="sequence">40</field>
+        <field name="date_start">2026-07-01</field>
+        <field name="declaration_revenue_tag">28</field>
+    </record>
+    <record id="vas_gtgt_ind_gold" model="vas.gtgt.direct.industry">
+        <field name="code">GOLD</field>
+        <field name="name">Mua bán, chế tác vàng bạc, đá quý</field>
+        <field name="rate_percent">10</field>
+        <field name="sequence">5</field>
+        <field name="date_start">2026-07-01</field>
+        <field name="is_gold">1</field>
+    </record>
+
+    <!-- Phiên bản mẫu 04 TT89 -->
+    <record id="vas_gtgt_version_04_tt89" model="vas.gtgt.form.version">
+        <field name="code">TT89</field>
+        <field name="name">Mẫu 04/GTGT theo Thông tư 89/2026/TT-BTC</field>
+        <field name="form_type_id" ref="vas_gtgt_form_04"/>
+        <field name="circular_label">Thông tư 89/2026/TT-BTC</field>
+        <field name="date_start">2026-07-01</field>
+    </record>
+    <!-- Phiên bản mẫu 03 TT89 -->
+    <record id="vas_gtgt_version_03_tt89" model="vas.gtgt.form.version">
+        <field name="code">TT89</field>
+        <field name="name">Mẫu 03/GTGT theo Thông tư 89/2026/TT-BTC</field>
+        <field name="form_type_id" ref="vas_gtgt_form_03"/>
+        <field name="circular_label">Thông tư 89/2026/TT-BTC</field>
+        <field name="date_start">2026-07-01</field>
+    </record>
+
+    <!-- Chỉ tiêu 04 -->
+    <record id="ind_04_21a" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_04_tt89"/>
+        <field name="code">21a</field>
+        <field name="name">Tổng doanh thu không chịu thuế</field>
+        <field name="sequence">210</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">manual</field>
+    </record>
+    <record id="ind_04_21b" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_04_tt89"/>
+        <field name="code">21b</field>
+        <field name="name">Tổng doanh thu chịu thuế suất 0%</field>
+        <field name="sequence">220</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">manual</field>
+    </record>
+    <record id="ind_04_22" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_04_tt89"/>
+        <field name="code">22</field>
+        <field name="name">DT phân phối, cung cấp hàng hóa</field>
+        <field name="sequence">230</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_direct_revenue</field>
+        <field name="ledger_tag">DIST</field>
+    </record>
+    <record id="ind_04_23" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_04_tt89"/>
+        <field name="code">23</field>
+        <field name="name">Thuế phân phối HH (DT × tỷ lệ dữ liệu)</field>
+        <field name="sequence">240</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">direct_industry_tax</field>
+        <field name="ledger_tag">DIST</field>
+    </record>
+    <record id="ind_04_24" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_04_tt89"/>
+        <field name="code">24</field>
+        <field name="name">DT dịch vụ, XD không bao thầu NVL</field>
+        <field name="sequence">250</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_direct_revenue</field>
+        <field name="ledger_tag">SVC</field>
+    </record>
+    <record id="ind_04_25" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_04_tt89"/>
+        <field name="code">25</field>
+        <field name="name">Thuế DV/XD không bao thầu</field>
+        <field name="sequence">260</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">direct_industry_tax</field>
+        <field name="ledger_tag">SVC</field>
+    </record>
+    <record id="ind_04_26" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_04_tt89"/>
+        <field name="code">26</field>
+        <field name="name">DT SX/vận tải/DV gắn HH, XD bao thầu</field>
+        <field name="sequence">270</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_direct_revenue</field>
+        <field name="ledger_tag">MFG</field>
+    </record>
+    <record id="ind_04_27" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_04_tt89"/>
+        <field name="code">27</field>
+        <field name="name">Thuế SX/vận tải/XD bao thầu</field>
+        <field name="sequence">280</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">direct_industry_tax</field>
+        <field name="ledger_tag">MFG</field>
+    </record>
+    <record id="ind_04_28" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_04_tt89"/>
+        <field name="code">28</field>
+        <field name="name">DT hoạt động kinh doanh khác</field>
+        <field name="sequence">290</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_direct_revenue</field>
+        <field name="ledger_tag">OTHER</field>
+    </record>
+    <record id="ind_04_29" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_04_tt89"/>
+        <field name="code">29</field>
+        <field name="name">Thuế KD khác</field>
+        <field name="sequence">300</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">direct_industry_tax</field>
+        <field name="ledger_tag">OTHER</field>
+    </record>
+    <record id="ind_04_30" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_04_tt89"/>
+        <field name="code">30</field>
+        <field name="name">Tổng DT chịu thuế theo tỷ lệ</field>
+        <field name="sequence">310</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">formula</field>
+        <field name="formula">[22]+[24]+[26]+[28]</field>
+    </record>
+    <record id="ind_04_31" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_04_tt89"/>
+        <field name="code">31</field>
+        <field name="name">Tổng thuế phải nộp theo tỷ lệ</field>
+        <field name="sequence">320</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">formula</field>
+        <field name="formula">[23]+[25]+[27]+[29]</field>
+    </record>
+    <record id="ind_04_30a" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_04_tt89"/>
+        <field name="code">30a</field>
+        <field name="name">Tổng DT chịu thuế (gồm 0%)</field>
+        <field name="sequence">330</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">formula</field>
+        <field name="formula">[21b]+[30]</field>
+    </record>
+    <record id="ind_04_32" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_04_tt89"/>
+        <field name="code">32</field>
+        <field name="name">Tổng doanh thu</field>
+        <field name="sequence">340</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">formula</field>
+        <field name="formula">[21a]+[30a]</field>
+    </record>
+
+    <!-- Chỉ tiêu 03 -->
+    <record id="ind_03_21" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_03_tt89"/>
+        <field name="code">21</field>
+        <field name="name">GTGT âm được kết chuyển kỳ trước</field>
+        <field name="sequence">210</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">carry_neg_gtgt</field>
+    </record>
+    <record id="ind_03_22" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_03_tt89"/>
+        <field name="code">22</field>
+        <field name="name">Giá thanh toán vàng bạc đá quý bán ra</field>
+        <field name="sequence">220</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_gold_revenue</field>
+    </record>
+    <record id="ind_03_23" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_03_tt89"/>
+        <field name="code">23</field>
+        <field name="name">Giá thanh toán vàng bạc đá quý mua vào</field>
+        <field name="sequence">230</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">ledger_gold_cost</field>
+    </record>
+    <record id="ind_03_24" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_03_tt89"/>
+        <field name="code">24</field>
+        <field name="name">Điều chỉnh tăng GTGT âm các kỳ trước</field>
+        <field name="sequence">240</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">manual</field>
+    </record>
+    <record id="ind_03_25" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_03_tt89"/>
+        <field name="code">25</field>
+        <field name="name">Điều chỉnh giảm GTGT âm các kỳ trước</field>
+        <field name="sequence">250</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">manual</field>
+    </record>
+    <record id="ind_03_26" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_03_tt89"/>
+        <field name="code">26</field>
+        <field name="name">GTGT chịu thuế trong kỳ</field>
+        <field name="sequence">260</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">formula</field>
+        <field name="formula">[22]-[23]-[21]-[24]+[25]</field>
+    </record>
+    <record id="ind_03_26a" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_03_tt89"/>
+        <field name="code">26a</field>
+        <field name="name">GTGT xuất khẩu</field>
+        <field name="sequence">270</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">manual</field>
+    </record>
+    <record id="ind_03_26b" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_03_tt89"/>
+        <field name="code">26b</field>
+        <field name="name">GTGT tiêu thụ nội địa</field>
+        <field name="sequence">280</field>
+        <field name="column_kind">value</field>
+        <field name="source_kind">formula</field>
+        <field name="formula">[26]-[26a]</field>
+    </record>
+    <record id="ind_03_27" model="vas.gtgt.indicator">
+        <field name="form_version_id" ref="vas_gtgt_version_03_tt89"/>
+        <field name="code">27</field>
+        <field name="name">Thuế GTGT phải nộp</field>
+        <field name="sequence">290</field>
+        <field name="column_kind">tax</field>
+        <field name="source_kind">formula</field>
+        <field name="formula">[26b]*0.1;max0</field>
+    </record>
+</odoo>

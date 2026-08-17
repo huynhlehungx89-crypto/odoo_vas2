@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- B03-DNN gián tiếp — docs/nguon/_w11_b03_design.md §1. Mã 40/50 CHỐT CONNECTA. -->
+
+    <record id="vas_report_line_b03_01" model="vas.report.line">
+        <field name="sequence">10</field>
+        <field name="code">01</field>
+        <field name="name">Lợi nhuận trước thuế</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_from_b02:50</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">B02 mã 50; 15581 tr.44</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_03" model="vas.report.line">
+        <field name="sequence">30</field>
+        <field name="code">03</field>
+        <field name="name">Khấu hao TSCĐ và BĐSĐT</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage2</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">15581 tr.44–45; cấu hình bóc tách = CHỐT CONNECTA</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_04" model="vas.report.line">
+        <field name="sequence">40</field>
+        <field name="code">04</field>
+        <field name="name">Các khoản dự phòng</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage2</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">15581 tr.45</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_05" model="vas.report.line">
+        <field name="sequence">50</field>
+        <field name="code">05</field>
+        <field name="name">Lãi, lỗ chênh lệch tỷ giá hối đoái do đánh giá lại các khoản mục tiền tệ có gốc ngoại tệ</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage2</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">15581 tr.45</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_06" model="vas.report.line">
+        <field name="sequence">60</field>
+        <field name="code">06</field>
+        <field name="name">Lãi, lỗ từ hoạt động đầu tư</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage2</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">15581 tr.45–46; phụ thuộc TL/NB TS W8/C4</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_07" model="vas.report.line">
+        <field name="sequence">70</field>
+        <field name="code">07</field>
+        <field name="name">Chi phí lãi vay</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage2</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">15581 tr.46</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_08" model="vas.report.line">
+        <field name="sequence">80</field>
+        <field name="code">08</field>
+        <field name="name">Các khoản điều chỉnh khác</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage2</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">Chỉ TK 356; 15581 tr.46</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_10" model="vas.report.line">
+        <field name="sequence">100</field>
+        <field name="code">10</field>
+        <field name="name">Tăng, giảm các khoản phải thu</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage2</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">Δ=open_dr−close_dr (tăng PT→âm); tách đối tác; 15581 tr.46–47</field>
+        <field name="warn_kind">none</field>
+        <field name="aggregate_by_partner" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_11" model="vas.report.line">
+        <field name="sequence">110</field>
+        <field name="code">11</field>
+        <field name="name">Tăng, giảm hàng tồn kho</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage2</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">Δ=open_dr−close_dr SD thuần TK (không tách ĐT); 15581 tr.47</field>
+        <field name="warn_kind">none</field>
+        <field name="aggregate_by_partner" eval="False"/>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_12" model="vas.report.line">
+        <field name="sequence">120</field>
+        <field name="code">12</field>
+        <field name="name">Tăng, giảm các khoản phải trả (Không kể lãi vay phải trả, thuế thu nhập doanh nghiệp phải nộp)</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage2</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">Δ=close_cr−open_cr; tách ĐT; gồm 335 trừ lãi vas.loan; 15581 tr.48</field>
+        <field name="warn_kind">none</field>
+        <field name="aggregate_by_partner" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_13" model="vas.report.line">
+        <field name="sequence">130</field>
+        <field name="code">13</field>
+        <field name="name">Tăng, giảm chi phí trả trước</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage2</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">Δ=open_dr−close_dr SD thuần 242 (không tách ĐT); 15581 tr.48</field>
+        <field name="warn_kind">none</field>
+        <field name="aggregate_by_partner" eval="False"/>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_14" model="vas.report.line">
+        <field name="sequence">140</field>
+        <field name="code">14</field>
+        <field name="name">Tăng, giảm chứng khoán kinh doanh</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage2</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">Δ=open_dr−close_dr SD thuần 121 (không tách ĐT); 15581 tr.48</field>
+        <field name="warn_kind">none</field>
+        <field name="aggregate_by_partner" eval="False"/>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_15" model="vas.report.line">
+        <field name="sequence">150</field>
+        <field name="code">15</field>
+        <field name="name">Tiền lãi vay đã trả</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage3</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">15581 tr.49</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_16" model="vas.report.line">
+        <field name="sequence">160</field>
+        <field name="code">16</field>
+        <field name="name">Thuế thu nhập doanh nghiệp đã nộp</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage3</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">15581 tr.49</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_17" model="vas.report.line">
+        <field name="sequence">170</field>
+        <field name="code">17</field>
+        <field name="name">Tiền thu khác từ hoạt động kinh doanh</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage3</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">15581 tr.49</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_18" model="vas.report.line">
+        <field name="sequence">180</field>
+        <field name="code">18</field>
+        <field name="name">Tiền chi khác cho hoạt động kinh doanh</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage3</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">15581 tr.50</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_21" model="vas.report.line">
+        <field name="sequence">200</field>
+        <field name="code">21</field>
+        <field name="name">Tiền chi để mua sắm, xây dựng TSCĐ, BĐSĐT và các tài sản dài hạn khác</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage3</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">15581 tr.50–51</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_22" model="vas.report.line">
+        <field name="sequence">210</field>
+        <field name="code">22</field>
+        <field name="name">Tiền thu từ thanh lý, nhượng bán TSCĐ, BĐSĐT và các tài sản dài hạn khác</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage3</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">15581 tr.51; phụ thuộc TL/NB TS W8/C4</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_23" model="vas.report.line">
+        <field name="sequence">220</field>
+        <field name="code">23</field>
+        <field name="name">Tiền chi cho vay, đầu tư góp vốn vào đơn vị khác</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage3</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">15581 tr.52</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_24" model="vas.report.line">
+        <field name="sequence">230</field>
+        <field name="code">24</field>
+        <field name="name">Tiền thu hồi cho vay, đầu tư góp vốn vào đơn vị khác</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage3</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">15581 tr.52</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_25" model="vas.report.line">
+        <field name="sequence">240</field>
+        <field name="code">25</field>
+        <field name="name">Tiền thu lãi cho vay, cổ tức và lợi nhuận được chia</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage3</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">15581 tr.52</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_31" model="vas.report.line">
+        <field name="sequence">260</field>
+        <field name="code">31</field>
+        <field name="name">Tiền thu từ phát hành cổ phiếu, nhận vốn góp của chủ sở hữu</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage3</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">15581 tr.53</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_32" model="vas.report.line">
+        <field name="sequence">270</field>
+        <field name="code">32</field>
+        <field name="name">Tiền trả lại vốn góp cho các chủ sở hữu, mua lại cổ phiếu của doanh nghiệp đã phát hành</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage3</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">15581 tr.53</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_33" model="vas.report.line">
+        <field name="sequence">280</field>
+        <field name="code">33</field>
+        <field name="name">Tiền thu từ đi vay</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage3</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">15581 tr.54</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_34" model="vas.report.line">
+        <field name="sequence">290</field>
+        <field name="code">34</field>
+        <field name="name">Tiền trả nợ gốc vay và nợ gốc thuê tài chính</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage3</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">15581 tr.54</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_35" model="vas.report.line">
+        <field name="sequence">300</field>
+        <field name="code">35</field>
+        <field name="name">Cổ tức, lợi nhuận đã trả cho chủ sở hữu</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage3</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">15581 tr.54</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_60" model="vas.report.line">
+        <field name="sequence">330</field>
+        <field name="code">60</field>
+        <field name="name">Tiền và tương đương tiền đầu kỳ</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_from_b01a:110:opening</field>
+        <field name="warn_kind">balance_on_codes</field>
+        <field name="warn_account_codes">1281,1288</field>
+        <field name="warn_message">1281/1288 còn SD — không tự xếp vào TĐT (C1 / B03 60–70).</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133_chot_connecta</field>
+        <field name="basis_note">B01a 110 đầu kỳ (C1); 15581 tr.39</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_61" model="vas.report.line">
+        <field name="sequence">340</field>
+        <field name="code">61</field>
+        <field name="name">Ảnh hưởng của thay đổi tỷ giá hối đoái quy đổi ngoại tệ</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_stage3</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">15581 tr.39</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_70" model="vas.report.line">
+        <field name="sequence">350</field>
+        <field name="code">70</field>
+        <field name="name">Tiền và tương đương tiền cuối kỳ</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">code_custom</field>
+        <field name="code_custom_key">b03_from_b01a:110:closing</field>
+        <field name="warn_kind">balance_on_codes</field>
+        <field name="warn_account_codes">1281,1288</field>
+        <field name="warn_message">1281/1288 còn SD — không tự xếp vào TĐT (C1 / B03 60–70).</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">Lưới L1 = B01a 110 cuối kỳ; mẫu 70=50+60+61; 15583 tr.8</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_02" model="vas.report.line">
+        <field name="sequence">20</field>
+        <field name="code">02</field>
+        <field name="name">Điều chỉnh cho các khoản</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">total</field>
+        <field name="amount_source">total</field>
+        <field name="child_line_ids" eval="[(6, 0, [ref('vas_report_line_b03_03'), ref('vas_report_line_b03_04'), ref('vas_report_line_b03_05'), ref('vas_report_line_b03_06'), ref('vas_report_line_b03_07'), ref('vas_report_line_b03_08')])]"/>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">02 = 03+…+08; 15581 tr.44</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_09" model="vas.report.line">
+        <field name="sequence">90</field>
+        <field name="code">09</field>
+        <field name="name">Lợi nhuận từ hoạt động kinh doanh trước thay đổi vốn lưu động</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">total</field>
+        <field name="amount_source">total</field>
+        <field name="child_line_ids" eval="[(6, 0, [ref('vas_report_line_b03_10'), ref('vas_report_line_b03_11'), ref('vas_report_line_b03_12'), ref('vas_report_line_b03_13'), ref('vas_report_line_b03_14'), ref('vas_report_line_b03_15'), ref('vas_report_line_b03_16'), ref('vas_report_line_b03_17'), ref('vas_report_line_b03_18')])]"/>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">Công thức in 09=10+…+18 (tên≠công thức; theo công thức vì mã 20); 15581 tr.46</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_20" model="vas.report.line">
+        <field name="sequence">190</field>
+        <field name="code">20</field>
+        <field name="name">Lưu chuyển tiền thuần từ hoạt động kinh doanh</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">total</field>
+        <field name="amount_source">total</field>
+        <field name="child_line_ids" eval="[(6, 0, [ref('vas_report_line_b03_01'), ref('vas_report_line_b03_02'), ref('vas_report_line_b03_09')])]"/>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">20=01+02+09; lưới 01+Σ03…08+Σ10…18; 15581 tr.50</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_30" model="vas.report.line">
+        <field name="sequence">250</field>
+        <field name="code">30</field>
+        <field name="name">Lưu chuyển tiền thuần từ hoạt động đầu tư</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">total</field>
+        <field name="amount_source">total</field>
+        <field name="child_line_ids" eval="[(6, 0, [ref('vas_report_line_b03_21'), ref('vas_report_line_b03_22'), ref('vas_report_line_b03_23'), ref('vas_report_line_b03_24'), ref('vas_report_line_b03_25')])]"/>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="basis_note">30=21+…+25; 15581 tr.53</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_40" model="vas.report.line">
+        <field name="sequence">310</field>
+        <field name="code">40</field>
+        <field name="name">Lưu chuyển tiền thuần từ hoạt động tài chính</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">total</field>
+        <field name="amount_source">total</field>
+        <field name="child_line_ids" eval="[(6, 0, [ref('vas_report_line_b03_31'), ref('vas_report_line_b03_32'), ref('vas_report_line_b03_33'), ref('vas_report_line_b03_34'), ref('vas_report_line_b03_35')])]"/>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133_chot_connecta</field>
+        <field name="basis_note">HD 40=31+…+35; mẫu in gián tiếp không có dòng — CHỐT CONNECTA seed</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b03_50" model="vas.report.line">
+        <field name="sequence">320</field>
+        <field name="code">50</field>
+        <field name="name">Lưu chuyển tiền thuần trong kỳ</field>
+        <field name="form_code">B03-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">total</field>
+        <field name="amount_source">total</field>
+        <field name="child_line_ids" eval="[(6, 0, [ref('vas_report_line_b03_20'), ref('vas_report_line_b03_30'), ref('vas_report_line_b03_40')])]"/>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">suy_ket_cau</field>
+        <field name="basis_note">CHỐT CONNECTA seed; mẫu in gián tiếp không có dòng; 50=20+30+40</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,337 @@
+===== PAGE 55 =====
+ 
+56 
+CÔNG BÁO/Số 1103 + 1104/Ngày 12-10-2016 
+  
+2.4.4.4. Tổng hợp các luồng tiền trong kỳ (Xem Mẫu số B03 - DNN) 
+- Lưu chuyển tiền thuần trong kỳ (Mã số 50) 
+Chỉ tiêu “Lưu chuyển tiền thuần trong kỳ” phản ánh chênh lệch giữa tổng số 
+tiền thu vào với tổng số tiền chi ra từ ba loại hoạt động: Hoạt động kinh doanh, 
+hoạt động đầu tư và hoạt động tài chính của doanh nghiệp trong kỳ báo cáo. Nếu 
+số liệu chỉ tiêu này là số âm thì ghi trong ngoặc đơn (...). 
+Mã số 50 = Mã số 20 + Mã số 30 + Mã số 40.  
+- Tiền và tương đương tiền đầu kỳ (Mã số 60) 
+Chỉ tiêu này được lập căn cứ vào số liệu chỉ tiêu “Tiền và tương đương tiền” 
+đầu kỳ báo cáo (Mã số 110, cột “Số đầu năm” trên Báo cáo tình hình tài chính). 
+- Ảnh hưởng của thay đổi tỷ giá hối đoái quy đổi ngoại tệ (Mã số 61) 
+Chỉ tiêu này được lập căn cứ vào tổng số chênh lệch tỷ giá hối đoái do đánh 
+giá lại số dư cuối kỳ của tiền và các khoản tương đương tiền bằng ngoại tệ (Mã số 110 
+của Báo cáo tình hình tài chính) tại thời điểm cuối kỳ báo cáo. 
+Số liệu để ghi vào chỉ tiêu này được lấy từ sổ kế toán các TK 111, 112, 128 và 
+các tài khoản liên quan (chi tiết các khoản thỏa mãn định nghĩa là tương đương 
+tiền), sau khi đối chiếu với sổ kế toán chi tiết TK 413 trong kỳ báo cáo. Chỉ tiêu 
+này được ghi bằng số dương nếu có lãi tỷ giá và được ghi bằng số âm dưới hình 
+thức ghi trong ngoặc đơn (...) nếu phát sinh lỗ tỷ giá. 
+- Tiền và tương đương tiền cuối kỳ (Mã số 70) 
+Chỉ tiêu này được lập căn cứ vào số liệu chỉ tiêu “Tiền và tương đương tiền” 
+cuối kỳ báo cáo (Mã số 110, cột “Số cuối năm” trên Báo cáo tình hình tài chính). 
+Chỉ tiêu này bằng số “Tổng cộng” của các chỉ tiêu Mã số 50, 60 và 61 và bằng 
+chỉ tiêu Mã số 110 cột “Số cuối năm” trên Báo cáo tình hình tài chính kỳ đó.  
+Mã số 70 = Mã số 50 + Mã số 60 + Mã số 61. 
+2.5. Phương pháp lập và trình bày Thuyết minh BCTC (Xem Mẫu số 
+B09 - DNN) 
+2.5.1. Mục đích của Bản thuyết minh Báo cáo tài chính 
+a) Bản thuyết minh Báo cáo tài chính là một bộ phận hợp thành không thể tách 
+rời của Báo cáo tài chính doanh nghiệp dùng để mô tả mang tính tường thuật hoặc 
+phân tích chi tiết các thông tin số liệu đã được trình bày trong Báo cáo tình hình tài 
+chính, Báo cáo kết quả hoạt động kinh doanh, Báo cáo lưu chuyển tiền tệ cũng như 
+các thông tin cần thiết khác;  
+b) Bản thuyết minh Báo cáo tài chính cũng có thể trình bày những thông tin 
+khác nếu doanh nghiệp xét thấy cần thiết cho việc trình bày trung thực, hợp lý Báo 
+cáo tài chính. 
+
+===== PAGE 56 =====
+ 
+ 
+CÔNG BÁO/Số 1103 + 1104/Ngày 12-10-2016 
+57 
+ 
+2.5.2. Nguyên tắc lập và trình bày Bản thuyết minh Báo cáo tài chính  
+a) Khi lập Báo cáo tài chính, doanh nghiệp phải lập Bản thuyết minh Báo cáo 
+tài chính theo hướng dẫn tại Thông tư này; 
+b) Bản thuyết minh Báo cáo tài chính của doanh nghiệp phải trình bày những 
+nội dung dưới đây: 
+- Các thông tin về cơ sở lập và trình bày Báo cáo tài chính và các chính sách kế 
+toán cụ thể được chọn và áp dụng đối với các giao dịch và các sự kiện quan trọng; 
+- Cung cấp thông tin bổ sung chưa được trình bày trong các Báo cáo tài chính 
+khác, nhưng lại cần thiết cho việc trình bày trung thực và hợp lý tình hình tài 
+chính, kết quả kinh doanh của doanh nghiệp. 
+c) Bản thuyết minh Báo cáo tài chính phải được trình bày một cách có hệ 
+thống. Doanh nghiệp được chủ động sắp xếp số thứ tự trong thuyết minh Báo cáo 
+tài chính theo cách thức phù hợp nhất với đặc thù của mình theo nguyên tắc mỗi 
+khoản mục trong Báo cáo tình hình tài chính, Báo cáo kết quả hoạt động kinh 
+doanh và Báo cáo lưu chuyển tiền tệ cần được đánh dấu dẫn tới các thông tin liên 
+quan trong Bản thuyết minh Báo cáo tài chính.  
+2.5.3. Cơ sở lập Bản thuyết minh Báo cáo tài chính 
+- Căn cứ vào Báo cáo tình hình tài chính, Báo cáo kết quả hoạt động kinh 
+doanh, Báo cáo lưu chuyển tiền tệ kỳ báo cáo; 
+- Căn cứ vào sổ kế toán tổng hợp; Sổ, thẻ kế toán chi tiết hoặc bảng tổng hợp 
+chi tiết có liên quan; 
+- Căn cứ vào Bản thuyết minh Báo cáo tài chính kỳ trước; 
+- Căn cứ vào tình hình thực tế của doanh nghiệp và các tài liệu liên quan. 
+2.5.4. Nội dung và phương pháp lập các chỉ tiêu 
+2.5.4.1. Đặc điểm hoạt động của doanh nghiệp 
+Trong phần này doanh nghiệp cần nêu rõ: 
+a) Hình thức sở hữu vốn: Công ty cổ phần, công ty trách nhiệm hữu hạn, công 
+ty hợp danh hay doanh nghiệp tư nhân;  
+b) Lĩnh vực kinh doanh: Nêu rõ là sản xuất công nghiệp, kinh doanh thương 
+mại, dịch vụ, xây lắp hoặc tổng hợp nhiều lĩnh vực kinh doanh; 
+c) Ngành nghề kinh doanh: Nêu rõ hoạt động kinh doanh chính và đặc điểm 
+sản phẩm sản xuất hoặc dịch vụ cung cấp của doanh nghiệp;  
+d) Chu kỳ sản xuất, kinh doanh thông thường: Trường hợp chu kỳ kéo dài hơn 
+12 tháng thì thuyết minh thêm chu kỳ sản xuất kinh doanh bình quân của ngành, 
+lĩnh vực; 
+
+===== PAGE 57 =====
+ 
+58 
+CÔNG BÁO/Số 1103 + 1104/Ngày 12-10-2016 
+  
+đ) Đặc điểm hoạt động của doanh nghiệp trong năm tài chính có ảnh hưởng 
+đến Báo cáo tài chính: Nêu rõ những sự kiện về môi trường pháp lý, diễn biến thị 
+trường, đặc điểm hoạt động kinh doanh, quản lý, tài chính, các sự kiện sáp nhập, chia, 
+tách, thay đổi quy mô... có ảnh hưởng đến Báo cáo tài chính của doanh nghiệp. 
+2.5.4.2. Kỳ kế toán, đơn vị tiền tệ sử dụng trong kế toán 
+a) Kỳ kế toán năm ghi rõ kỳ kế toán năm theo năm dương lịch bắt đầu từ 
+ngày 01/01/... đến 31/12/... Nếu doanh nghiệp có năm tài chính khác với năm 
+dương lịch thì ghi rõ ngày bắt đầu và ngày kết thúc kỳ kế toán năm; 
+b) Đơn vị tiền tệ sử dụng trong kế toán: ghi rõ là Đồng Việt Nam hoặc một 
+đơn vị tiền tệ kế toán được lựa chọn theo quy định của Luật Kế toán. 
+2.5.4.3. Chuẩn mực kế toán và Chế độ kế toán áp dụng 
+Tuyên bố về việc tuân thủ Chuẩn mực kế toán và Chế độ kế toán: Nêu rõ Báo 
+cáo tài chính có được lập và trình bày phù hợp và có tuân thủ Chuẩn mực kế toán 
+và Chế độ kế toán doanh nghiệp nhỏ và vừa hay không?  
+2.5.4.4. Các chính sách kế toán áp dụng  
+(1) Tỷ giá hối đoái áp dụng trong kế toán: 
+- Ngân hàng thương mại nơi doanh nghiệp thường xuyên có giao dịch 
+- Cách xác định tỷ giá giao dịch thực tế áp dụng đối với các giao dịch phát sinh 
+trong kỳ và tỷ giá áp dụng khi đánh giá lại các khoản mục tiền tệ có gốc ngoại tệ 
+cuối kỳ.  
+(2) Nguyên tắc chuyển đổi báo cáo tài chính được lập bằng ngoại tệ sang Đồng 
+Việt Nam. 
+(3) Nguyên tắc ghi nhận các khoản tiền và các khoản tương đương tiền: Nêu rõ 
+các khoản tương đương tiền được xác định trên cơ sở nào. 
+(4) Nguyên tắc kế toán các khoản đầu tư tài chính 
+a) Đối với chứng khoán kinh doanh:  
+- Thời điểm ghi nhận (đối với chứng khoán niêm yết thuyết minh rõ là T+0 
+hay thời điểm khác) 
+- Giá trị ghi sổ được xác định là giá trị hợp lý hoặc giá gốc; 
+- Căn cứ trích lập dự phòng giảm giá chứng khoán kinh doanh.  
+b) Đối với các khoản cho vay: 
+- Có đánh giá lại các khoản cho vay thỏa mãn định nghĩa các khoản mục tiền tệ 
+có gốc ngoại tệ không? 
+- Căn cứ lập dự phòng phải thu khó đòi đối với các khoản cho vay.  
+
+===== PAGE 58 =====
+ 
+ 
+CÔNG BÁO/Số 1103 + 1104/Ngày 12-10-2016 
+59 
+ 
+c) Đối với các khoản đầu tư vào công ty liên doanh, liên kết (dựa vào tỷ lệ biểu 
+quyết hoặc thỏa thuận khác): 
+- Đối với các công ty liên doanh, liên kết được mua trong kỳ, thời điểm ghi 
+nhận ban đầu là thời điểm nào?  
+- Nguyên tắc xác định công ty liên doanh, liên kết (dựa theo tỷ lệ quyền biểu 
+quyết, tỷ lệ vốn góp hay tỷ lệ lợi ích); 
+- Căn cứ lập dự phòng tổn thất đầu tư vào công ty liên doanh, liên kết; căn cứ 
+để xác định tổn thất; 
+d) Đối với các khoản đầu tư vào công cụ vốn của đơn vị khác: 
+- Giá trị ghi sổ của khoản đầu tư vào đơn vị khác được xác định theo giá gốc 
+hay phương pháp khác?  
+- Căn cứ lập dự phòng tổn thất đầu tư vào đơn vị khác; Báo cáo tài chính để 
+xác định tổn thất. 
+đ) Các phương pháp kế toán đối với các giao dịch khác liên quan đến đầu tư 
+tài chính: 
+- Giao dịch hoán đổi cổ phiếu; 
+- Giao dịch đầu tư dưới hình thức góp vốn; 
+- Giao dịch dưới hình thức mua lại phần vốn góp; 
+- Phương pháp kế toán đối với khoản cổ tức được chia bằng cổ phiếu; 
+(4) Nguyên tắc kế toán nợ phải thu 
+- Tiêu chí phân loại các khoản nợ phải thu (phải thu khách hàng, phải thu nội 
+bộ, phải thu khác)? 
+- Có được theo dõi chi tiết theo kỳ hạn gốc, kỳ hạn còn lại tại thời điểm báo 
+cáo, theo nguyên tệ và theo từng đối tượng không? 
+- Có đánh giá lại các khoản nợ phải thu thỏa mãn định nghĩa của các khoản 
+mục tiền tệ có gốc ngoại tệ không?  
+- Phương pháp lập dự phòng phải thu khó đòi. 
+(5) Nguyên tắc ghi nhận hàng tồn kho 
+- Nguyên tắc ghi nhận hàng tồn kho: Nêu rõ hàng tồn kho được ghi nhận theo 
+giá gốc hoặc theo giá trị thuần có thể thực hiện được. 
+- Phương pháp tính giá trị hàng tồn kho: Nêu rõ áp dụng phương pháp nào 
+(Bình quân gia quyền; nhập trước, xuất trước; giá thực tế đích danh hay phương 
+pháp giá bán lẻ). 
+- Phương pháp hạch toán hàng tồn kho: Nêu rõ áp dụng phương pháp kê khai 
+thường xuyên hay phương pháp kiểm kê định kỳ. 
+
+===== PAGE 59 =====
+ 
+60 
+CÔNG BÁO/Số 1103 + 1104/Ngày 12-10-2016 
+  
+- Phương pháp lập dự phòng giảm giá hàng tồn kho (Nêu rõ doanh nghiệp lập 
+dự phòng giảm giá hàng tồn kho trên cơ sở chênh lệch lớn hơn của giá gốc và giá 
+trị thuần có thể thực hiện được của hàng tồn kho. Phương pháp lập dự phòng giảm 
+giá hàng tồn kho là lập theo số chênh lệch giữa số dự phòng phải lập năm nay với 
+số dự phòng đã lập năm trước chưa sử dụng hết dẫn đến năm nay phải lập thêm 
+hay hoàn nhập). 
+(6) Nguyên tắc kế toán và khấu hao TSCĐ, TSCĐ thuê tài chính, Bất động sản 
+đầu tư 
+a) Nguyên tắc kế toán TSCĐ hữu hình, TSCĐ vô hình:  
+- Nguyên tắc kế toán các khoản chi phí phát sinh sau ghi nhận ban đầu (chi phí 
+nâng cấp, cải tạo, duy tu, sửa chữa) được ghi nhận vào nguyên giá hay chi phí sản 
+xuất, kinh doanh; 
+- Nêu rõ các phương pháp khấu hao TSCĐ;  
+- Các quy định khác về quản lý, sử dụng, khấu hao TSCĐ có được tuân thủ không? 
+b) Nguyên tắc kế toán TSCĐ thuê tài chính:  
+- Nêu rõ nguyên giá được xác định như thế nào;  
+- Nêu rõ các phương pháp khấu hao TSCĐ thuê tài chính. 
+c) Nguyên tắc kế toán Bất động sản đầu tư. 
+- Nguyên giá BĐSĐT được ghi nhận theo phương pháp nào? 
+- Nêu rõ các phương pháp khấu hao BĐSĐT. 
+(7) Nguyên tắc kế toán nợ phải trả 
+- Phân loại nợ phải trả như thế nào? 
+- Có theo dõi nợ phải trả theo từng đối tượng, kỳ hạn gốc, kỳ hạn còn lại tại 
+thời điểm báo cáo, theo nguyên tệ không? 
+- Có đánh giá lại các khoản nợ phải trả thỏa mãn định nghĩa các khoản mục 
+tiền tệ có gốc ngoại tệ không? 
+- Có lập dự phòng nợ phải trả không? 
+(8) Nguyên tắc ghi nhận và vốn hóa các khoản chi phí đi vay: 
+- Nguyên tắc ghi nhận chi phí đi vay: Nêu rõ chi phí đi vay được ghi nhận vào 
+chi phí tài chính trong kỳ khi phát sinh hay được vốn hóa. 
+- Tỷ lệ vốn hóa được sử dụng để xác định chi phí đi vay được vốn hóa trong 
+kỳ: Nêu rõ tỷ lệ vốn hóa này là bao nhiêu? 
+ (9) Nguyên tắc ghi nhận vốn chủ sở hữu: 
+- Vốn góp của chủ sở hữu có được ghi nhận theo số vốn thực góp không; 
+Thặng dư vốn cổ phần được ghi nhận như thế nào? 
+ - Lợi nhuận chưa phân phối được xác định như thế nào?  
+
+===== PAGE 60 =====
+ 
+ 
+CÔNG BÁO/Số 1103 + 1104/Ngày 12-10-2016 
+61 
+ 
+(10) Nguyên tắc và phương pháp ghi nhận doanh thu, thu nhập khác: 
+- Doanh thu bán hàng và cung cấp dịch vụ: Có tuân thủ đầy đủ các điều kiện 
+ghi nhận doanh thu hay không?  
+- Doanh thu hợp đồng xây dựng 
+- Các nguyên tắc ghi nhận doanh thu hoạt động tài chính.  
+- Các nguyên tắc ghi nhận thu nhập khác. 
+(11) Nguyên tắc kế toán chi phí: 
+- Giá vốn hàng bán (có đảm bảo nguyên tắc phù hợp với doanh thu không; Có 
+đảm bảo nguyên tắc thận trọng, ghi nhận ngay các chi phí vượt trên mức bình 
+thường của hàng tồn kho không; Các khoản ghi giảm giá vốn hàng bán là gì...) 
+- Chi phí tài chính: Có ghi nhận đầy đủ chi phí lãi vay (kể cả số trích trước) 
+của kỳ báo cáo không? 
+- Chi phí quản lý kinh doanh: Có ghi nhận đầy đủ chi phí bán hàng và chi phí 
+quản lý doanh nghiệp phát sinh trong kỳ không; Các khoản điều chỉnh giảm chi phí 
+bán hàng và chi phí quản lý doanh nghiệp là gì.... 
+ 2.5.5. Thông tin bổ sung cho các khoản mục trình bày trong Báo cáo tình 
+hình tài chính: 
+- Trong phần này, doanh nghiệp phải trình bày và phân tích chi tiết các số 
+liệu đã được trình bày trong Báo cáo tình hình tài chính để giúp người sử dụng 
+Báo cáo tài chính hiểu rõ hơn nội dung các khoản mục tài sản, nợ phải trả và vốn 
+chủ sở hữu. 
+- Đơn vị tính giá trị trình bày trong phần “Thông tin bổ sung cho các khoản 
+mục trình bày trong Báo cáo tình hình tài chính” là đơn vị tính được sử dụng trong 
+Báo cáo tình hình tài chính. Số liệu ghi vào cột “Số đầu năm” được lấy từ cột “Số 
+cuối năm” trong Bản thuyết minh Báo cáo tài chính năm trước. Số liệu ghi vào cột 
+“Số cuối năm” được lập trên cơ sở số liệu lấy từ: 
++ Báo cáo tình hình tài chính năm nay; 
++ Sổ kế toán tổng hợp; 
++ Sổ và thẻ kế toán chi tiết hoặc Bảng tổng hợp chi tiết có liên quan. 
+- Trường hợp doanh nghiệp có áp dụng hồi tố do thay đổi chính sách kế toán 
+hoặc điều chỉnh hồi tố sai sót trọng yếu của các năm trước thì phải điều chỉnh số 
+liệu so sánh (số liệu ở cột “Số đầu năm”) để đảm bảo nguyên tắc có thể so sánh 
+được và phải giải trình rõ điều này trong thuyết minh báo cáo tài chính. Trường 
+hợp vì lý do nào đó dẫn đến số liệu ở cột “Số đầu năm” không có khả năng so sánh 
+được với số liệu ở cột “Số cuối năm” thì điều này phải được nêu rõ trong Bản 
+thuyết minh Báo cáo tài chính. 
+- Đối với các khoản mục yêu cầu thuyết minh theo giá trị hợp lý, trường hợp 
+không xác định được giá trị hợp lý thì phải ghi rõ lý do. 
+
+===== PAGE 61 =====
+ 
+62 
+CÔNG BÁO/Số 1103 + 1104/Ngày 12-10-2016 
+  
+2.5.6. Thông tin bổ sung cho các khoản mục trình bày trong Báo cáo kết quả 
+hoạt động kinh doanh: 
+- Trong phần này, doanh nghiệp phải trình bày và phân tích chi tiết các số 
+liệu đã được thể hiện trong Báo cáo kết quả hoạt động kinh doanh để giúp người 
+sử dụng Báo cáo tài chính hiểu rõ hơn nội dung của các khoản mục doanh thu, 
+chi phí. 
+- Đơn vị tính giá trị trình bày trong phần “Thông tin bổ sung cho các khoản 
+mục trình bày trong Báo cáo kết quả hoạt động kinh doanh” là đơn vị tính được sử 
+dụng trong Báo cáo kết quả hoạt động kinh doanh. Số liệu ghi vào cột “Năm 
+trước” được lấy từ Bản thuyết minh Báo cáo tài chính năm trước. Số liệu ghi vào 
+cột “Năm nay” được lập trên cơ sở số liệu lấy từ: 
++ Báo cáo kết quả hoạt động kinh doanh năm nay; 
++ Sổ kế toán tổng hợp; 
++ Sổ và thẻ kế toán chi tiết hoặc Bảng tổng hợp chi tiết có liên quan. 
+- Doanh nghiệp được chủ động đánh số thứ tự của thông tin chi tiết được trình 
+bày trong phần này theo nguyên tắc phù hợp với số dẫn từ Báo cáo kết quả hoạt 
+động kinh doanh và đảm bảo dễ đối chiếu và có thể so sánh giữa các kỳ. 
+- Trường hợp vì lý do nào đó dẫn đến số liệu ở cột “Năm nay” không có khả 
+năng so sánh được với số liệu ở cột “Năm trước” thì điều này phải được nêu rõ 
+trong Bản thuyết minh Báo cáo tài chính. 
+2.5.7. Thông tin bổ sung cho Báo cáo lưu chuyển tiền tệ 
+- Trong phần này, doanh nghiệp phải trình bày và phân tích các số liệu đã được 
+thể hiện trong Báo cáo lưu chuyển tiền tệ để giúp người sử dụng hiểu rõ hơn về các 
+yếu tố ảnh hưởng đến lưu chuyển tiền trong kỳ của doanh nghiệp. 
+- Đơn vị tính giá trị trình bày trong phần “Thông tin bổ sung cho các khoản 
+mục trình bày trong Báo cáo lưu chuyển tiền tệ” là đơn vị tính được sử dụng trong 
+Báo cáo lưu chuyển tiền tệ. Số liệu ghi vào cột “Năm trước” được lấy từ Bản 
+thuyết minh Báo cáo tài chính năm trước; Số liệu ghi vào cột “Năm nay” được lập 
+trên cơ sở số liệu lấy từ: 
++ Báo cáo lưu chuyển tiền tệ năm nay; 
++ Sổ kế toán tổng hợp; 
++ Sổ và thẻ kế toán chi tiết hoặc Bảng tổng hợp chi tiết có liên quan. 
+2.5.8. Những thông tin khác 
+Trong phần này, doanh nghiệp phải trình bày những thông tin quan trọng khác 
+(nếu có) ngoài những thông tin đã trình bày trên nhằm cung cấp thêm thông tin 
+khác nếu xét thấy cần thiết giúp cho người sử dụng hiểu Báo cáo tài chính của 
+doanh nghiệp đã được trình bày trung thực, hợp lý. 
+
+===== PAGE 62 =====
+ 
+ 
+CÔNG BÁO/Số 1103 + 1104/Ngày 12-10-2016 
+63 
+ 
+MỤC 3 
+NỘI DUNG VÀ PHƯƠNG PHÁP LẬP BÁO CÁO TÀI CHÍNH  
+CỦA DOANH NGHIỆP SIÊU NHỎ 
+ 
+Các doanh nghiệp siêu nhỏ căn cứ vào biểu mẫu báo cáo tài chính năm quy 
+định tại Phụ lục 2 ban hành kèm theo Thông tư này và các nguyên tắc chung để 
+thực hiện việc lập và trình bày báo cáo tài chính tại đơn vị.  
+Điều 82. Nội dung và phương pháp lập báo cáo tài chính của doanh nghiệp 
+siêu nhỏ 
+1. Nội dung và phương pháp lập các chỉ tiêu của Báo cáo tình hình tài chính 
+(Mẫu số B01 - DNSN) 
+1.1. Tài sản 
+- Tiền và các khoản tương đương tiền (Mã số 110) 
+Chỉ tiêu này phản ánh toàn bộ tiền mặt tại quỹ, tiền gửi ngân hàng không kỳ 
+hạn và các khoản tương đương tiền hiện có của doanh nghiệp tại thời điểm báo cáo. 
+Số liệu để ghi vào chỉ tiêu này là tổng số dư Nợ của các TK 111, 112, số dư 
+Nợ chi tiết của TK 1281 (chi tiết các khoản tiền gửi có kỳ hạn gốc không quá 3 tháng) 
+và TK 1288 (chi tiết các khoản đủ tiêu chuẩn phân loại là tương đương tiền).  
+Các khoản tương đương tiền có thể bao gồm: Kỳ phiếu ngân hàng, tín phiếu 
+kho bạc, tiền gửi ngân hàng có kỳ hạn gốc không quá 3 tháng... 
+Các khoản trước đây được phân loại là tương đương tiền nhưng quá hạn chưa 
+thu hồi được phải chuyển sang trình bày tại các chỉ tiêu khác, phù hợp với nội 
+dung của từng khoản mục. 
+- Các khoản đầu tư (Mã số 120) 
+Là chỉ tiêu tổng hợp phản ánh tổng giá trị của các khoản đầu tư tài chính (sau 
+khi đã trừ đi các khoản dự phòng cho các khoản đầu tư tài chính), bao gồm: Chứng 
+khoán kinh doanh, các khoản đầu tư nắm giữ đến ngày đáo hạn và các khoản đầu 
+tư góp vốn vào đơn vị khác.  
+Các khoản đầu tư tài chính được phản ánh trong chỉ tiêu này không bao gồm 
+các khoản đầu tư đã được trình bày trong chỉ tiêu “Tiền và các khoản tương đương 
+tiền” (Mã số 110) và các khoản phải thu về cho vay đã được trình bày trong chỉ 
+tiêu “Các khoản phải thu” (Mã số 130).  
+Số liệu để ghi vào chỉ tiêu này là số dư Nợ của các TK 121, 228 và TK 128 
+(sau khi đã trừ đi các khoản đầu tư tài chính đã được phân loại là tương đương tiền 
+và các khoản phải thu về cho vay) trừ đi số dư Có các TK 2291, 2292. 

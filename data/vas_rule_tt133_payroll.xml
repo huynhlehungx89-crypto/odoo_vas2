@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- W9 R38–R42 — metadata/UI; sync hand-built từ payslip.line CODE. -->
+    <record id="vas_rule_tt133_r38" model="vas.rule">
+        <field name="code">R38</field>
+        <field name="name">Trích lương (GROSS → CP/334)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">payroll_accrue</field>
+        <field name="sequence">380</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r38_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r38"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">product_expense</field>
+        <field name="amount_selector">total</field>
+    </record>
+    <record id="vas_rule_tt133_r38_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r38"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">employee_payable</field>
+        <field name="amount_selector">total</field>
+    </record>
+
+    <record id="vas_rule_tt133_r39" model="vas.rule">
+        <field name="code">R39</field>
+        <field name="name">Khấu trừ BH/TNCN từ 334</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">payroll_deduct</field>
+        <field name="sequence">381</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r39_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r39"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">employee_payable</field>
+        <field name="amount_selector">total</field>
+    </record>
+    <record id="vas_rule_tt133_r39_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r39"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">fixed</field>
+        <field name="account_id" ref="vas_account_tt133_3383"/>
+        <field name="amount_selector">total</field>
+    </record>
+
+    <record id="vas_rule_tt133_r40" model="vas.rule">
+        <field name="code">R40</field>
+        <field name="name">BH/KPCĐ phần DN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">payroll_employer</field>
+        <field name="sequence">382</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r40_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r40"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">product_expense</field>
+        <field name="amount_selector">total</field>
+    </record>
+    <record id="vas_rule_tt133_r40_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r40"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">fixed</field>
+        <field name="account_id" ref="vas_account_tt133_3383"/>
+        <field name="amount_selector">total</field>
+    </record>
+
+    <record id="vas_rule_tt133_r41" model="vas.rule">
+        <field name="code">R41</field>
+        <field name="name">Trả lương (334/tiền)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">payroll_pay</field>
+        <field name="sequence">383</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r41_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r41"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">employee_payable</field>
+        <field name="amount_selector">paid</field>
+    </record>
+    <record id="vas_rule_tt133_r41_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r41"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">bank_cash</field>
+        <field name="amount_selector">paid</field>
+    </record>
+
+    <record id="vas_rule_tt133_r42" model="vas.rule">
+        <field name="code">R42</field>
+        <field name="name">Nộp BH / TNCN lương</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">payroll_remit</field>
+        <field name="sequence">384</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r42_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r42"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">fixed</field>
+        <field name="account_id" ref="vas_account_tt133_3383"/>
+        <field name="amount_selector">paid</field>
+    </record>
+    <record id="vas_rule_tt133_r42_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r42"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">bank_cash</field>
+        <field name="amount_selector">paid</field>
+    </record>
+</odoo>

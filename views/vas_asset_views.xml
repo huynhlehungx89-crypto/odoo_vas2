@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vas_asset_tree" model="ir.ui.view">
+        <field name="name">vas.asset.list</field>
+        <field name="model">vas.asset</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="asset_type"/>
+                <field name="method"/>
+                <field name="original_value"/>
+                <field name="date_start"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_asset_form" model="ir.ui.view">
+        <field name="name">vas.asset.form</field>
+        <field name="model">vas.asset</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_confirm" type="object" string="Xác nhận / Sinh lịch"
+                            invisible="state != 'draft'" class="btn-primary"/>
+                    <button name="action_recompute_schedule" type="object" string="Tính lại lịch"
+                            invisible="state not in ('running', 'paused')"/>
+                    <button name="action_generate_period_entries" type="object"
+                            string="Sinh bút toán các kỳ mở"
+                            invisible="state != 'running'"/>
+                    <button name="action_sync_odoo_master" type="object"
+                            string="Đồng bộ master Odoo"
+                            invisible="not account_asset_available or not odoo_asset_id"/>
+                    <button name="action_cancel" type="object" string="Hủy thẻ"
+                            invisible="state in ('cancelled', 'closed')"
+                            confirm="Hủy thẻ: bỏ qua dòng planned, đảo JE kỳ mở?"/>
+                    <field name="state" widget="statusbar"
+                            statusbar_visible="draft,running,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Tên tài sản / khoản phân bổ"/></h1>
+                        <h3><field name="code" placeholder="Mã"/></h3>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="asset_type"/>
+                            <field name="asset_kind" invisible="asset_type != 'prepaid'"/>
+                            <field name="is_welfare" invisible="asset_type != 'tscd'"/>
+                            <field name="asset_group_id"/>
+                            <field name="method"/>
+                            <field name="prorata"/>
+                            <field name="date_start"/>
+                            <field name="useful_life_years"/>
+                            <field name="duration_months"/>
+                            <field name="units_total" invisible="method != 'units'"/>
+                        </group>
+                        <group>
+                            <field name="original_value"/>
+                            <field name="salvage_value"/>
+                            <field name="currency_id"/>
+                            <field name="account_gross_id"/>
+                            <field name="account_accum_id"/>
+                            <field name="account_expense_id"/>
+                            <field name="cost_item_id"
+                                     domain="[('is_aggregate_node', '=', False), ('code', '!=', 'CPD')]"/>
+                            <field name="journal_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="regime_id"/>
+                            <field name="account_asset_available" invisible="1"/>
+                            <field name="source_mode"/>
+                            <field name="odoo_asset_id"
+                                     invisible="not account_asset_available"
+                                     readonly="source_mode != 'odoo_asset'"/>
+                            <field name="value_depreciated"/>
+                            <field name="value_residual"/>
+                        </group>
+                    </group>
+                    <group string="Cảnh báo" invisible="not warning_note">
+                        <field name="warning_note" nolabel="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Lịch">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="sequence"/>
+                                    <field name="period_id"/>
+                                    <field name="date_from"/>
+                                    <field name="date_to"/>
+                                    <field name="days"/>
+                                    <field name="amount"/>
+                                    <field name="accumulated"/>
+                                    <field name="remaining"/>
+                                    <field name="units_qty"/>
+                                    <field name="state"/>
+                                    <field name="is_last"/>
+                                    <field name="move_id"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_asset" model="ir.actions.act_window">
+        <field name="name">Tài sản / Phân bổ</field>
+        <field name="res_model">vas.asset</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_vas_generate_asset_entries" model="ir.actions.server">
+        <field name="name">Sinh khấu hao &amp; phân bổ kỳ</field>
+        <field name="model_id" ref="model_vas_period"/>
+        <field name="binding_model_id" ref="model_vas_period"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+for period in records:
+    company = period.fiscalyear_id.company_id
+    env['vas.asset'].generate_asset_entries(company, period)
+]]></field>
+    </record>
+
+    <menuitem id="menu_vas_asset"
+              name="Tài sản / Phân bổ"
+              parent="menu_vas_ops"
+              action="action_vas_ops_workflow_asset"
+              sequence="50"/>
+</odoo>

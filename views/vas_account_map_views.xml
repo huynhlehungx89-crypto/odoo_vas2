@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ========== vas.account.map ========== -->
+    <record id="view_vas_account_map_list" model="ir.ui.view">
+        <field name="name">vas.account.map.list</field>
+        <field name="model">vas.account.map</field>
+        <field name="arch" type="xml">
+            <list string="Ánh xạ tài khoản" editable="bottom">
+                <field name="regime_id"/>
+                <field name="apply_to"/>
+                <field name="category_id" readonly="apply_to != 'category'"/>
+                <field name="product_id" readonly="apply_to != 'product'"/>
+                <field name="stock_account_id" domain="[('regime_id', '=', regime_id)]"/>
+                <field name="revenue_account_id" domain="[('regime_id', '=', regime_id)]"/>
+                <field name="cogs_account_id" domain="[('regime_id', '=', regime_id)]"/>
+                <field name="expense_account_id" domain="[('regime_id', '=', regime_id)]"/>
+                <field name="cost_item_id"
+                         domain="[('is_aggregate_node', '=', False), ('code', '!=', 'CPD')]"/>
+                <field name="company_id" optional="show" groups="base.group_multi_company"/>
+                <field name="active" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_account_map_form" model="ir.ui.view">
+        <field name="name">vas.account.map.form</field>
+        <field name="model">vas.account.map</field>
+        <field name="arch" type="xml">
+            <form string="Ánh xạ tài khoản">
+                <sheet>
+                    <widget name="web_ribbon" title="Đã lưu trữ" bg_color="text-bg-danger"
+                            invisible="active"/>
+                    <group>
+                        <group string="Áp dụng cho">
+                            <field name="regime_id"/>
+                            <field name="apply_to" widget="radio"/>
+                            <field name="category_id"
+                                   invisible="apply_to != 'category'"
+                                   required="apply_to == 'category'"/>
+                            <field name="product_id"
+                                   invisible="apply_to != 'product'"
+                                   required="apply_to == 'product'"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active"/>
+                        </group>
+                        <group string="Tài khoản VAS">
+                            <field name="stock_account_id" domain="[('regime_id', '=', regime_id)]"/>
+                            <field name="revenue_account_id" domain="[('regime_id', '=', regime_id)]"/>
+                            <field name="cogs_account_id" domain="[('regime_id', '=', regime_id)]"/>
+                            <field name="expense_account_id" domain="[('regime_id', '=', regime_id)]"/>
+                            <field name="cost_item_id"
+                                     domain="[('is_aggregate_node', '=', False), ('code', '!=', 'CPD')]"/>
+                        </group>
+                    </group>
+                    <div class="text-muted">
+                        Trật tự tra của engine: dòng của chính sản phẩm → dòng của nhóm
+                        TRỰC TIẾP của sản phẩm → mặc định 156 / 5111 / 632 / 6422 kèm cờ
+                        cảnh báo trên bút toán. Engine <b>không</b> leo lên nhóm cha.
+                        Trường để trống là hợp lệ và sẽ rơi tiếp xuống bước sau.
+                        <br/>
+                        <b>TK chi phí</b> chia theo <b>mục đích chi</b>, không theo bộ phận
+                        của người chi: TT133 chỉ có 154 (sản xuất), 6421 (bán hàng),
+                        6422 (quản lý doanh nghiệp).
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_vas_account_map_search" model="ir.ui.view">
+        <field name="name">vas.account.map.search</field>
+        <field name="model">vas.account.map</field>
+        <field name="arch" type="xml">
+            <search string="Ánh xạ tài khoản">
+                <field name="category_id"/>
+                <field name="product_id"/>
+                <field name="regime_id"/>
+                <filter string="Theo nhóm sản phẩm" name="by_category"
+                        domain="[('apply_to', '=', 'category')]"/>
+                <filter string="Ngoại lệ theo sản phẩm" name="by_product"
+                        domain="[('apply_to', '=', 'product')]"/>
+                <separator/>
+                <filter string="Đã lưu trữ" name="inactive" domain="[('active', '=', False)]"/>
+                <group>
+                    <filter string="Chế độ kế toán" name="group_regime"
+                            context="{'group_by': 'regime_id'}"/>
+                    <filter string="Áp dụng cho" name="group_apply_to"
+                            context="{'group_by': 'apply_to'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_vas_account_map" model="ir.actions.act_window">
+        <field name="name">Sản phẩm &amp; nhóm sản phẩm</field>
+        <field name="res_model">vas.account.map</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Khai tài khoản cho nhóm sản phẩm</p>
+            <p>
+                Mỗi nhóm sản phẩm khai một dòng: tài khoản tồn kho, doanh thu, giá vốn
+                và chi phí. Cần ngoại lệ cho một sản phẩm thì tạo dòng "Sản phẩm cụ thể".
+            </p>
+        </field>
+    </record>
+
+    <!-- ========== Màn rà soát (quét ngược từ nhóm sản phẩm) ========== -->
+    <record id="view_vas_account_map_review_list" model="ir.ui.view">
+        <field name="name">vas.account.map.review.list</field>
+        <field name="model">vas.account.map.review</field>
+        <field name="arch" type="xml">
+            <list string="Rà soát cấu hình"
+                  create="false" delete="false"
+                  decoration-danger="state == 'missing'"
+                  decoration-warning="state == 'partial'">
+                <field name="category_id"/>
+                <field name="product_count" string="Số sản phẩm"/>
+                <field name="stock_account_id" string="TK tồn kho"/>
+                <field name="revenue_account_id" string="TK doanh thu"/>
+                <field name="cogs_account_id" string="TK giá vốn"/>
+                <field name="expense_account_id" string="TK chi phí"/>
+                <field name="state" widget="badge"
+                       decoration-danger="state == 'missing'"
+                       decoration-warning="state == 'partial'"
+                       decoration-success="state == 'ok'"/>
+                <field name="regime_id" optional="hide"/>
+                <field name="company_id" optional="hide" groups="base.group_multi_company"/>
+                <button name="action_configure" type="object" string="Khai ngay"
+                        icon="fa-pencil" class="btn-link"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_account_map_review_search" model="ir.ui.view">
+        <field name="name">vas.account.map.review.search</field>
+        <field name="model">vas.account.map.review</field>
+        <field name="arch" type="xml">
+            <search string="Rà soát cấu hình">
+                <field name="category_id"/>
+                <filter string="Chỉ hiện nhóm thiếu cấu hình" name="incomplete"
+                        domain="[('state', 'in', ('missing', 'partial'))]"/>
+                <filter string="Chưa khai gì" name="missing" domain="[('state', '=', 'missing')]"/>
+                <separator/>
+                <group>
+                    <filter string="Trạng thái" name="group_state"
+                            context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_vas_account_map_review" model="ir.actions.act_window">
+        <field name="name">Rà soát cấu hình</field>
+        <field name="res_model">vas.account.map.review</field>
+        <field name="view_mode">list</field>
+        <field name="context">{'search_default_incomplete': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Mọi nhóm sản phẩm đang dùng đều đã khai</p>
+            <p>
+                Màn này liệt kê các nhóm sản phẩm CÓ sản phẩm rồi đối chiếu ngược với bảng
+                ánh xạ, nên nhóm chưa khai vẫn hiện ra. Bỏ bộ lọc để xem cả nhóm đã khai.
+            </p>
+        </field>
+    </record>
+
+    <!-- ========== Menus ========== -->
+    <menuitem id="menu_vas_account_map_root"
+              name="Ánh xạ tài khoản"
+              parent="menu_vas_config"
+              sequence="25"/>
+
+    <menuitem id="menu_vas_account_map"
+              name="Sản phẩm &amp; nhóm sản phẩm"
+              parent="menu_vas_account_map_root"
+              action="action_vas_account_map"
+              sequence="10"/>
+
+    <!-- Chừa sequence 20/30 cho "Sổ quỹ / ngân hàng" và "Thuế" làm sau. -->
+
+    <menuitem id="menu_vas_account_map_review"
+              name="Rà soát cấu hình"
+              parent="menu_vas_account_map_root"
+              action="action_vas_account_map_review"
+              sequence="90"/>
+</odoo>

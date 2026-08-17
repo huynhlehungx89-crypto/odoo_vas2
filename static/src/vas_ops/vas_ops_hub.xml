@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="connecta_vas.VasOpsHub">
+        <div class="o_action o_vas_ops_hub">
+            <Layout display="{controlPanel: false}">
+                <div class="o_vas_ops_toolbar d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+                    <h2 class="m-0 fs-4">Tất cả nghiệp vụ</h2>
+                    <button class="btn btn-secondary btn-sm" t-on-click="onSync">
+                        Đồng bộ ngay
+                    </button>
+                </div>
+                <div class="o_content p-3">
+                    <t t-if="state.loading">
+                        <div class="text-muted">Đang tải…</div>
+                    </t>
+                    <t t-elif="state.error">
+                        <div class="alert alert-danger" t-esc="state.error"/>
+                    </t>
+                    <t t-elif="!state.tiles.length">
+                        <div class="text-muted">Chưa có nhóm nghiệp vụ nào để hiển thị.</div>
+                    </t>
+                    <t t-else="">
+                        <div class="o_vas_ops_grid">
+                            <t t-foreach="state.tiles" t-as="tile" t-key="tile.id">
+                                <button type="button" class="o_vas_ops_tile btn btn-light"
+                                        t-on-click="() => this.onTileClick(tile)">
+                                    <i t-attf-class="fa {{ tile.icon }} fa-2x mb-2"/>
+                                    <div class="o_vas_ops_tile_name" t-esc="tile.name"/>
+                                </button>
+                            </t>
+                        </div>
+                    </t>
+                </div>
+            </Layout>
+        </div>
+    </t>
+</templates>

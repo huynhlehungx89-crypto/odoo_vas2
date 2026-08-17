@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Idempotent: get-or-create TT133 and set main company default -->
+    <function model="vas.regime" name="_connecta_seed_tt133"/>
+</odoo>

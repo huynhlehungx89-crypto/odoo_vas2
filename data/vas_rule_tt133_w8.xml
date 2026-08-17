@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- W8 R27: nộp GTGT hàng NK qua payment nhãn import_vat_payment.
+         Nợ 33312 / Có 111|112 (M11-7). R18 bỏ qua vì có vas_operation_type. -->
+    <record id="vas_rule_tt133_r27" model="vas.rule">
+        <field name="code">R27</field>
+        <field name="name">M11-7 · Nợ 33312 / Có 111|112 · TT133 Điều 41</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">import_vat_payment</field>
+        <field name="condition">[("vas_operation_type", "=", "import_vat_payment"), ("payment_type", "=", "outbound")]</field>
+        <field name="sequence">61</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r27_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r27"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">tax_import_vat_payable</field>
+        <field name="amount_selector">paid</field>
+    </record>
+    <record id="vas_rule_tt133_r27_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r27"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">bank_cash</field>
+        <field name="amount_selector">paid</field>
+    </record>
+</odoo>

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- W3 R19 FALLBACK outbound: Nợ 141 / Có 111|112 -->
+    <record id="vas_rule_tt133_r19" model="vas.rule">
+        <field name="code">R19</field>
+        <field name="name">Tạm ứng người lao động (chi)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">advance_employee</field>
+        <field name="condition">[("payment_type", "=", "outbound")]</field>
+        <field name="sequence">55</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r19_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r19"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">employee_advance</field>
+        <field name="amount_selector">paid</field>
+    </record>
+    <record id="vas_rule_tt133_r19_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r19"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">bank_cash</field>
+        <field name="amount_selector">paid</field>
+    </record>
+
+    <record id="vas_rule_tt133_r19_in" model="vas.rule">
+        <field name="code">R19b</field>
+        <field name="name">Hoàn tạm ứng người lao động</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">advance_employee</field>
+        <field name="condition">[("payment_type", "=", "inbound")]</field>
+        <field name="sequence">56</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r19_in_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r19_in"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">bank_cash</field>
+        <field name="amount_selector">paid</field>
+    </record>
+    <record id="vas_rule_tt133_r19_in_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r19_in"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">employee_advance</field>
+        <field name="amount_selector">paid</field>
+    </record>
+
+    <!-- W3 R20: MỘT payment gắn nhãn internal_transfer + sổ đích.
+         Nợ = TK của sổ đích, Có = TK của sổ nguồn → T06 (112/111) và T07 (111/112). -->
+    <record id="vas_rule_tt133_r20" model="vas.rule">
+        <field name="code">R20</field>
+        <field name="name">Nộp/rút quỹ tiền mặt ↔ ngân hàng</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">cash_transfer</field>
+        <field name="sequence">45</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r20_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r20"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">dest_bank_cash</field>
+        <field name="amount_selector">paid</field>
+    </record>
+    <record id="vas_rule_tt133_r20_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r20"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">bank_cash</field>
+        <field name="amount_selector">paid</field>
+    </record>
+
+    <!-- W3 R21 — ký quỹ/ký cược. Đáp án workbook 03_Chi_Tiet_KB:
+         T10 b1 Nợ 1386 / Có 111-112 ; T10 b2 Nợ 111-112 / Có 1386
+         T08 b1 Nợ 111-112 / Có 3386 ; T08 b2 Nợ 3386 / Có 111-112
+         (TT133 dùng 1386/3386, KHÔNG phải 244/344 của TT200.) -->
+    <record id="vas_rule_tt133_r21_out" model="vas.rule">
+        <field name="code">R21a</field>
+        <field name="name">Chi tiền ký quỹ, ký cược mang đi</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">deposit</field>
+        <field name="condition">[("vas_operation_type", "=", "deposit_out"), ("payment_type", "=", "outbound")]</field>
+        <field name="sequence">57</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r21_out_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r21_out"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">fixed</field>
+        <field name="account_id" ref="vas_account_tt133_1386"/>
+        <field name="amount_selector">paid</field>
+    </record>
+    <record id="vas_rule_tt133_r21_out_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r21_out"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">bank_cash</field>
+        <field name="amount_selector">paid</field>
+    </record>
+
+    <record id="vas_rule_tt133_r21_out_back" model="vas.rule">
+        <field name="code">R21b</field>
+        <field name="name">Nhận lại tiền ký quỹ, ký cược đã mang đi</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">deposit</field>
+        <field name="condition">[("vas_operation_type", "=", "deposit_out"), ("payment_type", "=", "inbound")]</field>
+        <field name="sequence">58</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r21_out_back_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r21_out_back"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">bank_cash</field>
+        <field name="amount_selector">paid</field>
+    </record>
+    <record id="vas_rule_tt133_r21_out_back_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r21_out_back"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">fixed</field>
+        <field name="account_id" ref="vas_account_tt133_1386"/>
+        <field name="amount_selector">paid</field>
+    </record>
+
+    <record id="vas_rule_tt133_r21_in" model="vas.rule">
+        <field name="code">R21c</field>
+        <field name="name">Nhận tiền ký quỹ, ký cược của đối tác</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">deposit</field>
+        <field name="condition">[("vas_operation_type", "=", "deposit_in"), ("payment_type", "=", "inbound")]</field>
+        <field name="sequence">59</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r21_in_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r21_in"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">bank_cash</field>
+        <field name="amount_selector">paid</field>
+    </record>
+    <record id="vas_rule_tt133_r21_in_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r21_in"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">fixed</field>
+        <field name="account_id" ref="vas_account_tt133_3386"/>
+        <field name="amount_selector">paid</field>
+    </record>
+
+    <record id="vas_rule_tt133_r21_in_back" model="vas.rule">
+        <field name="code">R21d</field>
+        <field name="name">Hoàn trả tiền ký quỹ, ký cược đã nhận</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">deposit</field>
+        <field name="condition">[("vas_operation_type", "=", "deposit_in"), ("payment_type", "=", "outbound")]</field>
+        <field name="sequence">60</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r21_in_back_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r21_in_back"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">fixed</field>
+        <field name="account_id" ref="vas_account_tt133_3386"/>
+        <field name="amount_selector">paid</field>
+    </record>
+    <record id="vas_rule_tt133_r21_in_back_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r21_in_back"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">bank_cash</field>
+        <field name="amount_selector">paid</field>
+    </record>
+
+    <record id="vas_rule_tt133_r23_out" model="vas.rule">
+        <field name="code">R23a</field>
+        <field name="name">Chiết khấu thanh toán được hưởng (mua)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">payment_discount</field>
+        <field name="condition">[("payment_type", "=", "outbound")]</field>
+        <field name="sequence">65</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r23_out_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r23_out"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">partner_payable</field>
+        <field name="amount_selector">discount</field>
+    </record>
+    <record id="vas_rule_tt133_r23_out_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r23_out"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">finance_income</field>
+        <field name="amount_selector">discount</field>
+    </record>
+
+    <record id="vas_rule_tt133_r23_in" model="vas.rule">
+        <field name="code">R23b</field>
+        <field name="name">Chiết khấu thanh toán cho khách (bán)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">payment_discount</field>
+        <field name="condition">[("payment_type", "=", "inbound")]</field>
+        <field name="sequence">66</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r23_in_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r23_in"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">finance_expense</field>
+        <field name="amount_selector">discount</field>
+    </record>
+    <record id="vas_rule_tt133_r23_in_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r23_in"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">partner_receivable</field>
+        <field name="amount_selector">discount</field>
+    </record>
+</odoo>

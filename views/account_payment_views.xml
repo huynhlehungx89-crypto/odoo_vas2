@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_payment_form_vas_operation" model="ir.ui.view">
+        <field name="name">account.payment.form.vas.operation</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='memo']" position="after">
+                <field name="vas_operation_type"/>
+                <field name="vas_cash_flow_activity"/>
+                <field name="vas_dest_journal_id"
+                       invisible="vas_operation_type != 'internal_transfer'"
+                       required="vas_operation_type == 'internal_transfer'"/>
+                <field name="vas_import_vat_id"
+                       invisible="vas_operation_type != 'import_vat_payment'"/>
+                <field name="vas_loan_id"
+                       invisible="vas_operation_type not in ('loan_receipt', 'loan_repay', 'loan_interest_pay', 'loan_interest_pay_direct')"
+                       required="vas_operation_type in ('loan_receipt', 'loan_repay')"/>
+                <field name="vas_payslip_id"
+                       invisible="vas_operation_type != 'payroll_pay'"/>
+                <field name="vas_payroll_remit_account_code"
+                       invisible="vas_operation_type != 'social_insurance_remit'"
+                       placeholder="3383"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_payment_tree_vas_operation" model="ir.ui.view">
+        <field name="name">account.payment.list.vas.operation</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='journal_id']" position="after">
+                <field name="vas_dest_journal_id" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Nghiệp vụ VN: danh sách account.payment lọc sẵn + tạo mới điền sẵn nhãn -->
+    <record id="action_vas_payment_internal_transfer" model="ir.actions.act_window">
+        <field name="name">Chuyển quỹ nội bộ</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('vas_operation_type', '=', 'internal_transfer')]</field>
+        <field name="context">{
+            'default_vas_operation_type': 'internal_transfer',
+            'default_payment_type': 'outbound',
+            'default_move_journal_types': ('bank', 'cash'),
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Ghi nhận nộp tiền mặt vào ngân hàng / rút tiền gửi về quỹ</p>
+            <p>Chọn sổ nguồn ở Nhật ký và sổ nhận tiền ở Sổ đích. VAS sinh một bút toán 111 ↔ 112.</p>
+        </field>
+    </record>
+
+    <record id="action_vas_payment_deposit_out" model="ir.actions.act_window">
+        <field name="name">Ký quỹ mang đi</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('vas_operation_type', '=', 'deposit_out')]</field>
+        <field name="context">{
+            'default_vas_operation_type': 'deposit_out',
+            'default_payment_type': 'outbound',
+            'default_partner_type': 'supplier',
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Tiền ký quỹ, ký cược doanh nghiệp mang đi (TK 1386)</p>
+        </field>
+    </record>
+
+    <record id="action_vas_payment_deposit_in" model="ir.actions.act_window">
+        <field name="name">Nhận ký quỹ, ký cược</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('vas_operation_type', '=', 'deposit_in')]</field>
+        <field name="context">{
+            'default_vas_operation_type': 'deposit_in',
+            'default_payment_type': 'inbound',
+            'default_partner_type': 'customer',
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Tiền bảo đảm nhận của đối tác (TK 3386)</p>
+        </field>
+    </record>
+
+    <record id="action_vas_payment_employee_advance" model="ir.actions.act_window">
+        <field name="name">Tạm ứng nhân viên</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('vas_operation_type', '=', 'employee_advance')]</field>
+        <field name="context">{
+            'default_vas_operation_type': 'employee_advance',
+            'default_payment_type': 'outbound',
+            'default_partner_type': 'supplier',
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Chi tạm ứng cho người lao động (TK 141)</p>
+        </field>
+    </record>
+
+    <record id="action_vas_payment_advance_refund" model="ir.actions.act_window">
+        <field name="name">Hoàn tạm ứng</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('vas_operation_type', '=', 'advance_refund')]</field>
+        <field name="context">{
+            'default_vas_operation_type': 'advance_refund',
+            'default_payment_type': 'inbound',
+            'default_partner_type': 'supplier',
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Thu lại tiền tạm ứng chi không hết (TK 141)</p>
+            <p>
+                Dùng khi người lao động nộp lại phần tạm ứng còn dư sau khi quyết
+                toán chi phí — workbook T04 bước 2. VAS ghi Nợ 111/112 / Có 141,
+                đưa số tạm ứng về 0.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_vas_payment_employee_debt" model="ir.actions.act_window">
+        <field name="name">Trả nợ người lao động</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('vas_operation_type', '=', 'employee_debt_payment')]</field>
+        <field name="context">{
+            'default_vas_operation_type': 'employee_debt_payment',
+            'default_payment_type': 'outbound',
+            'default_partner_type': 'supplier',
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Trả nốt phần công ty còn nợ người lao động (TK 334)</p>
+            <p>
+                Dùng cho hai trường hợp cùng kết ở số dư Có 334: nhân viên chi
+                VƯỢT số đã tạm ứng (workbook T05), và nhân viên tự bỏ tiền túi
+                khi chưa từng tạm ứng. VAS ghi Nợ 334 / Có 111,112.
+            </p>
+            <p>
+                Đây <b>không</b> phải phiếu tạm ứng — đừng gắn nhãn
+                "Tạm ứng nhân viên", vì nhãn đó ghi Nợ 141 và sẽ làm tạm ứng
+                phình lên thay vì tất toán công nợ.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_vas_payment_import_vat" model="ir.actions.act_window">
+        <field name="name">Nộp GTGT hàng NK</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('vas_operation_type', '=', 'import_vat_payment')]</field>
+        <field name="context">{
+            'default_vas_operation_type': 'import_vat_payment',
+            'default_payment_type': 'outbound',
+            'default_partner_type': 'supplier',
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Nộp thuế GTGT hàng nhập khẩu (TK 33312)</p>
+            <p>
+                Gắn nhãn này rồi đồng bộ VAS — rule R27 ghi Nợ 33312 / Có 111|112
+                (M11-7). Không dùng phiếu chi thường (R18 sẽ ghi nhầm Nợ 331).
+            </p>
+        </field>
+    </record>
+
+    <record id="action_vas_payment_loan_interest" model="ir.actions.act_window">
+        <field name="name">Trả lãi vay</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('vas_operation_type', '=', 'loan_interest_pay')]</field>
+        <field name="context">{
+            'default_vas_operation_type': 'loan_interest_pay',
+            'default_payment_type': 'outbound',
+            'default_partner_type': 'supplier',
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Phiếu chi trả lãi vay (qua 335)</p>
+            <p>
+                Lọc nhãn <code>loan_interest_pay</code> — Nợ 335 / Có 111|112.
+                Không lẫn phiếu trả gốc hay phiếu chi thường.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_vas_payment_loan_repay" model="ir.actions.act_window">
+        <field name="name">Trả gốc vay</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('vas_operation_type', '=', 'loan_repay')]</field>
+        <field name="context">{
+            'default_vas_operation_type': 'loan_repay',
+            'default_payment_type': 'outbound',
+            'default_partner_type': 'supplier',
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Phiếu chi trả gốc vay</p>
+            <p>
+                Lọc nhãn <code>loan_repay</code> — Nợ 341 / Có 111|112.
+            </p>
+        </field>
+    </record>
+
+    <!-- Parent XML = account.menu_finance (Invoicing / Community).
+         Enterprise có accountant → hook/migration kéo sang
+         accountant.menu_accounting (app Accounting).
+         noupdate=1: lần -u sau không đè parent về Invoicing (app rỗng). -->
+    <data noupdate="1">
+        <menuitem id="menu_vas_vn_operations"
+                  name="Nghiệp vụ VN"
+                  parent="account.menu_finance"
+                  sequence="6"/>
+        <menuitem id="menu_vas_payment_internal_transfer"
+                  parent="menu_vas_vn_operations"
+                  action="action_vas_payment_internal_transfer"
+                  sequence="10"/>
+        <menuitem id="menu_vas_payment_deposit_out"
+                  parent="menu_vas_vn_operations"
+                  action="action_vas_payment_deposit_out"
+                  sequence="20"/>
+        <menuitem id="menu_vas_payment_deposit_in"
+                  parent="menu_vas_vn_operations"
+                  action="action_vas_payment_deposit_in"
+                  sequence="30"/>
+        <menuitem id="menu_vas_payment_employee_advance"
+                  parent="menu_vas_vn_operations"
+                  action="action_vas_payment_employee_advance"
+                  sequence="40"/>
+        <menuitem id="menu_vas_payment_advance_refund"
+                  parent="menu_vas_vn_operations"
+                  action="action_vas_payment_advance_refund"
+                  sequence="45"/>
+        <menuitem id="menu_vas_payment_employee_debt"
+                  parent="menu_vas_vn_operations"
+                  action="action_vas_payment_employee_debt"
+                  sequence="50"/>
+        <menuitem id="menu_vas_payment_import_vat"
+                  parent="menu_vas_vn_operations"
+                  action="action_vas_payment_import_vat"
+                  sequence="55"/>
+        <menuitem id="menu_vas_payment_loan_interest"
+                  parent="menu_vas_vn_operations"
+                  action="action_vas_payment_loan_interest"
+                  sequence="60"/>
+        <menuitem id="menu_vas_payment_loan_repay"
+                  parent="menu_vas_vn_operations"
+                  action="action_vas_payment_loan_repay"
+                  sequence="65"/>
+    </data>
+</odoo>

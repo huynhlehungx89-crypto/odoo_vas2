@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vas_payroll_department_map_list" model="ir.ui.view">
+        <field name="name">vas.payroll.department.map.list</field>
+        <field name="model">vas.payroll.department.map</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="department_id"/>
+                <field name="expense_account_id"/>
+                <field name="cost_item_id"
+                         domain="[('is_aggregate_node', '=', False), ('code', '!=', 'CPD')]"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_vas_payroll_department_map" model="ir.actions.act_window">
+        <field name="name">Map bộ phận → TK CP lương</field>
+        <field name="res_model">vas.payroll.department.map</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <menuitem id="menu_vas_payroll_department_map"
+              name="Map bộ phận lương"
+              parent="menu_vas_config"
+              action="action_vas_payroll_department_map"
+              sequence="85"/>
+</odoo>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- W1: R01 sale_invoice — Nợ 131 total / Có TK doanh thu theo nhóm SP untaxed / Có 33311 tax -->
+    <record id="vas_rule_tt133_r01" model="vas.rule">
+        <field name="code">R01</field>
+        <field name="name">Hóa đơn bán hàng</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">sale_invoice</field>
+        <field name="sequence">10</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r01_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r01"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">partner_receivable</field>
+        <field name="amount_selector">total</field>
+    </record>
+    <record id="vas_rule_tt133_r01_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r01"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">product_revenue</field>
+        <field name="amount_selector">untaxed</field>
+    </record>
+    <record id="vas_rule_tt133_r01_l3" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r01"/>
+        <field name="sequence">30</field>
+        <field name="side">credit</field>
+        <field name="account_selector">tax_output</field>
+        <field name="amount_selector">tax</field>
+    </record>
+
+    <!-- W1: R02 sale_delivery — Nợ TK giá vốn / Có TK tồn kho, cả hai theo nhóm SP -->
+    <record id="vas_rule_tt133_r02" model="vas.rule">
+        <field name="code">R02</field>
+        <field name="name">Xuất kho bán hàng</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">sale_delivery</field>
+        <field name="sequence">20</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r02_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r02"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">product_cogs</field>
+        <field name="amount_selector">cogs</field>
+    </record>
+    <record id="vas_rule_tt133_r02_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r02"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">product_inventory</field>
+        <field name="amount_selector">cogs</field>
+    </record>
+
+    <!-- W1: R17 payment_in — Nợ bank_cash paid / Có 131 paid -->
+    <record id="vas_rule_tt133_r17" model="vas.rule">
+        <field name="code">R17</field>
+        <field name="name">Thu tiền khách hàng</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">payment_in</field>
+        <field name="sequence">30</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r17_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r17"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">bank_cash</field>
+        <field name="amount_selector">paid</field>
+    </record>
+    <record id="vas_rule_tt133_r17_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r17"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">partner_receivable</field>
+        <field name="amount_selector">paid</field>
+    </record>
+</odoo>

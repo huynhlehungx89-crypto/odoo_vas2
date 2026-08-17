@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vas_closing_rule_list" model="ir.ui.view">
+        <field name="name">vas.closing.rule.list</field>
+        <field name="model">vas.closing.rule</field>
+        <field name="arch" type="xml">
+            <list string="Quy tắc kết chuyển"
+                  default_order="group_code, sequence, id"
+                  decoration-info="is_system">
+                <field name="sequence" widget="handle"/>
+                <field name="code" string="Mã"/>
+                <field name="account_from_id" string="Kết chuyển từ"/>
+                <field name="account_to_id" string="Kết chuyển đến"/>
+                <field name="close_side" string="Bên kết chuyển"/>
+                <field name="group_code" string="Nhóm"/>
+                <field name="name" string="Diễn giải"/>
+                <field name="is_system" string="Hệ thống" widget="boolean"/>
+                <field name="active" string="Đang dùng" widget="boolean_toggle"/>
+                <field name="rule_layer" column_invisible="1"/>
+                <field name="timing" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_closing_rule_form" model="ir.ui.view">
+        <field name="name">vas.closing.rule.form</field>
+        <field name="model">vas.closing.rule</field>
+        <field name="arch" type="xml">
+            <form string="Quy tắc kết chuyển">
+                <sheet>
+                    <widget name="web_ribbon" title="Hệ thống" bg_color="text-bg-info"
+                            invisible="not is_system"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="Diễn giải kết chuyển"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="regime_id"/>
+                            <field name="sequence"/>
+                            <field name="rule_layer"/>
+                            <field name="group_code"/>
+                            <field name="timing"/>
+                        </group>
+                        <group>
+                            <field name="account_from_id" string="Kết chuyển từ"
+                                     readonly="is_system"/>
+                            <field name="account_to_id" string="Kết chuyển đến"
+                                     readonly="is_system"/>
+                            <field name="close_side" readonly="is_system"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="is_system" readonly="1"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <div class="alert alert-info" role="alert" invisible="not is_system">
+                        Quy tắc hệ thống: chỉ được bật/tắt, sửa thứ tự và diễn giải.
+                        Không đổi tài khoản nguồn/đích hay các field cấu trúc.
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_vas_closing_rule_search" model="ir.ui.view">
+        <field name="name">vas.closing.rule.search</field>
+        <field name="model">vas.closing.rule</field>
+        <field name="arch" type="xml">
+            <search string="Quy tắc kết chuyển">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="account_from_id"/>
+                <field name="account_to_id"/>
+                <field name="group_code"/>
+                <filter name="filter_active" string="Đang dùng"
+                        domain="[('active', '=', True)]"/>
+                <filter name="filter_inactive" string="Ngừng"
+                        domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter name="filter_kqkd" string="Nhóm KQKD"
+                        domain="[('group_code', '=', 'kqkd')]"/>
+                <filter name="filter_fx" string="Nhóm tỷ giá"
+                        domain="[('group_code', '=', 'fx')]"/>
+                <filter name="filter_vat" string="Nhóm GTGT"
+                        domain="[('group_code', '=', 'vat')]"/>
+                <filter name="filter_cit" string="Nhóm thuế TNDN"
+                        domain="[('group_code', '=', 'cit')]"/>
+                <filter name="filter_prepaid" string="Nhóm phân bổ"
+                        domain="[('group_code', '=', 'prepaid')]"/>
+                <filter name="filter_provision" string="Nhóm dự phòng"
+                        domain="[('group_code', '=', 'provision')]"/>
+                <filter name="filter_year_start" string="Nhóm đầu năm"
+                        domain="[('group_code', '=', 'year_start')]"/>
+                <separator/>
+                <filter name="filter_system" string="Hệ thống"
+                        domain="[('is_system', '=', True)]"/>
+                <group>
+                    <filter name="group_by_group" string="Nhóm"
+                            context="{'group_by': 'group_code'}"/>
+                    <filter name="group_by_layer" string="Lớp"
+                            context="{'group_by': 'rule_layer'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_vas_closing_rule" model="ir.actions.act_window">
+        <field name="name">Quy tắc kết chuyển</field>
+        <field name="res_model">vas.closing.rule</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_filter_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Thêm quy tắc kết chuyển của công ty (tiểu khoản chi tiết…).
+            </p>
+            <p>Quy tắc hệ thống đã sẵn — chỉ bật/tắt hoặc sửa diễn giải / thứ tự.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_vas_closing_rule"
+              name="Quy tắc kết chuyển"
+              parent="menu_vas_config"
+              action="action_vas_closing_rule"
+              sequence="25"/>
+</odoo>

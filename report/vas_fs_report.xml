@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_vas_fs" model="ir.actions.report">
+        <field name="name">Báo cáo tài chính VAS</field>
+        <field name="model">vas.report.print.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">connecta_vas.report_vas_fs</field>
+        <field name="report_file">connecta_vas.report_vas_fs</field>
+        <field name="print_report_name">object.filename or 'BCTC_VAS.pdf'</field>
+    </record>
+
+    <template id="report_vas_fs">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="wiz">
+                <t t-set="data" t-value="wiz.get_payload()"/>
+                <t t-set="meta" t-value="data.get('meta') or {}"/>
+                <t t-set="columns" t-value="data.get('columns') or []"/>
+                <t t-set="lines" t-value="data.get('lines') or []"/>
+                <div class="page" style="font-size: 10px;">
+                    <div class="row mb-2">
+                        <div class="col-7"><strong t-esc="meta.get('company_name') or ''"/></div>
+                        <div class="col-5 text-end">
+                            Mẫu số: <strong t-esc="meta.get('form_code') or ''"/>
+                        </div>
+                    </div>
+                    <h4 class="text-center text-uppercase"
+                        t-esc="meta.get('title') or ''"/>
+                    <p class="text-center mb-2 text-muted"
+                       t-esc="meta.get('period_label') or ''"/>
+                    <t t-if="meta.get('account_label')">
+                        <p class="text-center small" t-esc="meta.get('account_label')"/>
+                    </t>
+                    <t t-if="meta.get('warning')">
+                        <div class="alert alert-warning" style="white-space: pre-wrap;"
+                             t-esc="meta.get('warning')"/>
+                    </t>
+                    <table class="table table-sm table-bordered o_main_table">
+                        <thead>
+                            <tr>
+                                <t t-foreach="columns" t-as="col">
+                                    <th t-att-class="'text-end' if col.get('align') == 'right' else ''"
+                                        t-esc="col.get('label') or col.get('name')"/>
+                                </t>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="lines" t-as="line">
+                                <tr t-att-style="'font-weight:bold' if (line.get('is_total') or line.get('is_section') or line.get('unfoldable')) else ''">
+                                    <t t-foreach="columns" t-as="col">
+                                        <t t-set="val" t-value="(line.get('values') or [None] * len(columns))[col_index] if col_index &lt; len(line.get('values') or []) else ''"/>
+                                        <td t-att-class="'text-end' if col.get('align') == 'right' else ''"
+                                            t-esc="wiz.format_print_cell(val, col)"/>
+                                    </t>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

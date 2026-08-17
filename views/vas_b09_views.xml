@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vas_b09_wizard_form" model="ir.ui.view">
+        <field name="name">vas.b09.wizard.form</field>
+        <field name="model">vas.b09.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Lập Bản thuyết minh (B09)">
+                <group>
+                    <field name="company_id"/>
+                    <field name="regime_id"/>
+                    <field name="period_from_id"
+                              domain="[('fiscalyear_id.company_id', '=', company_id)]"/>
+                    <field name="period_to_id"
+                              domain="[('fiscalyear_id.company_id', '=', company_id)]"/>
+                    <field name="hide_reversed"/>
+                    <field name="copy_prior_year"/>
+                </group>
+                <footer>
+                    <button name="action_generate" type="object" string="Lập báo cáo"
+                            class="btn-primary"/>
+                    <button string="Hủy" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_b09_generate" model="ir.actions.act_window">
+        <field name="name">Lập B09</field>
+        <field name="res_model">vas.b09.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="action_vas_b09_snapshots" model="ir.actions.act_window">
+        <field name="name">Bản B09 đã lập</field>
+        <field name="res_model">vas.report.snapshot</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('form_code', '=', 'B09-DNN')]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="action_vas_b09_client" model="ir.actions.client">
+        <field name="name">Bản thuyết minh BCTC</field>
+        <field name="tag">vas_report_client</field>
+        <field name="path">vas-b09</field>
+        <field name="context">{
+            'report_model': 'vas.b09.wizard',
+            'report_title': 'Bản thuyết minh BCTC',
+        }</field>
+    </record>
+
+    <menuitem id="menu_vas_b09"
+              name="Bản thuyết minh (B09)"
+              parent="menu_vas_books"
+              action="action_vas_b09_client"
+              sequence="60"/>
+
+    <menuitem id="menu_vas_b09_generate"
+              name="Lập B09 mới"
+              parent="menu_vas_books"
+              action="action_vas_b09_generate"
+              sequence="61"/>
+
+    <menuitem id="menu_vas_b09_snapshots"
+              name="Bản B09 đã lập"
+              parent="menu_vas_books"
+              action="action_vas_b09_snapshots"
+              sequence="62"/>
+</odoo>

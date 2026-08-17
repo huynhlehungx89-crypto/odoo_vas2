@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- W10 chặng 1: quy tắc kết chuyển TT133 — workbook Quy_Tac_Ket_Chuyen -->
+    <!-- CẤM mã TT200: 521x, 621, 622, 623, 627, 641, 8211, 8212, 4131 -->
+
+    <!-- === Lớp A: STT 1-16 === -->
+    <record id="vas_closing_rule_tt133_511_911" model="vas.closing.rule">
+        <field name="code">511-911</field>
+        <field name="name">Kết chuyển doanh thu bán hàng và cung cấp dịch vụ</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">A_close</field>
+        <field name="group_code">kqkd</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="100"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_511"/>
+        <field name="account_to_id" ref="vas_account_tt133_911"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <!-- P4 (b): rule LÁ dưới 511 — engine ghi product_revenue vào 5111/5112/5113/5118.
+         GIỮ rule cha 511→911: compute KHÔNG gộp con → cha và lá không xả đôi.
+         CẢNH BÁO: nếu sau này bật gộp con (_AGGREGATE_CHILDREN_OF_FROM=True)
+         thì bộ cha+lá này XẢ ĐÔI; phải sửa compute + tắt một phía + K10 cha-con. -->
+    <record id="vas_closing_rule_tt133_5111_911" model="vas.closing.rule">
+        <field name="code">5111-911</field>
+        <field name="name">Kết chuyển doanh thu bán hàng hóa (5111)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">A_close</field>
+        <field name="group_code">kqkd</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="101"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_5111"/>
+        <field name="account_to_id" ref="vas_account_tt133_911"/>
+        <field name="close_side">both</field>
+    </record>
+    <record id="vas_closing_rule_tt133_5112_911" model="vas.closing.rule">
+        <field name="code">5112-911</field>
+        <field name="name">Kết chuyển doanh thu bán thành phẩm (5112)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">A_close</field>
+        <field name="group_code">kqkd</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="102"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_5112"/>
+        <field name="account_to_id" ref="vas_account_tt133_911"/>
+        <field name="close_side">both</field>
+    </record>
+    <record id="vas_closing_rule_tt133_5113_911" model="vas.closing.rule">
+        <field name="code">5113-911</field>
+        <field name="name">Kết chuyển doanh thu cung cấp dịch vụ (5113)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">A_close</field>
+        <field name="group_code">kqkd</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="103"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_5113"/>
+        <field name="account_to_id" ref="vas_account_tt133_911"/>
+        <field name="close_side">both</field>
+    </record>
+    <record id="vas_closing_rule_tt133_5118_911" model="vas.closing.rule">
+        <field name="code">5118-911</field>
+        <field name="name">Kết chuyển doanh thu khác (5118)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">A_close</field>
+        <field name="group_code">kqkd</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="104"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_5118"/>
+        <field name="account_to_id" ref="vas_account_tt133_911"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_515_911" model="vas.closing.rule">
+        <field name="code">515-911</field>
+        <field name="name">Kết chuyển doanh thu hoạt động tài chính</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">A_close</field>
+        <field name="group_code">kqkd</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="110"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_515"/>
+        <field name="account_to_id" ref="vas_account_tt133_911"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_711_911" model="vas.closing.rule">
+        <field name="code">711-911</field>
+        <field name="name">Kết chuyển thu nhập khác</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">A_close</field>
+        <field name="group_code">kqkd</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="120"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_711"/>
+        <field name="account_to_id" ref="vas_account_tt133_911"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_632_911" model="vas.closing.rule">
+        <field name="code">632-911</field>
+        <field name="name">Kết chuyển giá vốn hàng bán</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">A_close</field>
+        <field name="group_code">kqkd</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="130"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_632"/>
+        <field name="account_to_id" ref="vas_account_tt133_911"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_635_911" model="vas.closing.rule">
+        <field name="code">635-911</field>
+        <field name="name">Kết chuyển chi phí tài chính</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">A_close</field>
+        <field name="group_code">kqkd</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="140"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_635"/>
+        <field name="account_to_id" ref="vas_account_tt133_911"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_6421_911" model="vas.closing.rule">
+        <field name="code">6421-911</field>
+        <field name="name">Kết chuyển chi phí bán hàng</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">A_close</field>
+        <field name="group_code">kqkd</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="150"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_6421"/>
+        <field name="account_to_id" ref="vas_account_tt133_911"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_6422_911" model="vas.closing.rule">
+        <field name="code">6422-911</field>
+        <field name="name">Kết chuyển chi phí quản lý doanh nghiệp</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">A_close</field>
+        <field name="group_code">kqkd</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="160"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_6422"/>
+        <field name="account_to_id" ref="vas_account_tt133_911"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_811_911" model="vas.closing.rule">
+        <field name="code">811-911</field>
+        <field name="name">Kết chuyển chi phí khác</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">A_close</field>
+        <field name="group_code">kqkd</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="170"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_811"/>
+        <field name="account_to_id" ref="vas_account_tt133_911"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_821_911_debit" model="vas.closing.rule">
+        <field name="code">821-911-debit</field>
+        <field name="name">Kết chuyển chi phí thuế TNDN thuần (dư Nợ 821)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">A_close</field>
+        <field name="group_code">kqkd</field>
+        <field name="timing">year_end_bctc</field>
+        <field name="sequence" eval="180"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_821"/>
+        <field name="account_to_id" ref="vas_account_tt133_911"/>
+        <field name="close_side">debit</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_821_911_credit" model="vas.closing.rule">
+        <field name="code">821-911-credit</field>
+        <field name="name">Kết chuyển khoản giảm chi phí thuế TNDN (dư Có 821)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">A_close</field>
+        <field name="group_code">kqkd</field>
+        <field name="timing">year_end_bctc</field>
+        <field name="sequence" eval="185"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_821"/>
+        <field name="account_to_id" ref="vas_account_tt133_911"/>
+        <field name="close_side">credit</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_911_4212_credit" model="vas.closing.rule">
+        <field name="code">911-4212-credit</field>
+        <field name="name">Kết chuyển lãi sau thuế năm nay</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">A_close</field>
+        <field name="group_code">kqkd</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="190"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_911"/>
+        <field name="account_to_id" ref="vas_account_tt133_4212"/>
+        <field name="close_side">credit</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_911_4212_debit" model="vas.closing.rule">
+        <field name="code">911-4212-debit</field>
+        <field name="name">Kết chuyển lỗ năm nay</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">A_close</field>
+        <field name="group_code">kqkd</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="195"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_911"/>
+        <field name="account_to_id" ref="vas_account_tt133_4212"/>
+        <field name="close_side">debit</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_4212_4211_credit" model="vas.closing.rule">
+        <field name="code">4212-4211-credit</field>
+        <field name="name">Đầu năm: chuyển LN năm nay (dư Có 4212) sang 4211</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">A_close</field>
+        <field name="group_code">year_start</field>
+        <field name="timing">year_start</field>
+        <field name="sequence" eval="200"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_4212"/>
+        <field name="account_to_id" ref="vas_account_tt133_4211"/>
+        <field name="close_side">credit</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_4212_4211_debit" model="vas.closing.rule">
+        <field name="code">4212-4211-debit</field>
+        <field name="name">Đầu năm: chuyển lỗ năm nay (dư Nợ 4212) sang 4211</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">A_close</field>
+        <field name="group_code">year_start</field>
+        <field name="timing">year_start</field>
+        <field name="sequence" eval="205"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_4212"/>
+        <field name="account_to_id" ref="vas_account_tt133_4211"/>
+        <field name="close_side">debit</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_413_515" model="vas.closing.rule">
+        <field name="code">413-515</field>
+        <field name="name">Kết chuyển lãi tỷ giá hối đoái</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">A_close</field>
+        <field name="group_code">fx</field>
+        <field name="timing">after_fx_reval</field>
+        <field name="sequence" eval="50"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_413"/>
+        <field name="account_to_id" ref="vas_account_tt133_515"/>
+        <field name="close_side">credit</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_413_635" model="vas.closing.rule">
+        <field name="code">413-635</field>
+        <field name="name">Kết chuyển lỗ tỷ giá hối đoái</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">A_close</field>
+        <field name="group_code">fx</field>
+        <field name="timing">after_fx_reval</field>
+        <field name="sequence" eval="55"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_413"/>
+        <field name="account_to_id" ref="vas_account_tt133_635"/>
+        <field name="close_side">debit</field>
+    </record>
+
+    <!-- === Kiểm kê định kỳ STT 17-24 — active=False (A6) === -->
+    <record id="vas_closing_rule_tt133_631_154" model="vas.closing.rule">
+        <field name="code">631-154</field>
+        <field name="name">KKĐK: kết chuyển CPSXKD dở dang đầu kỳ</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">B_costing</field>
+        <field name="group_code">costing</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="210"/>
+        <field name="active" eval="False"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_631"/>
+        <field name="account_to_id" ref="vas_account_tt133_154"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_632_631" model="vas.closing.rule">
+        <field name="code">632-631</field>
+        <field name="name">KKĐK: kết chuyển giá thành SP/DV hoàn thành</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">B_costing</field>
+        <field name="group_code">costing</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="220"/>
+        <field name="active" eval="False"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_632"/>
+        <field name="account_to_id" ref="vas_account_tt133_631"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_154_631" model="vas.closing.rule">
+        <field name="code">154-631</field>
+        <field name="name">KKĐK: kết chuyển CPSXKD dở dang cuối kỳ</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">B_costing</field>
+        <field name="group_code">costing</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="230"/>
+        <field name="active" eval="False"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_154"/>
+        <field name="account_to_id" ref="vas_account_tt133_631"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_151_611_open" model="vas.closing.rule">
+        <field name="code">151-611-open</field>
+        <field name="name">KKĐK: tồn đầu kỳ 151 → 611</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">B_costing</field>
+        <field name="group_code">costing</field>
+        <field name="timing">year_start</field>
+        <field name="sequence" eval="240"/>
+        <field name="active" eval="False"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_151"/>
+        <field name="account_to_id" ref="vas_account_tt133_611"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_152_611_open" model="vas.closing.rule">
+        <field name="code">152-611-open</field>
+        <field name="name">KKĐK: tồn đầu kỳ 152 → 611</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">B_costing</field>
+        <field name="group_code">costing</field>
+        <field name="timing">year_start</field>
+        <field name="sequence" eval="241"/>
+        <field name="active" eval="False"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_152"/>
+        <field name="account_to_id" ref="vas_account_tt133_611"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_153_611_open" model="vas.closing.rule">
+        <field name="code">153-611-open</field>
+        <field name="name">KKĐK: tồn đầu kỳ 153 → 611</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">B_costing</field>
+        <field name="group_code">costing</field>
+        <field name="timing">year_start</field>
+        <field name="sequence" eval="242"/>
+        <field name="active" eval="False"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_153"/>
+        <field name="account_to_id" ref="vas_account_tt133_611"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_156_611_open" model="vas.closing.rule">
+        <field name="code">156-611-open</field>
+        <field name="name">KKĐK: tồn đầu kỳ 156 → 611</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">B_costing</field>
+        <field name="group_code">costing</field>
+        <field name="timing">year_start</field>
+        <field name="sequence" eval="243"/>
+        <field name="active" eval="False"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_156"/>
+        <field name="account_to_id" ref="vas_account_tt133_611"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_611_151_close" model="vas.closing.rule">
+        <field name="code">611-151-close</field>
+        <field name="name">KKĐK: tồn cuối kỳ khỏi 611 → 151</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">B_costing</field>
+        <field name="group_code">costing</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="250"/>
+        <field name="active" eval="False"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_611"/>
+        <field name="account_to_id" ref="vas_account_tt133_151"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_611_152_close" model="vas.closing.rule">
+        <field name="code">611-152-close</field>
+        <field name="name">KKĐK: tồn cuối kỳ khỏi 611 → 152</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">B_costing</field>
+        <field name="group_code">costing</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="251"/>
+        <field name="active" eval="False"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_611"/>
+        <field name="account_to_id" ref="vas_account_tt133_152"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_611_153_close" model="vas.closing.rule">
+        <field name="code">611-153-close</field>
+        <field name="name">KKĐK: tồn cuối kỳ khỏi 611 → 153</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">B_costing</field>
+        <field name="group_code">costing</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="252"/>
+        <field name="active" eval="False"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_611"/>
+        <field name="account_to_id" ref="vas_account_tt133_153"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_611_156_close" model="vas.closing.rule">
+        <field name="code">611-156-close</field>
+        <field name="name">KKĐK: tồn cuối kỳ khỏi 611 → 156</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">B_costing</field>
+        <field name="group_code">costing</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="253"/>
+        <field name="active" eval="False"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_611"/>
+        <field name="account_to_id" ref="vas_account_tt133_156"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_632_611" model="vas.closing.rule">
+        <field name="code">632-611</field>
+        <field name="name">KKĐK: xác định giá gốc hàng xuất bán</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">B_costing</field>
+        <field name="group_code">costing</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="260"/>
+        <field name="active" eval="False"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_632"/>
+        <field name="account_to_id" ref="vas_account_tt133_611"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <record id="vas_closing_rule_tt133_157_611" model="vas.closing.rule">
+        <field name="code">157-611</field>
+        <field name="name">KKĐK: hàng gửi đi bán chưa xác định đã bán</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">B_costing</field>
+        <field name="group_code">costing</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="270"/>
+        <field name="active" eval="False"/>
+        <field name="is_system" eval="True"/>
+        <field name="account_from_id" ref="vas_account_tt133_157"/>
+        <field name="account_to_id" ref="vas_account_tt133_611"/>
+        <field name="close_side">both</field>
+    </record>
+
+    <!-- === Nhóm meta (thứ tự phiếu) + L06 / V09 / CIT === -->
+    <record id="vas_closing_rule_tt133_MANUAL" model="vas.closing.rule">
+        <field name="code">MANUAL</field>
+        <field name="name">Trích/dự phòng nhập tay (C02–C07/C10)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">B_accrual</field>
+        <field name="group_code">provision</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="10"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+    </record>
+
+    <record id="vas_closing_rule_tt133_C01" model="vas.closing.rule">
+        <field name="code">C01</field>
+        <field name="name">Phân bổ chi phí trả trước 242</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">B_accrual</field>
+        <field name="group_code">prepaid</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="20"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+    </record>
+
+    <record id="vas_closing_rule_tt133_L06" model="vas.closing.rule">
+        <field name="code">L06</field>
+        <field name="name">Khấu trừ GTGT đầu vào–đầu ra</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">B_vat</field>
+        <field name="group_code">vat</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="30"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+    </record>
+
+    <record id="vas_closing_rule_tt133_V09" model="vas.closing.rule">
+        <field name="code">V09</field>
+        <field name="name">Đánh giá lại khoản mục tiền tệ gốc ngoại tệ</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">B_fx</field>
+        <field name="group_code">fx</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="40"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+    </record>
+
+    <record id="vas_closing_rule_tt133_CIT" model="vas.closing.rule">
+        <field name="code">CIT</field>
+        <field name="name">Ghi nhận / điều chỉnh thuế TNDN (số do kế toán nhập)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">B_cit</field>
+        <field name="group_code">cit</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="60"/>
+        <field name="active" eval="True"/>
+        <field name="is_system" eval="True"/>
+    </record>
+
+    <record id="vas_closing_rule_tt133_KKDK_24" model="vas.closing.rule">
+        <field name="code">KKDK-24</field>
+        <field name="name">KKĐK: NVL/CCDC xuất sử dụng (TK Nợ theo đối tượng — nhập tay)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="rule_layer">B_costing</field>
+        <field name="group_code">costing</field>
+        <field name="timing">period_end</field>
+        <field name="sequence" eval="280"/>
+        <field name="active" eval="False"/>
+        <field name="is_system" eval="True"/>
+    </record>
+
+</odoo>

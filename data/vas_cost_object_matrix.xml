@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Whitelist nguồn nối theo loại (4.5 điều kiện 1) — khai bằng dữ liệu. -->
+    <record id="vas_cost_object_source_product" model="vas.cost.object.source.map">
+        <field name="object_type">product</field>
+        <field name="model_name">product.product</field>
+        <field name="unique_per_company" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_cost_object_source_operation" model="vas.cost.object.source.map">
+        <field name="object_type">operation</field>
+        <field name="model_name">mrp.routing.workcenter</field>
+        <field name="unique_per_company" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_cost_object_source_process" model="vas.cost.object.source.map">
+        <field name="object_type">process</field>
+        <field name="model_name">mrp.bom</field>
+        <field name="unique_per_company" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+    <!-- phân xưởng / công trình / đơn hàng / hợp đồng: không có nguồn đợt này -->
+
+    <!-- Ma trận cha–con: chỉ mở quy trình SX ← cha của công đoạn. -->
+    <record id="vas_cost_object_parent_process_operation" model="vas.cost.object.parent.matrix">
+        <field name="parent_type">process</field>
+        <field name="child_type">operation</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

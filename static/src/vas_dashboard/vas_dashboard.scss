@@ -1,0 +1,79 @@
+.o_vas_dashboard {
+    .o_vas_dash_period {
+        min-width: 10rem;
+    }
+
+    .o_vas_dash_grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .o_vas_dash_tile {
+        background: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        padding: 1rem 1.1rem;
+        min-height: 10rem;
+    }
+
+    .o_vas_dash_span2 {
+        grid-column: span 2;
+    }
+
+    .o_vas_dash_tile_title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin: 0 0 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        color: #374151;
+    }
+
+    .o_vas_dash_kv {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.2rem 0;
+        font-size: 0.95rem;
+    }
+
+    .o_vas_dash_metrics {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .o_vas_dash_chart_wrap {
+        height: 220px;
+        position: relative;
+    }
+
+    .o_vas_dash_chart_pie {
+        height: 240px;
+    }
+
+    .o_vas_dash_empty_msg {
+        margin: 0;
+        color: #6b7280;
+        font-size: 0.95rem;
+    }
+
+    .o_vas_dash_pending {
+        margin-bottom: 0;
+        line-height: 1.35;
+    }
+
+    @media (max-width: 992px) {
+        .o_vas_dash_grid {
+            grid-template-columns: 1fr;
+        }
+        .o_vas_dash_span2 {
+            grid-column: span 1;
+        }
+        .o_vas_dash_metrics {
+            grid-template-columns: 1fr;
+        }
+    }
+}

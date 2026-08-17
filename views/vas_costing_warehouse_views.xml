@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vas_costing_warehouse_config_list" model="ir.ui.view">
+        <field name="name">vas.costing.warehouse.config.list</field>
+        <field name="model">vas.costing.warehouse.config</field>
+        <field name="arch" type="xml">
+            <list string="Cấu hình kho giá thành">
+                <field name="warehouse_id"/>
+                <field name="step_mode"/>
+                <field name="posting_mode"/>
+                <field name="fg_picking_type_id"/>
+                <field name="fg_location_id"/>
+                <field name="isolation_location_id"/>
+                <field name="costing_sale_order"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_vas_costing_warehouse_config_form" model="ir.ui.view">
+        <field name="name">vas.costing.warehouse.config.form</field>
+        <field name="model">vas.costing.warehouse.config</field>
+        <field name="arch" type="xml">
+            <form string="Cấu hình kho giá thành">
+                <header>
+                    <button name="action_post_provisional_fg" type="object"
+                            string="Ghi tạm thành phẩm" class="btn-primary"
+                            invisible="posting_mode != 'immediate'"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="warehouse_id"/>
+                            <field name="step_mode"/>
+                            <field name="posting_mode"/>
+                            <field name="fg_picking_type_id"/>
+                            <field name="fg_location_id"/>
+                        </group>
+                        <group>
+                            <field name="isolation_location_id"/>
+                            <field name="costing_sale_order"/>
+                            <field name="active"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="note" placeholder="Ghi chú"/>
+                    </group>
+                    <div class="text-muted">
+                        Một bước / hai bước: ghép giá một chặng, lấy trọn.
+                        Ba bước và gia công thuê ngoài: chưa mở — không chọn được.
+                        Ghi cuối kỳ: một lần 154→155 sau duyệt.
+                        Ghi ngay: tạm theo tiền NVL (ngày nhập kho), cuối kỳ ghi bù tại ngày kết thúc kỳ.
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_vas_costing_warehouse_config" model="ir.actions.act_window">
+        <field name="name">Cấu hình kho giá thành</field>
+        <field name="res_model">vas.costing.warehouse.config</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_vas_costing_warehouse_config"
+              name="Cấu hình kho giá thành"
+              parent="menu_vas_costing_root"
+              action="action_vas_costing_warehouse_config"
+              sequence="90"/>
+
+    <record id="view_vas_allocation_run_form_fingerprint" model="ir.ui.view">
+        <field name="name">vas.allocation.run.form.fingerprint</field>
+        <field name="model">vas.allocation.run</field>
+        <field name="inherit_id" ref="view_vas_allocation_run_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_check_source_fingerprint" type="object"
+                        string="Kiểm dấu vân tay nguồn"
+                        invisible="state != 'confirmed'"/>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <group string="Hết hiệu lực nguồn" invisible="state == 'draft'">
+                    <field name="fingerprint" readonly="1"/>
+                    <field name="needs_recompute" readonly="1"/>
+                    <field name="recompute_reason" readonly="1"
+                             invisible="not needs_recompute"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_vas_costing_provisional_lot_list" model="ir.ui.view">
+        <field name="name">vas.costing.provisional.lot.list</field>
+        <field name="model">vas.costing.provisional.lot</field>
+        <field name="arch" type="xml">
+            <list string="Lô ghi tạm thành phẩm">
+                <field name="period_id"/>
+                <field name="lot_code"/>
+                <field name="product_id"/>
+                <field name="qty"/>
+                <field name="amount_provisional"/>
+                <field name="amount_official"/>
+                <field name="amount_diff"/>
+                <field name="amount_trueup_stock"/>
+                <field name="amount_trueup_cogs"/>
+                <field name="state"/>
+                <field name="move_id"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_vas_costing_provisional_lot_form" model="ir.ui.view">
+        <field name="name">vas.costing.provisional.lot.form</field>
+        <field name="model">vas.costing.provisional.lot</field>
+        <field name="arch" type="xml">
+            <form string="Lô ghi tạm">
+                <header>
+                    <button name="action_open_move" type="object"
+                            string="Mở bút toán ghi tạm"/>
+                    <button name="action_reverse_provisional" type="object"
+                            string="Đảo ghi tạm"
+                            invisible="state != 'posted'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="period_id"/>
+                            <field name="warehouse_config_id"/>
+                            <field name="cost_object_id"/>
+                            <field name="product_id"/>
+                            <field name="stock_move_id"/>
+                            <field name="lot_code"/>
+                        </group>
+                        <group>
+                            <field name="qty"/>
+                            <field name="unit_price_provisional"/>
+                            <field name="amount_provisional"/>
+                            <field name="receipt_date"/>
+                            <field name="source_kind"/>
+                            <field name="move_id"/>
+                        </group>
+                    </group>
+                    <group string="Ghi bù">
+                        <field name="amount_official"/>
+                        <field name="amount_diff"/>
+                        <field name="qty_remaining"/>
+                        <field name="qty_sold"/>
+                        <field name="amount_trueup_stock"/>
+                        <field name="amount_trueup_cogs"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

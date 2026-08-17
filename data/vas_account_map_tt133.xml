@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Nhóm sản phẩm mặc định của Odoo: khai sẵn 156/5111/632 để hành vi hiện tại
+         của engine không đổi khi bỏ hardcode. company_id để trống = áp dụng cho mọi
+         công ty dùng TT133. noupdate="1" để khách sửa xong nâng cấp module không bị đè. -->
+    <record id="vas_account_map_tt133_goods" model="vas.account.map">
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="apply_to">category</field>
+        <field name="category_id" ref="product.product_category_goods"/>
+        <field name="stock_account_id" ref="vas_account_tt133_156"/>
+        <field name="revenue_account_id" ref="vas_account_tt133_5111"/>
+        <field name="cogs_account_id" ref="vas_account_tt133_632"/>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

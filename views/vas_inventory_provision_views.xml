@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_vas_inventory_provision" model="ir.sequence">
+        <field name="name">Phiếu dự phòng HTK</field>
+        <field name="code">vas.inventory.provision</field>
+        <field name="prefix">DPHTK/%(year)s/</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="view_vas_inventory_provision_tree" model="ir.ui.view">
+        <field name="name">vas.inventory.provision.list</field>
+        <field name="model">vas.inventory.provision</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="date"/>
+                <field name="period_id"/>
+                <field name="amount_needed"/>
+                <field name="amount_delta"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_inventory_provision_form" model="ir.ui.view">
+        <field name="name">vas.inventory.provision.form</field>
+        <field name="model">vas.inventory.provision</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_refresh_book" string="Lấy giá gốc sổ" type="object"
+                            invisible="state != 'draft'"/>
+                    <button name="action_post" string="Ghi sổ" type="object"
+                            invisible="state != 'draft'" class="btn-primary"/>
+                    <button name="action_reverse" string="Đảo" type="object"
+                            invisible="state != 'posted'"/>
+                    <button name="action_cancel" string="Hủy" type="object"
+                            invisible="state != 'posted'"
+                            confirm="Hủy phiếu và đảo bút toán VAS?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="date" readonly="state != 'draft'"/>
+                            <field name="ref" readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="regime_id" readonly="state != 'draft'"/>
+                            <field name="period_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="amount_needed"/>
+                            <field name="amount_delta"/>
+                            <field name="move_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <field name="line_ids" readonly="state != 'draft'">
+                        <list editable="bottom">
+                            <field name="product_id"/>
+                            <field name="book_qty"/>
+                            <field name="book_value"/>
+                            <field name="nrv_value"/>
+                            <field name="needed"/>
+                            <field name="previous"/>
+                            <field name="delta"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_inventory_provision" model="ir.actions.act_window">
+        <field name="name">Dự phòng giảm giá HTK</field>
+        <field name="res_model">vas.inventory.provision</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_vas_inventory_provision"
+              name="Dự phòng giảm giá HTK"
+              parent="menu_vas_ops"
+              action="action_vas_inventory_provision"
+              sequence="32"/>
+</odoo>

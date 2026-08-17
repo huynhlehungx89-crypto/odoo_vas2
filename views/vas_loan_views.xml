@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- vas.loan -->
+    <record id="view_vas_loan_tree" model="ir.ui.view">
+        <field name="name">vas.loan.list</field>
+        <field name="model">vas.loan</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="date_start"/>
+                <field name="principal"/>
+                <field name="outstanding_principal"/>
+                <field name="interest_rate"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_loan_form" model="ir.ui.view">
+        <field name="name">vas.loan.form</field>
+        <field name="model">vas.loan</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_confirm" type="object" string="Xác nhận / Sinh lịch lãi"
+                            invisible="state != 'draft'" class="btn-primary"/>
+                    <button name="action_recompute_planned_amounts" type="object"
+                            string="Tính lại lãi planned"
+                            invisible="state != 'running'"/>
+                    <button name="action_generate_period_entries" type="object"
+                            string="Sinh lãi các kỳ mở"
+                            invisible="state != 'running'"/>
+                    <button name="action_cancel" type="object" string="Hủy thẻ"
+                            invisible="state in ('cancelled', 'closed')"
+                            confirm="Hủy thẻ vay: bỏ qua planned, đảo JE kỳ mở?"/>
+                    <field name="state" widget="statusbar"
+                            statusbar_visible="draft,running,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Tên khoản vay"/></h1>
+                        <h3><field name="code" placeholder="Mã"/></h3>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="principal"/>
+                            <field name="outstanding_principal"/>
+                            <field name="currency_id"/>
+                            <field name="term_type"/>
+                        </group>
+                        <group>
+                            <field name="interest_rate"/>
+                            <field name="day_count_basis"/>
+                            <field name="interest_balance_mode"/>
+                            <field name="account_loan_id"/>
+                            <field name="account_interest_expense_id"/>
+                            <field name="account_interest_payable_id"/>
+                            <field name="capitalize_interest"/>
+                            <field name="capitalize_account_id"
+                                     invisible="not capitalize_interest"/>
+                            <field name="capitalize_date_from"
+                                     invisible="not capitalize_interest"/>
+                            <field name="capitalize_date_to"
+                                     invisible="not capitalize_interest"/>
+                            <field name="journal_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="regime_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Lịch lãi">
+                            <field name="line_ids">
+                                <list>
+                                    <field name="sequence"/>
+                                    <field name="period_id"/>
+                                    <field name="date_from"/>
+                                    <field name="date_to"/>
+                                    <field name="days"/>
+                                    <field name="principal_balance"/>
+                                    <field name="amount"/>
+                                    <field name="is_capitalized"/>
+                                    <field name="state"/>
+                                    <field name="move_id"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Giải ngân trả NCC">
+                            <field name="disbursement_ids">
+                                <list>
+                                    <field name="date"/>
+                                    <field name="amount"/>
+                                    <field name="partner_id"/>
+                                    <field name="ref"/>
+                                    <field name="state"/>
+                                    <field name="move_id"/>
+                                    <button name="action_post" type="object"
+                                            string="Ghi sổ"
+                                            invisible="state != 'draft'"/>
+                                    <button name="action_cancel" type="object"
+                                            string="Đảo / Hủy"
+                                            invisible="state != 'posted'"
+                                            confirm="Đảo bút toán giải ngân?"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="date"/>
+                                        <field name="amount"/>
+                                        <field name="partner_id"/>
+                                        <field name="ref"/>
+                                        <field name="state" readonly="1"/>
+                                        <field name="move_id" readonly="1"/>
+                                    </group>
+                                    <footer>
+                                        <button name="action_post" type="object"
+                                                string="Ghi sổ" class="btn-primary"
+                                                invisible="state != 'draft'"/>
+                                        <button name="action_cancel" type="object"
+                                                string="Đảo / Hủy"
+                                                invisible="state != 'posted'"/>
+                                    </footer>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_loan" model="ir.actions.act_window">
+        <field name="name">Khoản vay</field>
+        <field name="res_model">vas.loan</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_vas_generate_loan_interest" model="ir.actions.server">
+        <field name="name">Sinh lãi vay kỳ</field>
+        <field name="model_id" ref="model_vas_period"/>
+        <field name="binding_model_id" ref="model_vas_period"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+for period in records:
+    company = period.fiscalyear_id.company_id
+    env['vas.loan'].generate_interest_entries(company, period)
+]]></field>
+    </record>
+
+    <menuitem id="menu_vas_loan"
+              name="Khoản vay"
+              parent="menu_vas_ops"
+              action="action_vas_loan"
+              sequence="60"/>
+
+    <!-- vas.profit.distribution -->
+    <record id="view_vas_profit_distribution_tree" model="ir.ui.view">
+        <field name="name">vas.profit.distribution.list</field>
+        <field name="model">vas.profit.distribution</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="date"/>
+                <field name="amount_total"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_profit_distribution_form" model="ir.ui.view">
+        <field name="name">vas.profit.distribution.form</field>
+        <field name="model">vas.profit.distribution</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_post" type="object" string="Ghi sổ"
+                            invisible="state != 'draft'" class="btn-primary"/>
+                    <button name="action_cancel" type="object" string="Hủy"
+                            invisible="state != 'posted'"/>
+                    <field name="state" widget="statusbar"
+                            statusbar_visible="draft,posted"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="date"/>
+                            <field name="period_id"/>
+                            <field name="fiscalyear_id"/>
+                            <field name="source_account_id"/>
+                            <field name="amount_total"/>
+                            <field name="ref"/>
+                        </group>
+                        <group>
+                            <field name="move_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="regime_id"/>
+                            <field name="currency_id"/>
+                        </group>
+                    </group>
+                    <field name="line_ids">
+                        <list editable="bottom">
+                            <field name="line_type"/>
+                            <field name="partner_id"/>
+                            <field name="amount_gross"/>
+                            <field name="withholding_rate"/>
+                            <field name="amount_tax"/>
+                            <field name="amount_net"/>
+                            <field name="dest_account_id"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_profit_distribution" model="ir.actions.act_window">
+        <field name="name">Phân phối LN / quỹ</field>
+        <field name="res_model">vas.profit.distribution</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_vas_profit_distribution"
+              name="Phân phối LN / quỹ"
+              parent="menu_vas_ops"
+              action="action_vas_profit_distribution"
+              sequence="70"/>
+</odoo>

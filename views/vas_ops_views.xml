@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_vas_ops_hub" model="ir.actions.client">
+        <field name="name">Tất cả nghiệp vụ</field>
+        <field name="tag">vas_ops_hub</field>
+        <field name="path">vas-ops-hub</field>
+    </record>
+
+    <record id="action_vas_ops_workflow_cash" model="ir.actions.client">
+        <field name="name">Tiền mặt</field>
+        <field name="tag">vas_ops_workflow</field>
+        <field name="path">vas-ops-cash</field>
+        <field name="context">{'vas_ops_group_code': 'cash'}</field>
+    </record>
+
+    <record id="action_vas_ops_workflow_general" model="ir.actions.client">
+        <field name="name">Tổng hợp</field>
+        <field name="tag">vas_ops_workflow</field>
+        <field name="path">vas-ops-general</field>
+        <field name="context">{'vas_ops_group_code': 'general'}</field>
+    </record>
+
+    <record id="action_vas_ops_workflow_bank" model="ir.actions.client">
+        <field name="name">Tiền gửi</field>
+        <field name="tag">vas_ops_workflow</field>
+        <field name="path">vas-ops-bank</field>
+        <field name="context">{'vas_ops_group_code': 'bank'}</field>
+    </record>
+
+    <record id="action_vas_ops_workflow_purchase" model="ir.actions.client">
+        <field name="name">Mua hàng</field>
+        <field name="tag">vas_ops_workflow</field>
+        <field name="path">vas-ops-purchase</field>
+        <field name="context">{'vas_ops_group_code': 'purchase'}</field>
+    </record>
+
+    <record id="action_vas_ops_workflow_sale" model="ir.actions.client">
+        <field name="name">Bán hàng</field>
+        <field name="tag">vas_ops_workflow</field>
+        <field name="path">vas-ops-sale</field>
+        <field name="context">{'vas_ops_group_code': 'sale'}</field>
+    </record>
+
+    <record id="action_vas_ops_workflow_stock" model="ir.actions.client">
+        <field name="name">Kho</field>
+        <field name="tag">vas_ops_workflow</field>
+        <field name="path">vas-ops-stock</field>
+        <field name="context">{'vas_ops_group_code': 'stock'}</field>
+    </record>
+
+    <record id="action_vas_ops_workflow_costing" model="ir.actions.client">
+        <field name="name">Sản xuất &amp; Giá thành</field>
+        <field name="tag">vas_ops_workflow</field>
+        <field name="path">vas-ops-costing</field>
+        <field name="context">{'vas_ops_group_code': 'costing'}</field>
+    </record>
+
+    <record id="action_vas_ops_workflow_asset" model="ir.actions.client">
+        <field name="name">Tài sản &amp; Phân bổ</field>
+        <field name="tag">vas_ops_workflow</field>
+        <field name="path">vas-ops-asset</field>
+        <field name="context">{'vas_ops_group_code': 'asset'}</field>
+    </record>
+
+    <record id="action_vas_ops_workflow_tax" model="ir.actions.client">
+        <field name="name">Thuế</field>
+        <field name="tag">vas_ops_workflow</field>
+        <field name="path">vas-ops-tax</field>
+        <field name="context">{'vas_ops_group_code': 'tax'}</field>
+    </record>
+
+    <record id="action_vas_ops_workflow_vay" model="ir.actions.client">
+        <field name="name">Vay</field>
+        <field name="tag">vas_ops_workflow</field>
+        <field name="path">vas-ops-vay</field>
+        <field name="context">{'vas_ops_group_code': 'vay'}</field>
+    </record>
+
+    <record id="action_vas_ops_workflow_von" model="ir.actions.client">
+        <field name="name">Vốn</field>
+        <field name="tag">vas_ops_workflow</field>
+        <field name="path">vas-ops-von</field>
+        <field name="context">{'vas_ops_group_code': 'von'}</field>
+    </record>
+
+    <!-- Bốn mục cấp 1 -->
+    <menuitem id="menu_vas_ops"
+              name="Nghiệp vụ"
+              parent="menu_connecta_vas_root"
+              sequence="10"/>
+
+    <menuitem id="menu_vas_ops_all"
+              name="Tất cả nghiệp vụ"
+              parent="menu_vas_ops"
+              action="action_vas_ops_hub"
+              sequence="1"/>
+
+    <menuitem id="menu_vas_ops_cash"
+              name="Tiền mặt"
+              parent="menu_vas_ops"
+              action="action_vas_ops_workflow_cash"
+              sequence="2"/>
+
+    <menuitem id="menu_vas_ops_bank"
+              name="Tiền gửi"
+              parent="menu_vas_ops"
+              action="action_vas_ops_workflow_bank"
+              sequence="3"/>
+
+    <menuitem id="menu_vas_ops_purchase"
+              name="Mua hàng"
+              parent="menu_vas_ops"
+              action="action_vas_ops_workflow_purchase"
+              sequence="4"/>
+
+    <menuitem id="menu_vas_ops_sale"
+              name="Bán hàng"
+              parent="menu_vas_ops"
+              action="action_vas_ops_workflow_sale"
+              sequence="5"/>
+
+    <menuitem id="menu_vas_ops_stock"
+              name="Kho"
+              parent="menu_vas_ops"
+              action="action_vas_ops_workflow_stock"
+              sequence="6"/>
+
+    <menuitem id="menu_vas_ops_general"
+              name="Tổng hợp"
+              parent="menu_vas_ops"
+              action="action_vas_ops_workflow_general"
+              sequence="7"/>
+
+    <menuitem id="menu_vas_ops_costing"
+              name="Sản xuất &amp; Giá thành"
+              parent="menu_vas_ops"
+              action="action_vas_ops_workflow_costing"
+              sequence="8"/>
+
+    <menuitem id="menu_vas_ops_tax"
+              name="Thuế"
+              parent="menu_vas_ops"
+              action="action_vas_ops_workflow_tax"
+              sequence="9"/>
+
+    <menuitem id="menu_vas_ops_vay"
+              name="Vay"
+              parent="menu_vas_ops"
+              action="action_vas_ops_workflow_vay"
+              sequence="10"/>
+
+    <menuitem id="menu_vas_ops_von"
+              name="Vốn"
+              parent="menu_vas_ops"
+              action="action_vas_ops_workflow_von"
+              sequence="11"/>
+</odoo>

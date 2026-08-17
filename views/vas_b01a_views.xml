@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Chỉ tiêu cấu hình (seed) -->
+    <record id="view_vas_report_line_list" model="ir.ui.view">
+        <field name="name">vas.report.line.list</field>
+        <field name="model">vas.report.line</field>
+        <field name="arch" type="xml">
+            <list string="Chỉ tiêu BCTC" create="1" delete="1">
+                <field name="sequence" widget="handle"/>
+                <field name="form_code"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="note_b09_code" optional="show"
+                         string="Thuyết minh"/>
+                <field name="line_role"/>
+                <field name="amount_source"/>
+                <field name="balance_side"/>
+                <field name="account_codes"/>
+                <field name="aggregate_by_partner" optional="show"/>
+                <field name="basis_kind"/>
+                <field name="b09_fill_kind" optional="show"/>
+                <field name="b09_gap_reason" optional="hide"/>
+                <field name="b09_table_status" optional="show"/>
+                <field name="warn_kind"/>
+                <field name="is_system"/>
+                <field name="active"/>
+                <field name="regime_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_report_line_form" model="ir.ui.view">
+        <field name="name">vas.report.line.form</field>
+        <field name="model">vas.report.line</field>
+        <field name="arch" type="xml">
+            <form string="Chỉ tiêu BCTC">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="form_code"/>
+                            <field name="regime_id"/>
+                            <field name="sequence"/>
+                            <field name="note_b09_code"
+                                     string="Thuyết minh (mã mục B09)"/>
+                            <field name="active"/>
+                            <field name="is_system" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="line_role"/>
+                            <field name="amount_source"/>
+                            <field name="turnover_mode"
+                                      invisible="amount_source != 'turnover'"/>
+                            <field name="balance_side"/>
+                            <field name="account_codes"/>
+                            <field name="source_side"
+                                      invisible="amount_source != 'turnover'"/>
+                            <field name="counterpart_account_codes"
+                                      invisible="amount_source != 'turnover' or turnover_mode != 'counterpart'"/>
+                            <field name="counterpart_side"
+                                      invisible="amount_source != 'turnover' or turnover_mode != 'counterpart'"/>
+                            <field name="counterpart_net_both_ways"
+                                      invisible="amount_source != 'turnover' or turnover_mode != 'counterpart'"/>
+                            <field name="code_custom_key"
+                                      invisible="amount_source != 'code_custom'"/>
+                            <field name="aggregate_by_partner"/>
+                            <field name="sign_negative"/>
+                            <field name="show_negative_paren"/>
+                            <field name="basis_kind"/>
+                            <field name="basis_note"/>
+                            <field name="force_zero_currency_id"/>
+                        </group>
+                    </group>
+                    <group string="Phân loại B09" invisible="form_code != 'B09-DNN'">
+                        <field name="b09_fill_kind"/>
+                        <field name="b09_gap_reason"/>
+                        <field name="b09_table_status"/>
+                        <field name="b09_table_status_note"/>
+                    </group>
+                    <group string="Cảnh báo">
+                        <field name="warn_kind"/>
+                        <field name="warn_account_codes"/>
+                        <field name="warn_message"/>
+                    </group>
+                    <group string="Chỉ tiêu con">
+                        <field name="child_line_ids" nolabel="1" widget="many2many_tags"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_report_line" model="ir.actions.act_window">
+        <field name="name">Chỉ tiêu báo cáo tài chính</field>
+        <field name="res_model">vas.report.line</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_form_code': 'B01a-DNN'}</field>
+    </record>
+
+    <!-- Bản đã lập -->
+    <record id="view_vas_report_snapshot_list" model="ir.ui.view">
+        <field name="name">vas.report.snapshot.list</field>
+        <field name="model">vas.report.snapshot</field>
+        <field name="arch" type="xml">
+            <list string="Bản BCTC đã lập" create="0" delete="1">
+                <field name="name"/>
+                <field name="form_code"/>
+                <field name="company_id"/>
+                <field name="period_from_id"/>
+                <field name="period_to_id"/>
+                <field name="date_computed"/>
+                <field name="user_id"/>
+                <field name="is_submitted"/>
+                <field name="ledger_changed"/>
+                <button name="action_open_view" type="object" string="Xem"
+                        class="btn-link" icon="fa-eye"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_report_snapshot_form" model="ir.ui.view">
+        <field name="name">vas.report.snapshot.form</field>
+        <field name="model">vas.report.snapshot</field>
+        <field name="arch" type="xml">
+            <form string="Bản BCTC đã lập" create="0">
+                <header>
+                    <button name="action_open_view" type="object" string="Xem báo cáo"
+                            class="btn-primary"/>
+                    <button name="action_regenerate" type="object" string="Lập lại"
+                            invisible="is_submitted"/>
+                    <button name="action_mark_submitted" type="object" string="Đánh dấu đã nộp"
+                            invisible="is_submitted"
+                            confirm="Sau khi nộp không sửa/xóa được bản này. Tiếp tục?"/>
+                    <field name="is_submitted" widget="boolean_toggle" readonly="1"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-warning" role="alert" invisible="not ledger_changed">
+                        <field name="ledger_stale_message" nolabel="1"/>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="form_code"/>
+                            <field name="company_id"/>
+                            <field name="regime_id"/>
+                        </group>
+                        <group>
+                            <field name="period_from_id"/>
+                            <field name="period_to_id"/>
+                            <field name="date_computed"/>
+                            <field name="user_id"/>
+                            <field name="hide_reversed"/>
+                            <field name="currency_id"/>
+                            <field name="ledger_changed"/>
+                        </group>
+                    </group>
+                    <group string="Cảnh báo lúc lập" invisible="not warning_text">
+                        <field name="warning_level"/>
+                        <field name="warning_text" nolabel="1"/>
+                        <field name="imbalance_200_500"/>
+                    </group>
+                    <notebook>
+                        <page string="Chỉ tiêu">
+                            <field name="line_ids" nolabel="1" readonly="1">
+                                <list create="0" delete="0" edit="0" limit="10000">
+                                    <field name="sequence" optional="hide"/>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="note_b09_code" optional="show"
+                                             string="Thuyết minh"/>
+                                    <field name="line_role"/>
+                                    <field name="b09_fill_kind" optional="show"/>
+                                    <field name="b09_value_source" optional="show"/>
+                                    <field name="b09_is_confirmed" optional="hide"/>
+                                    <field name="b09_is_from_prior" optional="hide"/>
+                                    <field name="b09_gap_reason" optional="hide"/>
+                                    <field name="b09_table_status" optional="show"/>
+                                    <field name="b09_table_status_note" optional="hide"/>
+                                    <field name="b09_text_value" optional="show"/>
+                                    <field name="amount_opening"/>
+                                    <field name="amount_closing"/>
+                                    <field name="is_na_opening" optional="hide"/>
+                                    <field name="is_na_closing" optional="hide"/>
+                                    <field name="aggregate_by_partner" optional="show"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_vas_report_snapshot_line_form" model="ir.ui.view">
+        <field name="name">vas.report.snapshot.line.form</field>
+        <field name="model">vas.report.snapshot.line</field>
+        <field name="arch" type="xml">
+            <form string="Chi tiết chỉ tiêu đã lập" create="0" delete="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="line_role"/>
+                            <field name="aggregate_by_partner"/>
+                        </group>
+                        <group>
+                            <field name="amount_opening"/>
+                            <field name="amount_closing"/>
+                            <field name="is_na_opening"/>
+                            <field name="is_na_closing"/>
+                        </group>
+                    </group>
+                    <group string="Phân loại / trạng thái B09">
+                        <field name="b09_fill_kind"/>
+                        <field name="b09_value_source"/>
+                        <field name="b09_is_confirmed"/>
+                        <field name="b09_is_from_prior"/>
+                        <field name="b09_gap_reason"/>
+                        <field name="b09_table_status"/>
+                        <field name="b09_table_status_note"/>
+                        <field name="b09_text_value"/>
+                        <field name="b09_table_json"/>
+                    </group>
+                    <group string="Gồm những gì (đã lưu — không tính lại)">
+                        <field name="detail_ids" nolabel="1" readonly="1">
+                            <list create="0" delete="0" edit="0" limit="10000">
+                                <field name="account_code"/>
+                                <field name="account_id"/>
+                                <field name="partner_id"/>
+                                <field name="amount_opening"/>
+                                <field name="amount_closing"/>
+                            </list>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Wizard lập mới -->
+    <record id="view_vas_b01a_wizard_form" model="ir.ui.view">
+        <field name="name">vas.b01a.wizard.form</field>
+        <field name="model">vas.b01a.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Lập Bảng cân đối kế toán (B01a)">
+                <group>
+                    <field name="company_id"/>
+                    <field name="regime_id"/>
+                    <field name="period_from_id"
+                              domain="[('fiscalyear_id.company_id', '=', company_id)]"/>
+                    <field name="period_to_id"
+                              domain="[('fiscalyear_id.company_id', '=', company_id)]"/>
+                    <field name="hide_reversed"/>
+                </group>
+                <footer>
+                    <button name="action_generate" type="object" string="Lập báo cáo"
+                            class="btn-primary"/>
+                    <button string="Hủy" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_b01a_generate" model="ir.actions.act_window">
+        <field name="name">Lập B01a</field>
+        <field name="res_model">vas.b01a.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="action_vas_b01a_snapshots" model="ir.actions.act_window">
+        <field name="name">Bản B01a đã lập</field>
+        <field name="res_model">vas.report.snapshot</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('form_code', '=', 'B01a-DNN')]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="action_vas_b01a_client" model="ir.actions.client">
+        <field name="name">Bảng cân đối kế toán</field>
+        <field name="tag">vas_report_client</field>
+        <field name="path">vas-b01a</field>
+        <field name="context">{
+            'report_model': 'vas.b01a.wizard',
+            'report_title': 'Bảng cân đối kế toán',
+        }</field>
+    </record>
+
+    <menuitem id="menu_vas_b01a"
+              name="Bảng cân đối kế toán (B01a)"
+              parent="menu_vas_books"
+              action="action_vas_b01a_client"
+              sequence="30"/>
+
+    <menuitem id="menu_vas_b01a_generate"
+              name="Lập B01a mới"
+              parent="menu_vas_books"
+              action="action_vas_b01a_generate"
+              sequence="31"/>
+
+    <menuitem id="menu_vas_b01a_snapshots"
+              name="Bản B01a đã lập"
+              parent="menu_vas_books"
+              action="action_vas_b01a_snapshots"
+              sequence="32"/>
+
+    <menuitem id="menu_vas_report_line"
+              name="Chỉ tiêu BCTC"
+              parent="menu_vas_catalog_root"
+              action="action_vas_report_line"
+              sequence="40"
+              groups="base.group_system"/>
+</odoo>

@@ -1,0 +1,920 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ===== Nhóm ===== -->
+        <record id="vas_ops_group_cash" model="vas.ops.group">
+            <field name="code">cash</field>
+            <field name="name">Tiền mặt</field>
+            <field name="icon">fa-money</field>
+            <field name="sequence">10</field>
+            <field name="screen_kind">hub</field>
+            <field name="state">ready</field>
+        </record>
+        <record id="vas_ops_group_general" model="vas.ops.group">
+            <field name="code">general</field>
+            <field name="name">Tổng hợp</field>
+            <field name="icon">fa-sitemap</field>
+            <field name="sequence">20</field>
+            <field name="screen_kind">workflow</field>
+            <field name="state">ready</field>
+        </record>
+        <record id="vas_ops_group_bank" model="vas.ops.group">
+            <field name="code">bank</field>
+            <field name="name">Tiền gửi</field>
+            <field name="icon">fa-university</field>
+            <field name="sequence">30</field>
+            <field name="screen_kind">hub</field>
+            <field name="state">ready</field>
+        </record>
+        <record id="vas_ops_group_purchase" model="vas.ops.group">
+            <field name="code">purchase</field>
+            <field name="name">Mua hàng</field>
+            <field name="icon">fa-shopping-cart</field>
+            <field name="sequence">40</field>
+            <field name="screen_kind">workflow</field>
+            <field name="state">ready</field>
+        </record>
+        <record id="vas_ops_group_sale" model="vas.ops.group">
+            <field name="code">sale</field>
+            <field name="name">Bán hàng</field>
+            <field name="icon">fa-tags</field>
+            <field name="sequence">50</field>
+            <field name="screen_kind">workflow</field>
+            <field name="state">ready</field>
+        </record>
+        <record id="vas_ops_group_stock" model="vas.ops.group">
+            <field name="code">stock</field>
+            <field name="name">Kho</field>
+            <field name="icon">fa-cubes</field>
+            <field name="sequence">60</field>
+            <field name="screen_kind">hub</field>
+            <field name="state">ready</field>
+        </record>
+        <record id="vas_ops_group_ar_ap" model="vas.ops.group">
+            <field name="code">ar_ap</field>
+            <field name="name">Công nợ</field>
+            <field name="icon">fa-exchange</field>
+            <field name="sequence">70</field>
+            <field name="screen_kind">hub</field>
+            <field name="state">ready</field>
+        </record>
+
+        <!-- ===== Công nợ — hub ===== -->
+        <record id="vas_ops_btn_arap_aging_ar" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_ar_ap"/>
+            <field name="zone">process</field>
+            <field name="label">Tuổi nợ phải thu</field>
+            <field name="icon">fa-clock-o</field>
+            <field name="row">1</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">connecta_vas.action_vas_debt_aging_ar</field>
+        </record>
+        <record id="vas_ops_btn_arap_aging_ap" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_ar_ap"/>
+            <field name="zone">process</field>
+            <field name="label">Tuổi nợ phải trả</field>
+            <field name="icon">fa-clock-o</field>
+            <field name="row">1</field>
+            <field name="sequence">20</field>
+            <field name="action_xmlid">connecta_vas.action_vas_debt_aging_ap</field>
+        </record>
+        <record id="vas_ops_btn_arap_offset" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_ar_ap"/>
+            <field name="zone">process</field>
+            <field name="label">Bù trừ công nợ</field>
+            <field name="icon">fa-exchange</field>
+            <field name="row">1</field>
+            <field name="sequence">30</field>
+            <field name="action_xmlid">connecta_vas.action_vas_debt_offset</field>
+        </record>
+        <record id="vas_ops_btn_arap_cat_customer" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_ar_ap"/>
+            <field name="zone">catalog</field>
+            <field name="label">Khách hàng</field>
+            <field name="icon">fa-user</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">account.res_partner_action_customer</field>
+        </record>
+        <record id="vas_ops_btn_arap_cat_supplier" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_ar_ap"/>
+            <field name="zone">catalog</field>
+            <field name="label">Nhà cung cấp</field>
+            <field name="icon">fa-truck</field>
+            <field name="sequence">20</field>
+            <field name="action_xmlid">account.res_partner_action_supplier</field>
+        </record>
+        <record id="vas_ops_btn_arap_rep_ledger" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_ar_ap"/>
+            <field name="zone">report</field>
+            <field name="label">Sổ chi tiết S12</field>
+            <field name="icon">fa-book</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">connecta_vas.action_vas_account_ledger_client</field>
+        </record>
+        <record id="vas_ops_group_asset" model="vas.ops.group">
+            <field name="code">asset</field>
+            <field name="name">Tài sản &amp; Phân bổ</field>
+            <field name="icon">fa-building</field>
+            <field name="sequence">80</field>
+            <field name="screen_kind">workflow</field>
+            <field name="state">ready</field>
+        </record>
+        <record id="vas_ops_group_tax" model="vas.ops.group">
+            <field name="code">tax</field>
+            <field name="name">Thuế</field>
+            <field name="icon">fa-percent</field>
+            <field name="sequence">90</field>
+            <field name="screen_kind">workflow</field>
+            <field name="state">ready</field>
+        </record>
+        <record id="vas_ops_group_loan" model="vas.ops.group">
+            <field name="code">vay</field>
+            <field name="name">Vay</field>
+            <field name="icon">fa-handshake-o</field>
+            <field name="sequence">100</field>
+            <field name="screen_kind">workflow</field>
+            <field name="state">ready</field>
+        </record>
+        <record id="vas_ops_group_von" model="vas.ops.group">
+            <field name="code">von</field>
+            <field name="name">Vốn</field>
+            <field name="icon">fa-pie-chart</field>
+            <field name="sequence">105</field>
+            <field name="screen_kind">hub</field>
+            <field name="state">ready</field>
+        </record>
+        <record id="vas_ops_group_books" model="vas.ops.group">
+            <field name="code">books</field>
+            <field name="name">Sổ &amp; Báo cáo</field>
+            <field name="icon">fa-book</field>
+            <field name="sequence">110</field>
+            <field name="screen_kind">hub</field>
+            <field name="state">temp</field>
+            <field name="temp_action_xmlid">connecta_vas.action_vas_trial_balance_client</field>
+        </record>
+        <record id="vas_ops_group_catalog" model="vas.ops.group">
+            <field name="code">catalog</field>
+            <field name="name">Danh mục &amp; Số dư đầu kỳ</field>
+            <field name="icon">fa-list-alt</field>
+            <field name="sequence">120</field>
+            <field name="screen_kind">hub</field>
+            <field name="state">temp</field>
+            <field name="temp_action_xmlid">connecta_vas.action_vas_opening_balance</field>
+        </record>
+        <record id="vas_ops_group_costing" model="vas.ops.group">
+            <field name="code">costing</field>
+            <field name="name">Sản xuất &amp; Giá thành</field>
+            <field name="icon">fa-industry</field>
+            <field name="sequence">130</field>
+            <field name="screen_kind">workflow</field>
+            <field name="state">ready</field>
+        </record>
+        <record id="vas_ops_group_payroll" model="vas.ops.group">
+            <field name="code">payroll</field>
+            <field name="name">Tiền lương</field>
+            <field name="icon">fa-users</field>
+            <field name="sequence">140</field>
+            <field name="screen_kind">hub</field>
+            <field name="state">module</field>
+            <field name="required_module">hr_payroll</field>
+            <field name="temp_action_xmlid">hr_payroll.action_view_hr_payslip_month_form</field>
+        </record>
+
+        <!-- ===== Tiền mặt — hub ===== -->
+        <record id="vas_ops_btn_cash_in" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_cash"/>
+            <field name="zone">process</field>
+            <field name="label">Thu tiền</field>
+            <field name="icon">fa-sign-in</field>
+            <field name="row">1</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">account.action_account_payments</field>
+        </record>
+        <record id="vas_ops_btn_cash_out" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_cash"/>
+            <field name="zone">process</field>
+            <field name="label">Chi tiền</field>
+            <field name="icon">fa-sign-out</field>
+            <field name="row">1</field>
+            <field name="sequence">20</field>
+            <field name="action_xmlid">account.action_account_payments_payable</field>
+        </record>
+        <record id="vas_ops_btn_cash_deposit_out" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_cash"/>
+            <field name="zone">process</field>
+            <field name="label">Ký quỹ mang đi</field>
+            <field name="icon">fa-suitcase</field>
+            <field name="row">1</field>
+            <field name="sequence">30</field>
+            <field name="action_xmlid">connecta_vas.action_vas_payment_deposit_out</field>
+        </record>
+        <record id="vas_ops_btn_cash_deposit_in" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_cash"/>
+            <field name="zone">process</field>
+            <field name="label">Nhận ký quỹ</field>
+            <field name="icon">fa-inbox</field>
+            <field name="row">1</field>
+            <field name="sequence">40</field>
+            <field name="action_xmlid">connecta_vas.action_vas_payment_deposit_in</field>
+        </record>
+        <record id="vas_ops_btn_cash_cat_customer" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_cash"/>
+            <field name="zone">catalog</field>
+            <field name="label">Khách hàng</field>
+            <field name="icon">fa-user</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">account.res_partner_action_customer</field>
+        </record>
+        <record id="vas_ops_btn_cash_cat_supplier" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_cash"/>
+            <field name="zone">catalog</field>
+            <field name="label">Nhà cung cấp</field>
+            <field name="icon">fa-truck</field>
+            <field name="sequence">20</field>
+            <field name="action_xmlid">account.res_partner_action_supplier</field>
+        </record>
+        <record id="vas_ops_btn_cash_cat_employee" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_cash"/>
+            <field name="zone">catalog</field>
+            <field name="label">Nhân viên</field>
+            <field name="icon">fa-id-badge</field>
+            <field name="sequence">30</field>
+            <field name="action_xmlid">hr.open_view_employee_list_my</field>
+        </record>
+        <record id="vas_ops_btn_cash_cat_journal" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_cash"/>
+            <field name="zone">catalog</field>
+            <field name="label">Sổ nhật ký</field>
+            <field name="icon">fa-book</field>
+            <field name="sequence">40</field>
+            <field name="action_xmlid">connecta_vas.action_vas_journal</field>
+        </record>
+        <!-- Báo cáo sổ 111: không mở thẳng được TK 111 — bỏ theo đo, không seed -->
+
+        <!-- ===== Tổng hợp — workflow 4 bước ===== -->
+        <record id="vas_ops_btn_gen_move" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_general"/>
+            <field name="zone">process</field>
+            <field name="label">Chứng từ nghiệp vụ khác</field>
+            <field name="icon">fa-file-text-o</field>
+            <field name="row">1</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">connecta_vas.action_vas_move</field>
+        </record>
+        <record id="vas_ops_btn_gen_closing" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_general"/>
+            <field name="zone">process</field>
+            <field name="label">Kết chuyển cuối kỳ</field>
+            <field name="icon">fa-random</field>
+            <field name="row">1</field>
+            <field name="sequence">20</field>
+            <field name="action_xmlid">connecta_vas.action_vas_closing_entry</field>
+        </record>
+        <record id="vas_ops_btn_gen_lock" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_general"/>
+            <field name="zone">process</field>
+            <field name="label">Khóa sổ kỳ</field>
+            <field name="icon">fa-lock</field>
+            <field name="row">1</field>
+            <field name="sequence">30</field>
+            <field name="action_xmlid">connecta_vas.action_vas_period</field>
+        </record>
+        <record id="vas_ops_btn_gen_fs_parent" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_general"/>
+            <field name="zone">process</field>
+            <field name="label">Lập báo cáo tài chính</field>
+            <field name="icon">fa-bar-chart</field>
+            <field name="row">1</field>
+            <field name="sequence">40</field>
+            <field name="action_xmlid" eval="False"/>
+        </record>
+        <record id="vas_ops_btn_gen_b01a" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_general"/>
+            <field name="zone">process</field>
+            <field name="label">Lập B01a</field>
+            <field name="icon">fa-file-o</field>
+            <field name="sequence">41</field>
+            <field name="parent_id" ref="vas_ops_btn_gen_fs_parent"/>
+            <field name="action_xmlid">connecta_vas.action_vas_b01a_generate</field>
+        </record>
+        <record id="vas_ops_btn_gen_b02" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_general"/>
+            <field name="zone">process</field>
+            <field name="label">Lập B02</field>
+            <field name="icon">fa-file-o</field>
+            <field name="sequence">42</field>
+            <field name="parent_id" ref="vas_ops_btn_gen_fs_parent"/>
+            <field name="action_xmlid">connecta_vas.action_vas_b02_generate</field>
+        </record>
+        <record id="vas_ops_btn_gen_b03" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_general"/>
+            <field name="zone">process</field>
+            <field name="label">Lập B03</field>
+            <field name="icon">fa-file-o</field>
+            <field name="sequence">43</field>
+            <field name="parent_id" ref="vas_ops_btn_gen_fs_parent"/>
+            <field name="action_xmlid">connecta_vas.action_vas_b03_generate</field>
+        </record>
+        <record id="vas_ops_btn_gen_b09" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_general"/>
+            <field name="zone">process</field>
+            <field name="label">Lập B09</field>
+            <field name="icon">fa-file-o</field>
+            <field name="sequence">44</field>
+            <field name="parent_id" ref="vas_ops_btn_gen_fs_parent"/>
+            <field name="action_xmlid">connecta_vas.action_vas_b09_generate</field>
+        </record>
+        <!-- Chuỗi thẳng next M2M -->
+        <record id="vas_ops_btn_gen_move" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_gen_closing'))]"/>
+        </record>
+        <record id="vas_ops_btn_gen_closing" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_gen_lock'))]"/>
+        </record>
+        <record id="vas_ops_btn_gen_lock" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_gen_fs_parent'))]"/>
+        </record>
+
+        <record id="vas_ops_btn_gen_cat_account" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_general"/>
+            <field name="zone">catalog</field>
+            <field name="label">Danh mục tài khoản</field>
+            <field name="icon">fa-list</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">connecta_vas.action_vas_account</field>
+        </record>
+        <record id="vas_ops_btn_gen_cat_closing_rule" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_general"/>
+            <field name="zone">catalog</field>
+            <field name="label">Quy tắc kết chuyển</field>
+            <field name="icon">fa-cogs</field>
+            <field name="sequence">20</field>
+            <field name="action_xmlid">connecta_vas.action_vas_closing_rule</field>
+        </record>
+        <record id="vas_ops_btn_gen_cat_report_line" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_general"/>
+            <field name="zone">catalog</field>
+            <field name="label">Chỉ tiêu BCTC</field>
+            <field name="icon">fa-table</field>
+            <field name="sequence">30</field>
+            <field name="action_xmlid">connecta_vas.action_vas_report_line</field>
+        </record>
+        <record id="vas_ops_btn_gen_rep_f01" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_general"/>
+            <field name="zone">report</field>
+            <field name="label">F01</field>
+            <field name="icon">fa-balance-scale</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">connecta_vas.action_vas_trial_balance_client</field>
+        </record>
+        <record id="vas_ops_btn_gen_rep_ledger" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_general"/>
+            <field name="zone">report</field>
+            <field name="label">Sổ chi tiết tài khoản</field>
+            <field name="icon">fa-book</field>
+            <field name="sequence">20</field>
+            <field name="action_xmlid">connecta_vas.action_vas_account_ledger_client</field>
+        </record>
+
+        <!-- ===== Bán hàng — chuỗi 5 + ô rời trả lại ===== -->
+        <record id="vas_ops_btn_sale_quote" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_sale"/>
+            <field name="zone">process</field>
+            <field name="label">Báo giá</field>
+            <field name="icon">fa-file-o</field>
+            <field name="row">1</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">sale.action_quotations</field>
+        </record>
+        <record id="vas_ops_btn_sale_order" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_sale"/>
+            <field name="zone">process</field>
+            <field name="label">Đơn bán hàng</field>
+            <field name="icon">fa-shopping-bag</field>
+            <field name="row">1</field>
+            <field name="sequence">20</field>
+            <field name="action_xmlid">sale.action_orders</field>
+        </record>
+        <record id="vas_ops_btn_sale_delivery" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_sale"/>
+            <field name="zone">process</field>
+            <field name="label">Xuất kho</field>
+            <field name="icon">fa-truck</field>
+            <field name="row">1</field>
+            <field name="sequence">30</field>
+            <field name="action_xmlid">stock.action_picking_tree_outgoing</field>
+        </record>
+        <record id="vas_ops_btn_sale_invoice" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_sale"/>
+            <field name="zone">process</field>
+            <field name="label">Hóa đơn bán</field>
+            <field name="icon">fa-file-text-o</field>
+            <field name="row">1</field>
+            <field name="sequence">40</field>
+            <field name="action_xmlid">account.action_move_out_invoice_type</field>
+        </record>
+        <record id="vas_ops_btn_sale_payment" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_sale"/>
+            <field name="zone">process</field>
+            <field name="label">Thu tiền</field>
+            <field name="icon">fa-sign-in</field>
+            <field name="row">1</field>
+            <field name="sequence">50</field>
+            <field name="action_xmlid">account.action_account_payments</field>
+        </record>
+        <record id="vas_ops_btn_sale_return" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_sale"/>
+            <field name="zone">process</field>
+            <field name="label">Trả lại hàng bán</field>
+            <field name="icon">fa-undo</field>
+            <field name="row">2</field>
+            <field name="sequence">90</field>
+            <field name="action_xmlid">account.action_move_out_refund_type</field>
+        </record>
+        <record id="vas_ops_btn_sale_quote" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_sale_order'))]"/>
+        </record>
+        <record id="vas_ops_btn_sale_order" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_sale_delivery'))]"/>
+        </record>
+        <record id="vas_ops_btn_sale_delivery" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_sale_invoice'))]"/>
+        </record>
+        <record id="vas_ops_btn_sale_invoice" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_sale_payment'))]"/>
+        </record>
+        <record id="vas_ops_btn_sale_cat_customer" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_sale"/>
+            <field name="zone">catalog</field>
+            <field name="label">Khách hàng</field>
+            <field name="icon">fa-user</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">account.res_partner_action_customer</field>
+        </record>
+        <record id="vas_ops_btn_sale_cat_product" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_sale"/>
+            <field name="zone">catalog</field>
+            <field name="label">Sản phẩm</field>
+            <field name="icon">fa-cube</field>
+            <field name="sequence">20</field>
+            <field name="action_xmlid">product.product_template_action</field>
+        </record>
+        <!-- Báo cáo bán hàng / công nợ phải thu: VAS chưa có màn riêng — để trống -->
+
+        <!-- ===== Mua hàng — chuỗi 4; trả lại hàng mua BỎ (chỉ wizard phiếu kho) ===== -->
+        <record id="vas_ops_btn_pur_order" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_purchase"/>
+            <field name="zone">process</field>
+            <field name="label">Đơn mua hàng</field>
+            <field name="icon">fa-shopping-cart</field>
+            <field name="row">1</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">purchase.purchase_form_action</field>
+        </record>
+        <record id="vas_ops_btn_pur_receipt" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_purchase"/>
+            <field name="zone">process</field>
+            <field name="label">Nhận hàng</field>
+            <field name="icon">fa-download</field>
+            <field name="row">1</field>
+            <field name="sequence">20</field>
+            <field name="action_xmlid">stock.action_picking_tree_incoming</field>
+        </record>
+        <record id="vas_ops_btn_pur_bill" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_purchase"/>
+            <field name="zone">process</field>
+            <field name="label">Nhận hóa đơn</field>
+            <field name="icon">fa-file-text-o</field>
+            <field name="row">1</field>
+            <field name="sequence">30</field>
+            <field name="action_xmlid">account.action_move_in_invoice_type</field>
+        </record>
+        <record id="vas_ops_btn_pur_payment" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_purchase"/>
+            <field name="zone">process</field>
+            <field name="label">Trả tiền</field>
+            <field name="icon">fa-sign-out</field>
+            <field name="row">1</field>
+            <field name="sequence">40</field>
+            <field name="action_xmlid">account.action_account_payments_payable</field>
+        </record>
+        <record id="vas_ops_btn_pur_order" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_pur_receipt'))]"/>
+        </record>
+        <record id="vas_ops_btn_pur_receipt" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_pur_bill'))]"/>
+        </record>
+        <record id="vas_ops_btn_pur_bill" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_pur_payment'))]"/>
+        </record>
+        <record id="vas_ops_btn_pur_cat_supplier" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_purchase"/>
+            <field name="zone">catalog</field>
+            <field name="label">Nhà cung cấp</field>
+            <field name="icon">fa-truck</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">account.res_partner_action_supplier</field>
+        </record>
+        <record id="vas_ops_btn_pur_cat_product" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_purchase"/>
+            <field name="zone">catalog</field>
+            <field name="label">Sản phẩm</field>
+            <field name="icon">fa-cube</field>
+            <field name="sequence">20</field>
+            <field name="action_xmlid">product.product_template_action</field>
+        </record>
+
+        <!-- ===== Kho — hub, ô rời ===== -->
+        <record id="vas_ops_btn_stock_in" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_stock"/>
+            <field name="zone">process</field>
+            <field name="label">Nhập kho</field>
+            <field name="icon">fa-download</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">stock.action_picking_tree_incoming</field>
+        </record>
+        <record id="vas_ops_btn_stock_out" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_stock"/>
+            <field name="zone">process</field>
+            <field name="label">Xuất kho</field>
+            <field name="icon">fa-upload</field>
+            <field name="sequence">20</field>
+            <field name="action_xmlid">stock.action_picking_tree_outgoing</field>
+        </record>
+        <record id="vas_ops_btn_stock_internal" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_stock"/>
+            <field name="zone">process</field>
+            <field name="label">Chuyển kho</field>
+            <field name="icon">fa-exchange</field>
+            <field name="sequence">30</field>
+            <field name="action_xmlid">stock.action_picking_tree_internal</field>
+        </record>
+        <record id="vas_ops_btn_stock_inventory" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_stock"/>
+            <field name="zone">process</field>
+            <field name="label">Kiểm kê kho</field>
+            <field name="icon">fa-check-square-o</field>
+            <field name="sequence">40</field>
+            <field name="action_xmlid">stock.action_view_inventory_tree</field>
+        </record>
+        <record id="vas_ops_btn_stock_cat_product" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_stock"/>
+            <field name="zone">catalog</field>
+            <field name="label">Sản phẩm</field>
+            <field name="icon">fa-cube</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">product.product_template_action</field>
+        </record>
+        <record id="vas_ops_btn_stock_cat_wh" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_stock"/>
+            <field name="zone">catalog</field>
+            <field name="label">Kho</field>
+            <field name="icon">fa-home</field>
+            <field name="sequence">20</field>
+            <field name="action_xmlid">stock.action_warehouse_form</field>
+        </record>
+
+        <!-- ===== Tiền gửi — hub ===== -->
+        <record id="vas_ops_btn_bank_in" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_bank"/>
+            <field name="zone">process</field>
+            <field name="label">Thu tiền</field>
+            <field name="icon">fa-sign-in</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">account.action_account_payments</field>
+        </record>
+        <record id="vas_ops_btn_bank_out" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_bank"/>
+            <field name="zone">process</field>
+            <field name="label">Chi tiền</field>
+            <field name="icon">fa-sign-out</field>
+            <field name="sequence">20</field>
+            <field name="action_xmlid">account.action_account_payments_payable</field>
+        </record>
+        <record id="vas_ops_btn_bank_transfer" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_bank"/>
+            <field name="zone">process</field>
+            <field name="label">Chuyển quỹ nội bộ</field>
+            <field name="icon">fa-exchange</field>
+            <field name="sequence">30</field>
+            <field name="action_xmlid">connecta_vas.action_vas_payment_internal_transfer</field>
+        </record>
+        <record id="vas_ops_btn_bank_reconcile" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_bank"/>
+            <field name="zone">process</field>
+            <field name="label">Đối chiếu ngân hàng</field>
+            <field name="icon">fa-balance-scale</field>
+            <field name="sequence">40</field>
+            <field name="action_xmlid">account_accountant.action_bank_statement_line_transactions</field>
+        </record>
+        <record id="vas_ops_btn_bank_cat_customer" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_bank"/>
+            <field name="zone">catalog</field>
+            <field name="label">Khách hàng</field>
+            <field name="icon">fa-user</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">account.res_partner_action_customer</field>
+        </record>
+        <record id="vas_ops_btn_bank_cat_supplier" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_bank"/>
+            <field name="zone">catalog</field>
+            <field name="label">Nhà cung cấp</field>
+            <field name="icon">fa-truck</field>
+            <field name="sequence">20</field>
+            <field name="action_xmlid">account.res_partner_action_supplier</field>
+        </record>
+        <record id="vas_ops_btn_bank_cat_bank" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_bank"/>
+            <field name="zone">catalog</field>
+            <field name="label">Tài khoản ngân hàng</field>
+            <field name="icon">fa-university</field>
+            <field name="sequence">30</field>
+            <field name="action_xmlid">base.action_res_partner_bank_account_form</field>
+        </record>
+
+        <!-- ===== Giá thành — chuỗi 8 (vượt định mức TRƯỚC tính, theo engine) ===== -->
+        <record id="vas_ops_btn_cost_opening" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_costing"/>
+            <field name="zone">process</field>
+            <field name="label">Dở dang đầu kỳ</field>
+            <field name="icon">fa-play</field>
+            <field name="row">1</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">connecta_vas.action_vas_opening_wip</field>
+        </record>
+        <record id="vas_ops_btn_cost_period" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_costing"/>
+            <field name="zone">process</field>
+            <field name="label">Tạo kỳ tính giá thành</field>
+            <field name="icon">fa-calendar</field>
+            <field name="row">1</field>
+            <field name="sequence">20</field>
+            <field name="action_xmlid">connecta_vas.action_vas_costing_period</field>
+        </record>
+        <record id="vas_ops_btn_cost_alloc" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_costing"/>
+            <field name="zone">process</field>
+            <field name="label">Lượt phân bổ chi phí chung</field>
+            <field name="icon">fa-share-alt</field>
+            <field name="row">1</field>
+            <field name="sequence">30</field>
+            <field name="action_xmlid">connecta_vas.action_vas_allocation_run</field>
+        </record>
+        <record id="vas_ops_btn_cost_closing" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_costing"/>
+            <field name="zone">process</field>
+            <field name="label">Dở dang cuối kỳ</field>
+            <field name="icon">fa-pause</field>
+            <field name="row">1</field>
+            <field name="sequence">40</field>
+            <field name="action_xmlid">connecta_vas.action_vas_closing_wip</field>
+        </record>
+        <record id="vas_ops_btn_cost_variance" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_costing"/>
+            <field name="zone">process</field>
+            <field name="label">Xử lý vượt định mức</field>
+            <field name="icon">fa-exclamation-triangle</field>
+            <field name="row">1</field>
+            <field name="sequence">50</field>
+            <field name="action_xmlid">connecta_vas.action_vas_variance_sheet</field>
+        </record>
+        <record id="vas_ops_btn_cost_compute" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_costing"/>
+            <field name="zone">process</field>
+            <field name="label">Tính giá thành</field>
+            <field name="icon">fa-calculator</field>
+            <field name="row">1</field>
+            <field name="sequence">60</field>
+            <field name="action_xmlid">connecta_vas.action_vas_costing_period</field>
+        </record>
+        <record id="vas_ops_btn_cost_fg" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_costing"/>
+            <field name="zone">process</field>
+            <field name="label">Nhập kho thành phẩm</field>
+            <field name="icon">fa-industry</field>
+            <field name="row">1</field>
+            <field name="sequence">70</field>
+            <field name="action_xmlid">connecta_vas.action_vas_costing_period</field>
+        </record>
+        <record id="vas_ops_btn_cost_s18" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_costing"/>
+            <field name="zone">process</field>
+            <field name="label">Thẻ tính giá thành S18-DNN</field>
+            <field name="icon">fa-table</field>
+            <field name="row">1</field>
+            <field name="sequence">80</field>
+            <field name="action_xmlid">connecta_vas.action_vas_costing_period</field>
+        </record>
+        <record id="vas_ops_btn_cost_opening" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_cost_period'))]"/>
+        </record>
+        <record id="vas_ops_btn_cost_period" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_cost_alloc'))]"/>
+        </record>
+        <record id="vas_ops_btn_cost_alloc" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_cost_closing'))]"/>
+        </record>
+        <record id="vas_ops_btn_cost_closing" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_cost_variance'))]"/>
+        </record>
+        <record id="vas_ops_btn_cost_variance" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_cost_compute'))]"/>
+        </record>
+        <record id="vas_ops_btn_cost_compute" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_cost_fg'))]"/>
+        </record>
+        <record id="vas_ops_btn_cost_fg" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_cost_s18'))]"/>
+        </record>
+        <record id="vas_ops_btn_cost_cat_item" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_costing"/>
+            <field name="zone">catalog</field>
+            <field name="label">Khoản mục chi phí</field>
+            <field name="icon">fa-list</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">connecta_vas.action_vas_cost_item</field>
+        </record>
+        <record id="vas_ops_btn_cost_cat_object" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_costing"/>
+            <field name="zone">catalog</field>
+            <field name="label">Đối tượng tập hợp chi phí</field>
+            <field name="icon">fa-sitemap</field>
+            <field name="sequence">20</field>
+            <field name="action_xmlid">connecta_vas.action_vas_cost_object</field>
+        </record>
+        <!-- Báo cáo giá thành: VAS chưa có màn danh sách riêng — để trống -->
+
+        <!-- ===== Tài sản & Phân bổ — chuỗi 4 + ô rời 242 ===== -->
+        <record id="vas_ops_btn_asset_register" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_asset"/>
+            <field name="zone">process</field>
+            <field name="label">Ghi tăng tài sản</field>
+            <field name="icon">fa-plus-square</field>
+            <field name="row">1</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">connecta_vas.action_vas_asset</field>
+        </record>
+        <record id="vas_ops_btn_asset_depreciate" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_asset"/>
+            <field name="zone">process</field>
+            <field name="label">Tính khấu hao định kỳ</field>
+            <field name="icon">fa-calendar-check-o</field>
+            <field name="row">1</field>
+            <field name="sequence">20</field>
+            <field name="action_xmlid">connecta_vas.action_vas_move_depreciation</field>
+        </record>
+        <record id="vas_ops_btn_asset_transfer" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_asset"/>
+            <field name="zone">process</field>
+            <field name="label">Điều chuyển</field>
+            <field name="icon">fa-exchange</field>
+            <field name="row">1</field>
+            <field name="sequence">30</field>
+            <field name="action_xmlid">connecta_vas.action_vas_asset</field>
+        </record>
+        <record id="vas_ops_btn_asset_dispose" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_asset"/>
+            <field name="zone">process</field>
+            <field name="label">Ghi giảm</field>
+            <field name="icon">fa-minus-circle</field>
+            <field name="row">1</field>
+            <field name="sequence">40</field>
+            <field name="action_xmlid">connecta_vas.action_vas_asset</field>
+        </record>
+        <record id="vas_ops_btn_asset_register" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_asset_depreciate'))]"/>
+        </record>
+        <record id="vas_ops_btn_asset_depreciate" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_asset_transfer'))]"/>
+        </record>
+        <record id="vas_ops_btn_asset_transfer" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_asset_dispose'))]"/>
+        </record>
+        <record id="vas_ops_btn_asset_prepaid" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_asset"/>
+            <field name="zone">process</field>
+            <field name="label">Chi phí trả trước (242)</field>
+            <field name="icon">fa-clock-o</field>
+            <field name="row">2</field>
+            <field name="sequence">90</field>
+            <field name="action_xmlid">connecta_vas.action_vas_asset</field>
+        </record>
+        <record id="vas_ops_btn_asset_cat_period" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_asset"/>
+            <field name="zone">catalog</field>
+            <field name="label">Kỳ kế toán</field>
+            <field name="icon">fa-calendar</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">connecta_vas.action_vas_period</field>
+        </record>
+        <!-- Báo cáo TSCĐ: VAS chưa có màn danh sách riêng — để trống -->
+
+        <!-- ===== Thuế — Khấu trừ L06 + ô rời GTGT NK (bỏ Nộp thuế GTGT chung) ===== -->
+        <record id="vas_ops_btn_tax_l06" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_tax"/>
+            <field name="zone">process</field>
+            <field name="label">Khấu trừ GTGT (L06)</field>
+            <field name="icon">fa-file-text-o</field>
+            <field name="row">1</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">connecta_vas.action_vas_closing_entry</field>
+        </record>
+        <record id="vas_ops_btn_tax_import_vat" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_tax"/>
+            <field name="zone">process</field>
+            <field name="label">GTGT hàng nhập khẩu</field>
+            <field name="icon">fa-ship</field>
+            <field name="row">2</field>
+            <field name="sequence">90</field>
+            <field name="action_xmlid">connecta_vas.action_vas_import_vat</field>
+        </record>
+        <record id="vas_ops_btn_tax_cat_landed" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_tax"/>
+            <field name="zone">catalog</field>
+            <field name="label">Ánh xạ thuế hàng NK</field>
+            <field name="icon">fa-map</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">connecta_vas.action_vas_landed_tax_map</field>
+        </record>
+        <!-- Báo cáo thuế: VAS chưa có màn danh sách riêng — để trống -->
+
+        <!-- ===== Vay — Khế ước → Ghi lãi → Trả lãi → Trả gốc → Tất toán ===== -->
+        <record id="vas_ops_btn_loan_contract" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_loan"/>
+            <field name="zone">process</field>
+            <field name="label">Khế ước vay</field>
+            <field name="icon">fa-file-text</field>
+            <field name="row">1</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">connecta_vas.action_vas_loan</field>
+        </record>
+        <record id="vas_ops_btn_loan_accrue" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_loan"/>
+            <field name="zone">process</field>
+            <field name="label">Ghi lãi định kỳ</field>
+            <field name="icon">fa-percent</field>
+            <field name="row">1</field>
+            <field name="sequence">20</field>
+            <field name="action_xmlid">connecta_vas.action_vas_move_loan_interest</field>
+        </record>
+        <record id="vas_ops_btn_loan_pay_interest" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_loan"/>
+            <field name="zone">process</field>
+            <field name="label">Trả lãi</field>
+            <field name="icon">fa-sign-out</field>
+            <field name="row">1</field>
+            <field name="sequence">30</field>
+            <field name="action_xmlid">connecta_vas.action_vas_payment_loan_interest</field>
+        </record>
+        <record id="vas_ops_btn_loan_repay" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_loan"/>
+            <field name="zone">process</field>
+            <field name="label">Trả gốc</field>
+            <field name="icon">fa-money</field>
+            <field name="row">1</field>
+            <field name="sequence">40</field>
+            <field name="action_xmlid">connecta_vas.action_vas_payment_loan_repay</field>
+        </record>
+        <record id="vas_ops_btn_loan_settle" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_loan"/>
+            <field name="zone">process</field>
+            <field name="label">Tất toán</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="row">1</field>
+            <field name="sequence">50</field>
+            <field name="action_xmlid">connecta_vas.action_vas_loan</field>
+        </record>
+        <record id="vas_ops_btn_loan_contract" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_loan_accrue'))]"/>
+        </record>
+        <record id="vas_ops_btn_loan_accrue" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_loan_pay_interest'))]"/>
+        </record>
+        <record id="vas_ops_btn_loan_pay_interest" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_loan_repay'))]"/>
+        </record>
+        <record id="vas_ops_btn_loan_repay" model="vas.ops.button">
+            <field name="next_ids" eval="[(4, ref('vas_ops_btn_loan_settle'))]"/>
+        </record>
+
+        <!-- ===== Vốn — hub 2 ô rời ===== -->
+        <record id="vas_ops_btn_von_profit" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_von"/>
+            <field name="zone">process</field>
+            <field name="label">Phân phối LN / quỹ</field>
+            <field name="icon">fa-share-alt</field>
+            <field name="row">1</field>
+            <field name="sequence">10</field>
+            <field name="action_xmlid">connecta_vas.action_vas_profit_distribution</field>
+        </record>
+        <record id="vas_ops_btn_von_capital" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_von"/>
+            <field name="zone">process</field>
+            <field name="label">Góp vốn hiện vật</field>
+            <field name="icon">fa-gift</field>
+            <field name="row">1</field>
+            <field name="sequence">20</field>
+            <field name="action_xmlid">connecta_vas.action_vas_capital_in_kind</field>
+        </record>
+    </data>
+</odoo>

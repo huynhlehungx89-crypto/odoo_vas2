@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_connecta_vas" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.connecta_vas</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Connecta VAS" string="Connecta VAS" name="connecta_vas">
+                    <block title="Connecta VAS" name="connecta_vas_setting_container">
+                        <setting string="Chế độ kế toán" company_dependent="1"
+                                 help="Chế độ kế toán VAS mặc định đóng dấu lên bút toán của công ty.">
+                            <field name="vas_regime_id"/>
+                        </setting>
+                        <setting string="Ngày bắt đầu ghi sổ" company_dependent="1"
+                                 help="Cutoff: chỉ đồng bộ chứng từ có ngày ≥ mốc này. Khai một lần trước khi chạy Đồng bộ.">
+                            <field name="vas_start_date"/>
+                        </setting>
+                        <setting string="Theo dõi hàng đi đường (TK 151)"
+                                 company_dependent="1"
+                                 help="Bật: HĐ mua khi chưa nhập → Nợ 151/Có 331; phiếu IN done → Nợ 156/Có 151. Tắt: 156 chỉ lúc nhận hàng.">
+                            <field name="vas_theo_doi_hang_di_duong"/>
+                        </setting>
+                        <setting string="Bóc tách được số khấu hao nằm trong hàng tồn kho"
+                                 company_dependent="1"
+                                 help="TT133 cho doanh nghiệp tự xác định thuộc trường hợp nào; đây là chính sách kế toán của doanh nghiệp, phải thuyết minh trong B09. Mặc định: Không. Khi Có: nhập số KH trong HTK cuối kỳ (ô bên dưới) — mã 03 và 11 dùng ở chặng sau.">
+                            <field name="vas_boc_tach_khau_hao_htk"/>
+                            <div invisible="not vas_boc_tach_khau_hao_htk" class="mt-2">
+                                <label for="vas_khau_hao_trong_htk"
+                                       string="Số khấu hao nằm trong HTK cuối kỳ"/>
+                                <field name="vas_khau_hao_trong_htk"/>
+                            </div>
+                        </setting>
+                        <setting string="Có bán hàng không chịu thuế GTGT"
+                                 company_dependent="1"
+                                 help="Tắt: mọi thuế đầu vào = dùng riêng chịu thuế, ẩn cột mục đích. Bật: phân loại mục đích + phân bổ dùng chung.">
+                            <field name="vas_has_exempt_sales"/>
+                        </setting>
+                        <setting string="TK quỹ nộp tiền quầy"
+                                 company_dependent="1"
+                                 help="Bên Nợ kết ca tiền mặt và đối ứng rút/bỏ tiền giữa ca. Trống = 1111 (cờ mặc định, chặn khóa kỳ).">
+                            <field name="vas_pos_cash_account_id"
+                                   domain="[('regime_id', '=', vas_regime_id), ('active', '=', True)]"/>
+                        </setting>
+                        <setting string="TK đối ứng hủy hàng"
+                                 company_dependent="1"
+                                 help="Bên Nợ phiếu hủy hàng. Trống = 811 + cờ mặc định, chặn khóa kỳ. Không tự chọn 632/154/138.">
+                            <field name="vas_scrap_account_id"
+                                   domain="[('regime_id', '=', vas_regime_id), ('active', '=', True)]"/>
+                        </setting>
+                        <setting string="Đồng bộ định khoản" help="Quét hóa đơn bán / xuất kho bán / thu tiền và sinh vas.move theo quy tắc.">
+                            <button name="action_vas_sync_now"
+                                    type="object"
+                                    string="Đồng bộ ngay"
+                                    class="btn-primary"
+                                    icon="fa-refresh"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_connecta_vas_config_settings" model="ir.actions.act_window">
+        <field name="name">Cài đặt</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+        <field name="context">{'module': 'connecta_vas'}</field>
+    </record>
+
+    <menuitem id="menu_vas_settings"
+              name="Thiết lập"
+              parent="menu_vas_config"
+              action="action_connecta_vas_config_settings"
+              sequence="5"/>
+</odoo>

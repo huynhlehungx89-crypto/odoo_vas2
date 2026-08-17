@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vas_variance_account_config_list" model="ir.ui.view">
+        <field name="name">vas.variance.account.config.list</field>
+        <field name="model">vas.variance.account.config</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="company_id"/>
+                <field name="regime_id"/>
+                <field name="account_pending_id"/>
+                <field name="account_claim_id"/>
+                <field name="account_payroll_id"/>
+                <field name="account_writeoff_id"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_variance_account_config_form" model="ir.ui.view">
+        <field name="name">vas.variance.account.config.form</field>
+        <field name="model">vas.variance.account.config</field>
+        <field name="arch" type="xml">
+            <form string="Cấu hình TK xử lý vượt định mức">
+                <sheet>
+                    <group>
+                        <field name="company_id"/>
+                        <field name="regime_id"/>
+                        <field name="active"/>
+                    </group>
+                    <group string="Tài khoản đề xuất (kế toán chọn lại được)">
+                        <field name="account_pending_id"/>
+                        <field name="account_claim_id"/>
+                        <field name="account_payroll_id"/>
+                        <field name="account_writeoff_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_variance_account_config" model="ir.actions.act_window">
+        <field name="name">TK xử lý vượt định mức</field>
+        <field name="res_model">vas.variance.account.config</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_vas_variance_sheet_list" model="ir.ui.view">
+        <field name="name">vas.variance.sheet.list</field>
+        <field name="model">vas.variance.sheet</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="period_id"/>
+                <field name="state"/>
+                <field name="amount_total"/>
+                <field name="is_followup"/>
+                <field name="company_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_variance_sheet_form" model="ir.ui.view">
+        <field name="name">vas.variance.sheet.form</field>
+        <field name="model">vas.variance.sheet</field>
+        <field name="arch" type="xml">
+            <form string="Phiếu xử lý vượt định mức">
+                <header>
+                    <button name="action_suggest_from_bom" type="object"
+                            string="Lấy số gợi ý"
+                            invisible="state not in ('draft',)"/>
+                    <button name="action_set_pending_responsibility" type="object"
+                            string="Chờ xác định trách nhiệm"
+                            invisible="state != 'draft'" class="btn-secondary"/>
+                    <button name="action_confirm" type="object"
+                            string="Xác nhận"
+                            invisible="state not in ('draft', 'pending_responsibility')"
+                            class="btn-primary"/>
+                    <button name="action_post" type="object"
+                            string="Ghi sổ"
+                            invisible="state != 'confirmed'" class="btn-primary"/>
+                    <button name="action_reverse" type="object"
+                            string="Đảo"
+                            invisible="state != 'posted'" class="btn-secondary"/>
+                    <button name="action_create_followup" type="object"
+                            string="Tạo phiếu xử lý tiếp"
+                            invisible="state != 'posted'"/>
+                    <button name="action_open_move" type="object"
+                            string="Mở bút toán"
+                            invisible="not move_id and not pullback_move_id"/>
+                    <field name="state" widget="statusbar"
+                            statusbar_visible="draft,pending_responsibility,confirmed,posted,reversed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="period_id"/>
+                            <field name="company_id"/>
+                            <field name="regime_id"/>
+                            <field name="amount_total"/>
+                        </group>
+                        <group>
+                            <field name="is_followup"/>
+                            <field name="parent_treatment_id"
+                                      invisible="not is_followup"/>
+                            <field name="parent_sheet_id"
+                                      invisible="not is_followup"/>
+                            <field name="move_id" readonly="1"/>
+                            <field name="pullback_move_id" readonly="1"/>
+                            <field name="reverse_reason" readonly="1"
+                                      invisible="state != 'reversed'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Dòng vượt / sai hỏng">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="line_kind"/>
+                                    <field name="suggestion_source"/>
+                                    <field name="cost_object_id"/>
+                                    <field name="cost_item_id"/>
+                                    <field name="product_id"/>
+                                    <field name="qty_standard" readonly="1"/>
+                                    <field name="qty_actual" readonly="1"/>
+                                    <field name="stock_value_actual" readonly="1"/>
+                                    <field name="amount_suggested" readonly="1"
+                                              string="Số hệ thống gợi ý"/>
+                                    <field name="amount_confirmed"
+                                              string="Số kế toán xác nhận"/>
+                                    <field name="amount_difference" readonly="1"/>
+                                    <field name="reason"/>
+                                    <field name="cause"/>
+                                    <field name="responsible_name"/>
+                                    <field name="source_label" readonly="1"/>
+                                    <field name="source_model" column_invisible="1"/>
+                                    <field name="source_res_id" column_invisible="1"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="line_kind"/>
+                                            <field name="suggestion_source"/>
+                                            <field name="cost_object_id"/>
+                                            <field name="cost_item_id"/>
+                                            <field name="product_id"/>
+                                        </group>
+                                        <group>
+                                            <field name="qty_standard" readonly="1"/>
+                                            <field name="qty_actual" readonly="1"/>
+                                            <field name="stock_value_actual" readonly="1"/>
+                                            <field name="amount_suggested" readonly="1"
+                                                      string="Số hệ thống gợi ý"/>
+                                            <field name="amount_confirmed"
+                                                      string="Số kế toán xác nhận"/>
+                                            <field name="amount_difference" readonly="1"/>
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <field name="reason"/>
+                                        <field name="cause"/>
+                                        <field name="responsible_name"/>
+                                        <field name="source_label" readonly="1"/>
+                                    </group>
+                                    <field name="treatment_ids"
+                                              invisible="line_kind == 'saving'">
+                                        <list editable="bottom">
+                                            <field name="treatment_type"/>
+                                            <field name="account_id"/>
+                                            <field name="account_used_id" readonly="1"/>
+                                            <field name="amount"/>
+                                            <field name="percent"/>
+                                            <field name="partner_id"/>
+                                            <field name="employee_id"/>
+                                            <field name="responsible_name"/>
+                                            <field name="reason"/>
+                                            <field name="name"/>
+                                            <field name="amount_processed" readonly="1"/>
+                                            <field name="amount_remaining" readonly="1"/>
+                                        </list>
+                                    </field>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Ghi chú">
+                            <field name="note"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_variance_sheet" model="ir.actions.act_window">
+        <field name="name">Phiếu xử lý vượt định mức</field>
+        <field name="res_model">vas.variance.sheet</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Xử lý vượt định mức: chuyển sang lưu đồ Nghiệp vụ › Sản xuất & Giá thành -->
+    <menuitem id="menu_vas_variance_account_config"
+              name="TK xử lý vượt định mức"
+              parent="menu_vas_costing_root"
+              action="action_vas_variance_account_config"
+              sequence="45"/>
+</odoo>

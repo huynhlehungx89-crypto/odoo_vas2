@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="connecta_vas.VasOpsWorkflow">
+        <div class="o_action o_vas_ops_workflow">
+            <Layout display="{controlPanel: false}">
+                <div class="o_vas_ops_toolbar d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+                    <h2 class="m-0 fs-4" t-esc="title"/>
+                    <button class="btn btn-secondary btn-sm" t-on-click="onSync">
+                        Đồng bộ ngay
+                    </button>
+                </div>
+                <div class="o_content p-3">
+                    <t t-if="state.loading">
+                        <div class="text-muted">Đang tải…</div>
+                    </t>
+                    <t t-elif="state.error">
+                        <div class="alert alert-danger" t-esc="state.error"/>
+                    </t>
+                    <t t-else="">
+                        <t t-if="state.payload.message">
+                            <div class="alert alert-info" t-esc="state.payload.message"/>
+                        </t>
+
+                        <div class="o_vas_ops_main d-flex gap-3 flex-wrap">
+                            <div class="o_vas_ops_center flex-grow-1">
+                                <!-- Hub: ô rời, không đường nối -->
+                                <t t-if="state.payload.layout === 'tiles'">
+                                    <div class="o_vas_ops_process_tiles">
+                                        <t t-foreach="state.payload.process" t-as="btn" t-key="btn.id">
+                                            <button type="button" class="btn btn-outline-primary o_vas_ops_step"
+                                                    t-on-click="() => this.onProcessClick(btn)">
+                                                <i t-if="btn.icon" t-attf-class="fa {{ btn.icon }} me-1"/>
+                                                <t t-esc="btn.label"/>
+                                            </button>
+                                        </t>
+                                    </div>
+                                </t>
+
+                                <!-- Workflow: chuỗi thẳng + ô rời (nhánh phụ, không nối) -->
+                                <t t-elif="state.payload.layout === 'chain'">
+                                    <div class="o_vas_ops_chain">
+                                        <t t-foreach="state.payload.process" t-as="btn" t-key="btn.id">
+                                            <div class="o_vas_ops_chain_item">
+                                                <t t-if="btn_index &gt; 0">
+                                                    <div class="o_vas_ops_chain_arrow" aria-hidden="true">→</div>
+                                                </t>
+                                                <div class="o_vas_ops_chain_node">
+                                                    <button type="button"
+                                                            t-att-class="btn.is_choice_parent ? 'btn btn-outline-secondary o_vas_ops_step' : 'btn btn-outline-primary o_vas_ops_step'"
+                                                            t-on-click="() => this.onProcessClick(btn)">
+                                                        <span class="badge text-bg-light me-1" t-esc="btn_index + 1"/>
+                                                        <i t-if="btn.icon" t-attf-class="fa {{ btn.icon }} me-1"/>
+                                                        <t t-esc="btn.label"/>
+                                                        <t t-if="btn.is_choice_parent">
+                                                            <i class="fa fa-caret-down ms-1"/>
+                                                        </t>
+                                                    </button>
+                                                    <t t-if="btn.is_choice_parent and state.expandedId === btn.id">
+                                                        <div class="o_vas_ops_choice_panel mt-2">
+                                                            <t t-foreach="btn.children" t-as="child" t-key="child.id">
+                                                                <button type="button"
+                                                                        class="btn btn-sm btn-light d-block w-100 text-start mb-1"
+                                                                        t-on-click="() => this.onChildClick(child)">
+                                                                    <t t-esc="child.label"/>
+                                                                </button>
+                                                            </t>
+                                                        </div>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                    <t t-if="state.payload.detached and state.payload.detached.length">
+                                        <div class="o_vas_ops_detached mt-3">
+                                            <t t-foreach="state.payload.detached" t-as="btn" t-key="btn.id">
+                                                <button type="button" class="btn btn-outline-primary o_vas_ops_step"
+                                                        t-on-click="() => this.onProcessClick(btn)">
+                                                    <i t-if="btn.icon" t-attf-class="fa {{ btn.icon }} me-1"/>
+                                                    <t t-esc="btn.label"/>
+                                                </button>
+                                            </t>
+                                        </div>
+                                    </t>
+                                </t>
+
+                                <div t-if="state.payload.catalog.length" class="o_vas_ops_catalog mt-4 pt-3 border-top">
+                                    <div class="text-muted small mb-2">Danh mục liên quan</div>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <t t-foreach="state.payload.catalog" t-as="btn" t-key="btn.id">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                                    t-on-click="() => this.openXmlid(btn.action_xmlid)">
+                                                <i t-if="btn.icon" t-attf-class="fa {{ btn.icon }} me-1"/>
+                                                <t t-esc="btn.label"/>
+                                            </button>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="o_vas_ops_reports border-start ps-3" style="min-width: 200px;">
+                                <div class="text-muted small mb-2">Báo cáo</div>
+                                <t t-foreach="state.payload.report" t-as="btn" t-key="btn.id">
+                                    <button type="button"
+                                            class="btn btn-link btn-sm d-block text-start px-0"
+                                            t-on-click="() => this.openXmlid(btn.action_xmlid)">
+                                        <t t-esc="btn.label"/>
+                                    </button>
+                                </t>
+                                <button type="button"
+                                        class="btn btn-link btn-sm d-block text-start px-0 mt-2"
+                                        t-on-click="onSeeAllReports">
+                                    Xem tất cả báo cáo
+                                </button>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </Layout>
+        </div>
+    </t>
+</templates>

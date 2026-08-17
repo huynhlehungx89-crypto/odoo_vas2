@@ -1,0 +1,71 @@
+.o_vas_ops_hub,
+.o_vas_ops_workflow {
+    height: 100%;
+}
+
+.o_vas_ops_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+}
+
+.o_vas_ops_tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 110px;
+    border: 1px solid var(--border-color, #dee2e6);
+    border-radius: 6px;
+    padding: 12px 8px;
+    text-align: center;
+}
+
+.o_vas_ops_tile:hover {
+    border-color: var(--o-brand-primary, #714b67);
+    background: var(--o-view-background-color, #f8f9fa);
+}
+
+.o_vas_ops_tile_name {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.o_vas_ops_process_tiles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.o_vas_ops_chain {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.o_vas_ops_chain_item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.o_vas_ops_chain_arrow {
+    padding-top: 8px;
+    color: #6c757d;
+    font-weight: 600;
+}
+
+.o_vas_ops_choice_panel {
+    min-width: 180px;
+    padding: 8px;
+    border: 1px solid var(--border-color, #dee2e6);
+    border-radius: 4px;
+    background: #fff;
+}
+
+.o_vas_ops_detached {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}

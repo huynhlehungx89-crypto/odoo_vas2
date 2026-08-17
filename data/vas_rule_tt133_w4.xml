@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- W4 R03: out_refund — đảo doanh thu/thuế, TK doanh thu tra theo nhóm SP -->
+    <record id="vas_rule_tt133_r03" model="vas.rule">
+        <field name="code">R03</field>
+        <field name="name">Trả lại hàng bán (hóa đơn)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">sale_refund</field>
+        <field name="sequence">15</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r03_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r03"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">product_revenue</field>
+        <field name="amount_selector">untaxed</field>
+    </record>
+    <record id="vas_rule_tt133_r03_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r03"/>
+        <field name="sequence">20</field>
+        <field name="side">debit</field>
+        <field name="account_selector">tax_output</field>
+        <field name="amount_selector">tax</field>
+    </record>
+    <record id="vas_rule_tt133_r03_l3" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r03"/>
+        <field name="sequence">30</field>
+        <field name="side">credit</field>
+        <field name="account_selector">partner_receivable</field>
+        <field name="amount_selector">total</field>
+    </record>
+
+    <!-- W4 R03 stock: nhập lại hàng bán trả — Nợ TK tồn kho / Có TK giá vốn, theo nhóm SP -->
+    <record id="vas_rule_tt133_r03s" model="vas.rule">
+        <field name="code">R03s</field>
+        <field name="name">Nhập kho hàng bán trả lại</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">sale_return_stock</field>
+        <field name="sequence">25</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r03s_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r03s"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">product_inventory</field>
+        <field name="amount_selector">cogs</field>
+    </record>
+    <record id="vas_rule_tt133_r03s_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r03s"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">product_cogs</field>
+        <field name="amount_selector">cogs</field>
+    </record>
+
+    <!-- W4 R04: credit note giảm giá (cùng cấu trúc R03; scanner gán khi không có nhập kho trả) -->
+    <record id="vas_rule_tt133_r04" model="vas.rule">
+        <field name="code">R04</field>
+        <field name="name">Chiết khấu/giảm giá bán (phi kho)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">sale_discount</field>
+        <field name="sequence">16</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r04_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r04"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">product_revenue</field>
+        <field name="amount_selector">untaxed</field>
+    </record>
+    <record id="vas_rule_tt133_r04_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r04"/>
+        <field name="sequence">20</field>
+        <field name="side">debit</field>
+        <field name="account_selector">tax_output</field>
+        <field name="amount_selector">tax</field>
+    </record>
+    <record id="vas_rule_tt133_r04_l3" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r04"/>
+        <field name="sequence">30</field>
+        <field name="side">credit</field>
+        <field name="account_selector">partner_receivable</field>
+        <field name="amount_selector">total</field>
+    </record>
+
+    <!-- W4 R08 (sửa ở TRỤC 2): chi phí mua ngoài — Nợ TK chi phí theo bảng ánh xạ
+         / Nợ 1331 / Có 331. Chỉ ghi phần các DÒNG DỊCH VỤ của hóa đơn; phần dòng
+         hàng tồn kho do R06 (giá) + R07 (thuế) ghi. Hết hardcode 6421. -->
+    <record id="vas_rule_tt133_r08" model="vas.rule">
+        <field name="code">R08</field>
+        <field name="name">Chi phí mua ngoài</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">purchase_service</field>
+        <field name="sequence">48</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r08_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r08"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">product_expense</field>
+        <field name="account_id" eval="False"/>
+        <field name="amount_selector">untaxed</field>
+    </record>
+    <record id="vas_rule_tt133_r08_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r08"/>
+        <field name="sequence">20</field>
+        <field name="side">debit</field>
+        <field name="account_selector">tax_input</field>
+        <field name="amount_selector">tax</field>
+    </record>
+    <record id="vas_rule_tt133_r08_l3" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r08"/>
+        <field name="sequence">30</field>
+        <field name="side">credit</field>
+        <field name="account_selector">partner_payable</field>
+        <field name="amount_selector">total</field>
+    </record>
+
+    <!-- W4 R09: in_refund — đảo công nợ/thuế; giá trị hàng qua stock return -->
+    <record id="vas_rule_tt133_r09" model="vas.rule">
+        <field name="code">R09</field>
+        <field name="name">Trả lại hàng mua (hóa đơn)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">purchase_refund</field>
+        <field name="sequence">52</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r09_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r09"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">partner_payable</field>
+        <field name="amount_selector">tax</field>
+    </record>
+    <record id="vas_rule_tt133_r09_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r09"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">tax_input</field>
+        <field name="amount_selector">tax</field>
+    </record>
+
+    <record id="vas_rule_tt133_r09s" model="vas.rule">
+        <field name="code">R09s</field>
+        <field name="name">Xuất kho trả NCC</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">purchase_return_stock</field>
+        <field name="sequence">42</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r09s_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r09s"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">partner_payable</field>
+        <field name="amount_selector">stock_value</field>
+    </record>
+    <record id="vas_rule_tt133_r09s_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r09s"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">product_inventory</field>
+        <field name="amount_selector">stock_value</field>
+    </record>
+
+    <!-- W4 R07b: điều chỉnh tạm tính — chênh untaxed HĐ vs giá trị đã nhập (stock_value) -->
+    <record id="vas_rule_tt133_r07b" model="vas.rule">
+        <field name="code">R07b</field>
+        <field name="name">Điều chỉnh giá tạm tính mua hàng</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">purchase_price_adjust</field>
+        <field name="sequence">51</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r07b_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r07b"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">product_inventory</field>
+        <field name="amount_selector">price_adjust</field>
+    </record>
+    <record id="vas_rule_tt133_r07b_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r07b"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">partner_payable</field>
+        <field name="amount_selector">price_adjust</field>
+    </record>
+
+    <!-- W4 R10: hàng đi đường — HĐ mua chưa nhập, công tắc 151 → Nợ 151 / Có 331 (untaxed) -->
+    <record id="vas_rule_tt133_r10" model="vas.rule">
+        <field name="code">R10</field>
+        <field name="name">Hàng mua đang đi đường (151)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">goods_in_transit</field>
+        <field name="sequence">49</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r10_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r10"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">goods_in_transit</field>
+        <field name="amount_selector">untaxed</field>
+    </record>
+    <record id="vas_rule_tt133_r10_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r10"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">partner_payable</field>
+        <field name="amount_selector">untaxed</field>
+    </record>
+
+    <!-- Hủy hàng: Nợ TK cấu hình / Có tồn kho — giá vốn lớp còn tồn trên sổ VAS -->
+    <record id="vas_rule_tt133_r29" model="vas.rule">
+        <field name="code">R29</field>
+        <field name="name">Hủy hàng (scrap)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">stock_scrap</field>
+        <field name="sequence">55</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r29_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r29"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">scrap_expense</field>
+        <field name="amount_selector">cogs</field>
+    </record>
+    <record id="vas_rule_tt133_r29_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r29"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">product_inventory</field>
+        <field name="amount_selector">cogs</field>
+    </record>
+</odoo>

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="connecta_vas.VasCostingM5">
+        <div class="o_action o_vas_costing_m5">
+            <Layout display="{controlPanel: false}">
+                <div class="o_vas_m5_toolbar d-flex justify-content-between align-items-center px-3 py-2 border-bottom flex-wrap gap-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <button type="button" class="btn btn-link btn-sm px-0"
+                                t-on-click="onBackToList">
+                            ← Danh sách kỳ
+                        </button>
+                        <h2 class="m-0 fs-4" t-if="state.data"
+                            t-esc="state.data.period_name"/>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge text-bg-secondary" t-if="state.data"
+                              t-esc="state.data.state_label"/>
+                        <button type="button" class="btn btn-secondary btn-sm"
+                                t-on-click="onOpenPeriodForm"
+                                t-att-disabled="!periodId">
+                            Biểu mẫu kỳ
+                        </button>
+                    </div>
+                </div>
+                <div class="o_content p-3">
+                    <t t-if="state.loading">
+                        <div class="text-muted">Đang tải kết quả kỳ…</div>
+                    </t>
+                    <t t-elif="state.error">
+                        <div class="alert alert-danger" t-esc="state.error"/>
+                    </t>
+                    <t t-elif="state.data">
+                        <div class="o_vas_m5_header mb-3">
+                            <div class="o_vas_m5_dates text-muted small mb-2">
+                                Từ <t t-esc="state.data.header.date_from"/>
+                                đến <t t-esc="state.data.header.date_to"/>
+                            </div>
+                            <t t-if="!state.data.has_result">
+                                <p class="o_vas_m5_empty mb-0" t-esc="state.data.empty_message"/>
+                            </t>
+                            <t t-else="">
+                                <div class="o_vas_m5_metrics">
+                                    <div>
+                                        <span class="text-muted">Dở dang đầu kỳ</span>
+                                        <div class="fs-5" t-esc="formatMoney(state.data.header.opening_wip)"/>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted">Phát sinh trong kỳ</span>
+                                        <div class="fs-5" t-esc="formatMoney(state.data.header.period_incurred)"/>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted">Khoản giảm giá thành</span>
+                                        <div class="fs-5" t-esc="formatMoney(state.data.header.cost_reduction)"/>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted">Dở dang cuối kỳ</span>
+                                        <div class="fs-5" t-esc="formatMoney(state.data.header.closing_wip)"/>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted">Tổng giá thành</span>
+                                        <div class="fs-5 fw-bold" t-esc="formatMoney(state.data.header.total_cost)"/>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+
+                        <t t-if="state.data.has_result and state.data.tabs and state.data.tabs.length">
+                            <ul class="nav nav-tabs o_vas_m5_tabs mb-3">
+                                <t t-foreach="state.data.tabs" t-as="tabBtn" t-key="tabBtn.key">
+                                    <li class="nav-item">
+                                        <button type="button" class="nav-link"
+                                                t-att-class="{'active': state.activeTab === tabBtn.key}"
+                                                t-att-data-tab-key="tabBtn.key"
+                                                t-on-click="onSelectTabClick"
+                                                t-esc="tabBtn.label"/>
+                                    </li>
+                                </t>
+                            </ul>
+
+                            <t t-foreach="state.data.tabs" t-as="tab" t-key="tab.key">
+                                <div t-if="state.activeTab === tab.key">
+                                    <p class="small text-muted" t-if="tab.note" t-esc="tab.note"/>
+
+                                    <t t-if="tab.kind === 'summary'">
+                                        <div class="table-responsive">
+                                            <table class="table table-sm table-hover o_vas_m5_table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Mã</th>
+                                                        <th>Đối tượng</th>
+                                                        <th class="text-end">DD đầu</th>
+                                                        <th class="text-end">Phát sinh</th>
+                                                        <th class="text-end">Giảm GT</th>
+                                                        <th class="text-end">DD cuối</th>
+                                                        <th class="text-end">Tổng GT</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="tab.rows" t-as="row" t-key="row.cost_object_id">
+                                                        <tr class="o_vas_m5_clickable"
+                                                            t-att-data-cost-object-id="row.cost_object_id"
+                                                            t-on-click="onOpenObjectClick">
+                                                            <td t-esc="row.code"/>
+                                                            <td t-esc="row.name"/>
+                                                            <td class="text-end" t-esc="formatMoney(row.opening_wip)"/>
+                                                            <td class="text-end" t-esc="formatMoney(row.period_incurred)"/>
+                                                            <td class="text-end" t-esc="formatMoney(row.cost_reduction)"/>
+                                                            <td class="text-end" t-esc="formatMoney(row.closing_wip)"/>
+                                                            <td class="text-end" t-esc="formatMoney(row.total_cost)"/>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr class="fw-bold">
+                                                        <td colspan="2">Tổng</td>
+                                                        <td class="text-end" t-esc="formatMoney(tab.total.opening_wip)"/>
+                                                        <td class="text-end" t-esc="formatMoney(tab.total.period_incurred)"/>
+                                                        <td class="text-end" t-esc="formatMoney(tab.total.cost_reduction)"/>
+                                                        <td class="text-end" t-esc="formatMoney(tab.total.closing_wip)"/>
+                                                        <td class="text-end" t-esc="formatMoney(tab.total.total_cost)"/>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </t>
+
+                                    <t t-elif="tab.kind === 'cost_sheet'">
+                                        <div class="table-responsive">
+                                            <table class="table table-sm table-hover o_vas_m5_table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Mã</th>
+                                                        <th>Thành phẩm / đối tượng</th>
+                                                        <t t-foreach="tab.columns" t-as="col" t-key="col.id">
+                                                            <th class="text-end" t-esc="col.code || col.label"/>
+                                                        </t>
+                                                        <th class="text-end">Tổng GT</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="tab.rows" t-as="row" t-key="row.cost_object_id">
+                                                        <tr class="o_vas_m5_clickable"
+                                                            t-att-data-cost-object-id="row.cost_object_id"
+                                                            t-on-click="onOpenObjectClick">
+                                                            <td t-esc="row.code"/>
+                                                            <td t-esc="row.name"/>
+                                                            <t t-foreach="tab.columns" t-as="col" t-key="col.id">
+                                                                <td class="text-end"
+                                                                    t-esc="formatMoney(cellAmount(row, col.id))"/>
+                                                            </t>
+                                                            <td class="text-end" t-esc="formatMoney(row.total_cost)"/>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr class="fw-bold">
+                                                        <td colspan="2">Tổng</td>
+                                                        <t t-foreach="tab.columns" t-as="col" t-key="col.id">
+                                                            <td class="text-end">—</td>
+                                                        </t>
+                                                        <td class="text-end" t-esc="formatMoney(tab.total.total_cost)"/>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </t>
+
+                                    <t t-elif="tab.kind === 'allocation'">
+                                        <div class="table-responsive">
+                                            <table class="table table-sm table-hover o_vas_m5_table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Lượt</th>
+                                                        <th>Khoản mục</th>
+                                                        <th>Đối tượng</th>
+                                                        <th class="text-end">Tỷ lệ %</th>
+                                                        <th class="text-end">Số tiền</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="tab.rows" t-as="row" t-key="row_index">
+                                                        <tr t-att-class="{'o_vas_m5_clickable': row.clickable}"
+                                                            t-att-data-cost-object-id="row.cost_object_id"
+                                                            t-on-click="onOpenObjectClick">
+                                                            <td t-esc="row.run"/>
+                                                            <td t-esc="row.cost_item"/>
+                                                            <td><t t-esc="row.code"/> — <t t-esc="row.name"/></td>
+                                                            <td class="text-end" t-esc="row.ratio_display"/>
+                                                            <td class="text-end" t-esc="formatMoney(row.amount)"/>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr class="fw-bold">
+                                                        <td colspan="4">Tổng</td>
+                                                        <td class="text-end" t-esc="formatMoney(tab.total.amount)"/>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </t>
+
+                                    <t t-elif="tab.kind === 'direct'">
+                                        <div class="table-responsive">
+                                            <table class="table table-sm table-hover o_vas_m5_table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Ngày</th>
+                                                        <th>Chứng từ</th>
+                                                        <th>TK</th>
+                                                        <th>Khoản mục</th>
+                                                        <th>Đối tượng</th>
+                                                        <th class="text-end">Nợ</th>
+                                                        <th class="text-end">Có</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="tab.rows" t-as="row" t-key="row_index">
+                                                        <tr t-att-class="{'o_vas_m5_clickable': row.clickable}"
+                                                            t-att-data-cost-object-id="row.cost_object_id"
+                                                            t-on-click="onOpenObjectClick">
+                                                            <td t-esc="row.date"/>
+                                                            <td t-esc="row.move"/>
+                                                            <td t-esc="row.account"/>
+                                                            <td t-esc="row.cost_item"/>
+                                                            <td><t t-esc="row.code"/> <t t-esc="row.name"/></td>
+                                                            <td class="text-end" t-esc="formatMoney(row.debit)"/>
+                                                            <td class="text-end" t-esc="formatMoney(row.credit)"/>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr class="fw-bold">
+                                                        <td colspan="5">Tổng</td>
+                                                        <td class="text-end" t-esc="formatMoney(tab.total.debit)"/>
+                                                        <td class="text-end" t-esc="formatMoney(tab.total.credit)"/>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </t>
+                                </div>
+                            </t>
+                        </t>
+
+                        <div class="text-muted small mt-2" t-if="state.data.elapsed_seconds !== undefined">
+                            Thời gian dựng: <t t-esc="state.data.elapsed_seconds"/> giây
+                        </div>
+                    </t>
+                </div>
+            </Layout>
+        </div>
+    </t>
+</templates>

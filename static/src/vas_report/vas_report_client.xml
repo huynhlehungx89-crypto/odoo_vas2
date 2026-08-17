@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="connecta_vas.VasReportClient">
+        <div class="o_action o_vas_report">
+            <Layout display="{controlPanel: false}" className="'o_vas_report_layout'">
+                <div class="o_vas_report_toolbar">
+                    <div class="o_vas_report_toolbar_left d-flex gap-2 align-items-center">
+                        <button class="btn btn-secondary btn-sm" t-on-click="onClickPdf"
+                                t-att-disabled="!state.data.lines.length">
+                            PDF
+                        </button>
+                        <button class="btn btn-secondary btn-sm" t-on-click="onClickXlsx"
+                                t-att-disabled="!state.data.lines.length">
+                            XLSX
+                        </button>
+                        <span class="o_vas_report_toolbar_title text-muted small ms-1"
+                              t-esc="displayName"/>
+                    </div>
+                    <div class="o_vas_report_toolbar_right d-flex flex-wrap gap-2 align-items-end">
+                        <div t-if="needsAccount">
+                            <label class="form-label small mb-0">Tài khoản</label>
+                            <select class="form-select form-select-sm o_vas_account_select"
+                                    t-on-change="onAccountChange"
+                                    t-att-value="state.options.account_id or ''">
+                                <option value="">— chọn TK —</option>
+                                <t t-foreach="state.accounts" t-as="a" t-key="a.id">
+                                    <option t-att-value="a.id" t-esc="a.name"
+                                            t-att-selected="a.id === state.options.account_id"/>
+                                </t>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label small mb-0">Từ kỳ</label>
+                            <select class="form-select form-select-sm"
+                                    t-on-change="onPeriodFromChange"
+                                    t-att-value="state.options.period_from_id or ''">
+                                <option value="">—</option>
+                                <t t-foreach="state.periods" t-as="p" t-key="p.id">
+                                    <option t-att-value="p.id" t-esc="p.name"
+                                            t-att-selected="p.id === state.options.period_from_id"/>
+                                </t>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label small mb-0">Đến kỳ</label>
+                            <select class="form-select form-select-sm"
+                                    t-on-change="onPeriodToChange"
+                                    t-att-value="state.options.period_to_id or ''">
+                                <option value="">—</option>
+                                <t t-foreach="state.periods" t-as="p" t-key="p.id">
+                                    <option t-att-value="p.id" t-esc="p.name"
+                                            t-att-selected="p.id === state.options.period_to_id"/>
+                                </t>
+                            </select>
+                        </div>
+                        <div class="form-check mb-1 ms-1">
+                            <input class="form-check-input" type="checkbox" id="vas_hide_reversed"
+                                   t-att-checked="state.options.hide_reversed"
+                                   t-on-change="onHideReversedChange"/>
+                            <label class="form-check-label" for="vas_hide_reversed">
+                                Ẩn đã đảo
+                            </label>
+                        </div>
+                        <button class="btn btn-primary btn-sm" t-on-click="onClickRefresh">
+                            Xem
+                        </button>
+                    </div>
+                </div>
+
+                <div class="o_content o_vas_report_content">
+                    <t t-if="state.loading">
+                        <div class="text-muted p-3">Đang tải…</div>
+                    </t>
+                    <t t-elif="state.error">
+                        <div t-att-class="state.errorKind === 'warning'
+                                ? 'alert alert-warning m-3'
+                                : 'alert alert-danger m-3'"
+                             t-esc="state.error"/>
+                    </t>
+                    <t t-elif="!state.loaded">
+                        <div class="text-muted p-3">
+                            Chọn kỳ và bấm <strong>Xem</strong> để tải báo cáo.
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <t t-if="state.data.meta.warning">
+                            <div t-att-class="state.data.meta.warning_level === 'danger'
+                                    ? 'o_vas_report_warning alert alert-danger fw-bold'
+                                    : 'o_vas_report_warning alert alert-warning'"
+                                 t-esc="state.data.meta.warning"/>
+                        </t>
+                        <div class="o_vas_report_paper">
+                            <div class="o_vas_report_header mb-3">
+                                <div class="d-flex justify-content-between small">
+                                    <div t-esc="state.data.meta.company_name"/>
+                                    <div>
+                                        Mẫu số:
+                                        <strong t-esc="state.data.meta.form_code"/>
+                                    </div>
+                                </div>
+                                <h3 class="text-center text-uppercase mt-2 mb-1"
+                                    t-esc="state.data.meta.title"/>
+                                <div class="text-center text-muted small"
+                                     t-esc="state.data.meta.period_label"/>
+                                <div t-if="state.data.meta.account_label"
+                                     class="text-center small"
+                                     t-esc="state.data.meta.account_label"/>
+                            </div>
+
+                            <div class="o_vas_report_scroll">
+                                <table class="o_vas_report_table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <t t-foreach="state.data.columns" t-as="col" t-key="col.name">
+                                                <th t-att-class="col.align === 'right' ? 'text-end' : ''"
+                                                    t-esc="col.label"/>
+                                            </t>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="visibleLines" t-as="line" t-key="line.id">
+                                            <tr t-att-class="lineClass(line)"
+                                                t-att-data-level="line.level"
+                                                t-att-data-id="line.id">
+                                                <t t-foreach="state.data.columns" t-as="col" t-key="col.name">
+                                                    <td t-att-class="cellClass(line.values[col_index], col)"
+                                                        t-att-style="col_first ? ('padding-left:' + (0.75 + (line.level || 0) * 1.1) + 'rem') : undefined">
+                                                        <t t-if="col_first and line.unfoldable">
+                                                            <button type="button"
+                                                                    class="btn btn_foldable p-0 me-1 border-0 bg-transparent"
+                                                                    t-on-click="() => this.toggleUnfold(line.id)">
+                                                                <i t-att-class="isUnfolded(line) ? 'fa fa-caret-down' : 'fa fa-caret-right'"/>
+                                                            </button>
+                                                        </t>
+                                                        <t t-elif="col_first">
+                                                            <span class="btn_foldable_empty me-1"/>
+                                                        </t>
+                                                        <t t-esc="formatCell(line.values[col_index], col)"/>
+                                                    </td>
+                                                </t>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </Layout>
+        </div>
+    </t>
+</templates>

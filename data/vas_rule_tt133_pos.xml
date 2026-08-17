@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- POS R43–R49 — metadata/UI; adapter đọc pos.order / pos.session. -->
+    <record id="vas_rule_tt133_r43" model="vas.rule">
+        <field name="code">R43</field>
+        <field name="name">Bán tại quầy</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">pos_sale</field>
+        <field name="sequence">430</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r43_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r43"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">partner_receivable</field>
+        <field name="amount_selector">total</field>
+    </record>
+    <record id="vas_rule_tt133_r43_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r43"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">product_revenue</field>
+        <field name="amount_selector">untaxed</field>
+    </record>
+    <record id="vas_rule_tt133_r43_l3" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r43"/>
+        <field name="sequence">30</field>
+        <field name="side">credit</field>
+        <field name="account_selector">tax_output</field>
+        <field name="amount_selector">tax</field>
+    </record>
+
+    <record id="vas_rule_tt133_r44" model="vas.rule">
+        <field name="code">R44</field>
+        <field name="name">Giá vốn bán tại quầy</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">pos_cogs</field>
+        <field name="sequence">440</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r44_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r44"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">product_cogs</field>
+        <field name="amount_selector">cogs</field>
+    </record>
+    <record id="vas_rule_tt133_r44_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r44"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">product_inventory</field>
+        <field name="amount_selector">cogs</field>
+    </record>
+
+    <record id="vas_rule_tt133_r45" model="vas.rule">
+        <field name="code">R45</field>
+        <field name="name">Trả hàng tại quầy</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">pos_refund</field>
+        <field name="sequence">450</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r45_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r45"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">product_revenue</field>
+        <field name="amount_selector">untaxed</field>
+    </record>
+    <record id="vas_rule_tt133_r45_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r45"/>
+        <field name="sequence">20</field>
+        <field name="side">debit</field>
+        <field name="account_selector">tax_output</field>
+        <field name="amount_selector">tax</field>
+    </record>
+    <record id="vas_rule_tt133_r45_l3" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r45"/>
+        <field name="sequence">30</field>
+        <field name="side">credit</field>
+        <field name="account_selector">partner_receivable</field>
+        <field name="amount_selector">total</field>
+    </record>
+
+    <record id="vas_rule_tt133_r46" model="vas.rule">
+        <field name="code">R46</field>
+        <field name="name">Kết ca tiền mặt quầy</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">pos_session_cash</field>
+        <field name="sequence">460</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r46_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r46"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">cash</field>
+        <field name="amount_selector">paid</field>
+    </record>
+    <record id="vas_rule_tt133_r46_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r46"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">partner_receivable</field>
+        <field name="amount_selector">paid</field>
+    </record>
+
+    <record id="vas_rule_tt133_r47" model="vas.rule">
+        <field name="code">R47</field>
+        <field name="name">Kết ca thẻ/ví quầy</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">pos_session_bank</field>
+        <field name="sequence">470</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r47_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r47"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">bank</field>
+        <field name="amount_selector">paid</field>
+    </record>
+    <record id="vas_rule_tt133_r47_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r47"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">partner_receivable</field>
+        <field name="amount_selector">paid</field>
+    </record>
+
+    <record id="vas_rule_tt133_r48" model="vas.rule">
+        <field name="code">R48</field>
+        <field name="name">Đếm thiếu két quầy</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">pos_cash_shortage</field>
+        <field name="sequence">480</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r49" model="vas.rule">
+        <field name="code">R49</field>
+        <field name="name">Đếm thừa két quầy</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">pos_cash_overage</field>
+        <field name="sequence">490</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

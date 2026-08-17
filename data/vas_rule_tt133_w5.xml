@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        W5 — Kho & sản xuất.
+
+        Không dòng nào được cắm cứng 152/155/156: tài khoản tồn kho luôn tra qua
+        `vas.account.map` bằng selector `product_inventory` theo trật tự 5 bước.
+        Riêng 154 là đích cố định của chi phí sản xuất, không thuộc bảng ánh xạ.
+
+        Phạm vi đợt này chỉ còn R14. R15 (nhập kho thành phẩm) hoãn vì câu hỏi
+        định giá thành phẩm theo phương pháp giá chuẩn chưa có câu trả lời kế
+        toán; R16 (kết tinh chi phí vào 154) hoãn cùng TRỤC 2.
+
+        R13 (điều chuyển kho nội bộ, K01) ĐÃ BỎ — xem KE_HOACH_ENGINE_RULE.md
+        §5.10c. Ba lý do: workbook K01 chốt không ghi Sổ Cái và để trống hai cột
+        tài khoản; `vas.account.map` khóa theo SẢN PHẨM chứ không theo KHO nên
+        điều chuyển (không đổi sản phẩm) luôn ra cùng một tài khoản ở cả hai
+        đầu — rule này về cấu trúc không bao giờ sinh nổi bút toán có nghĩa; và
+        số tiền nó từng ghi không đến từ giá trị thật mà từ `standard_price`.
+    -->
+
+    <!-- W5 R14: xuất NVL cho sản xuất — Nợ 154 / Có TK tồn kho của NVL. K02. -->
+    <record id="vas_rule_tt133_r14" model="vas.rule">
+        <field name="code">R14</field>
+        <field name="name">Xuất nguyên vật liệu cho sản xuất</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">stock_issue_production</field>
+        <field name="sequence">62</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r14_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r14"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">fixed</field>
+        <field name="account_id" ref="vas_account_tt133_154"/>
+        <field name="amount_selector">stock_value</field>
+    </record>
+    <record id="vas_rule_tt133_r14_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r14"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">product_inventory</field>
+        <field name="amount_selector">stock_value</field>
+    </record>
+</odoo>

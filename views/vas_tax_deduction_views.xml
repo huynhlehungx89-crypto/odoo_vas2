@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Danh mục điều kiện khấu trừ -->
+    <record id="view_vas_tax_deduction_rule_list" model="ir.ui.view">
+        <field name="name">vas.tax.deduction.rule.list</field>
+        <field name="model">vas.tax.deduction.rule</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="check_kind"/>
+                <field name="amount_threshold"/>
+                <field name="threshold_basis"/>
+                <field name="consequence"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_vas_tax_deduction_rule_form" model="ir.ui.view">
+        <field name="name">vas.tax.deduction.rule.form</field>
+        <field name="model">vas.tax.deduction.rule</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="check_kind"/>
+                            <field name="consequence"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="amount_threshold"/>
+                            <field name="threshold_basis"/>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="match_product_code"/>
+                        </group>
+                    </group>
+                    <group string="Nguồn">
+                        <field name="note" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_vas_tax_deduction_rule" model="ir.actions.act_window">
+        <field name="name">Điều kiện khấu trừ GTGT</field>
+        <field name="res_model">vas.tax.deduction.rule</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Màn phân loại thuế đầu vào -->
+    <record id="view_vas_input_tax_line_list" model="ir.ui.view">
+        <field name="name">vas.move.line.input.tax.list</field>
+        <field name="model">vas.move.line</field>
+        <field name="arch" type="xml">
+            <list multi_edit="1" create="0" delete="0">
+                <field name="date"/>
+                <field name="move_id"/>
+                <field name="partner_id"/>
+                <field name="deduction_base_untaxed" string="Giá trị"/>
+                <field name="debit" string="Tiền thuế"/>
+                <field name="use_purpose"
+                         column_invisible="not context.get('vas_show_use_purpose')"/>
+                <field name="deduction_check"/>
+                <field name="deduction_rule_id" optional="show"/>
+                <field name="deductible_amount"/>
+                <field name="tax_id" optional="hide"/>
+                <field name="company_currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_vas_input_tax_line_search" model="ir.ui.view">
+        <field name="name">vas.move.line.input.tax.search</field>
+        <field name="model">vas.move.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+                <field name="move_id"/>
+                <filter name="filter_pass" string="ĐẠT"
+                        domain="[('deduction_check', '=', 'pass')]"/>
+                <filter name="filter_fail" string="KHÔNG ĐẠT"
+                        domain="[('deduction_check', '=', 'fail')]"/>
+                <filter name="filter_wait" string="CHỜ ĐẾN HẠN"
+                        domain="[('deduction_check', '=', 'wait_due')]"/>
+                <filter name="filter_unset" string="Chưa xác định mục đích"
+                        domain="[('use_purpose', '=', 'unset')]"/>
+                <group>
+                    <filter name="group_check" string="Điều kiện"
+                            context="{'group_by': 'deduction_check'}"/>
+                    <filter name="group_purpose" string="Mục đích"
+                            context="{'group_by': 'use_purpose'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_vas_input_tax_lines" model="ir.actions.server">
+        <field name="name">Phân loại thuế đầu vào</field>
+        <field name="model_id" ref="model_vas_move_line"/>
+        <field name="state">code</field>
+        <field name="code">
+company = env.company
+env['vas.move.line'].recompute_input_vat_deduction(company=company)
+action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Phân loại thuế đầu vào',
+    'res_model': 'vas.move.line',
+    'view_mode': 'list',
+    'views': [(env.ref('connecta_vas.view_vas_input_tax_line_list').id, 'list')],
+    'search_view_id': (env.ref('connecta_vas.view_vas_input_tax_line_search').id,),
+    'domain': [
+        ('move_id.company_id', '=', company.id),
+        ('move_id.state', '=', 'posted'),
+        ('tax_id', '!=', False),
+        ('debit', '>', 0),
+        ('account_id.code', '=like', '1331%'),
+    ],
+    'context': {
+        'vas_show_use_purpose': company.vas_has_exempt_sales,
+        'create': False,
+    },
+}
+        </field>
+    </record>
+
+    <record id="view_vas_input_tax_purpose_wizard_form" model="ir.ui.view">
+        <field name="name">vas.input.tax.purpose.wizard.form</field>
+        <field name="model">vas.input.tax.purpose.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Sửa mục đích sử dụng">
+                <group>
+                    <field name="use_purpose"/>
+                    <field name="line_ids" widget="many2many_tags" invisible="1"/>
+                </group>
+                <footer>
+                    <button name="action_apply" type="object" string="Áp dụng" class="btn-primary"/>
+                    <button string="Hủy" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_vas_input_tax_purpose_wizard" model="ir.actions.act_window">
+        <field name="name">Sửa mục đích hàng loạt</field>
+        <field name="res_model">vas.input.tax.purpose.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_vas_move_line"/>
+        <field name="binding_view_types">list</field>
+    </record>
+
+    <menuitem id="menu_vas_tax_deduction_rule"
+              name="Điều kiện khấu trừ"
+              parent="menu_vas_catalog_root"
+              action="action_vas_tax_deduction_rule"
+              sequence="83"/>
+</odoo>

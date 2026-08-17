@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vas_landed_tax_map_list" model="ir.ui.view">
+        <field name="name">vas.landed.tax.map.list</field>
+        <field name="model">vas.landed.tax.map</field>
+        <field name="arch" type="xml">
+            <list string="Landed cost → thuế phải nộp" editable="bottom">
+                <field name="regime_id"/>
+                <field name="apply_to"/>
+                <field name="category_id" readonly="apply_to != 'category'"/>
+                <field name="product_id" readonly="apply_to != 'product'"/>
+                <field name="credit_account_id" domain="[('regime_id', '=', regime_id)]"/>
+                <field name="company_id" optional="show" groups="base.group_multi_company"/>
+                <field name="active" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_landed_tax_map_form" model="ir.ui.view">
+        <field name="name">vas.landed.tax.map.form</field>
+        <field name="model">vas.landed.tax.map</field>
+        <field name="arch" type="xml">
+            <form string="Landed cost → thuế phải nộp">
+                <sheet>
+                    <widget name="web_ribbon" title="Đã lưu trữ" bg_color="text-bg-danger"
+                            invisible="active"/>
+                    <group>
+                        <group string="Áp dụng cho">
+                            <field name="regime_id"/>
+                            <field name="apply_to" widget="radio"/>
+                            <field name="category_id"
+                                   invisible="apply_to != 'category'"
+                                   required="apply_to == 'category'"/>
+                            <field name="product_id"
+                                   invisible="apply_to != 'product'"
+                                   required="apply_to == 'product'"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active"/>
+                        </group>
+                        <group string="Đối ứng R25">
+                            <field name="credit_account_id"
+                                   domain="[('regime_id', '=', regime_id)]"/>
+                        </group>
+                    </group>
+                    <div class="text-muted">
+                        SP / nhóm SP landed nằm trong bảng này → R25 ghi
+                        <b>Nợ tồn / Có TK thuế</b> (vd 3333), không cần hóa đơn NCC.
+                        SP landed khác (cước) → giữ Có 331 theo vendor_bill.
+                        Thêm TTĐB (3332) / BVMT (33381): tạo dòng mới, không sửa code.
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_landed_tax_map" model="ir.actions.act_window">
+        <field name="name">Landed cost — thuế phải nộp</field>
+        <field name="res_model">vas.landed.tax.map</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_vas_landed_tax_map"
+              name="Landed cost — thuế phải nộp"
+              parent="menu_vas_account_map_root"
+              action="action_vas_landed_tax_map"
+              sequence="25"/>
+</odoo>

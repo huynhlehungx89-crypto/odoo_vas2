@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Điều chỉnh trả chậm -->
+    <record id="view_vas_gtgt_deferred_adjustment_list" model="ir.ui.view">
+        <field name="name">vas.gtgt.deferred.adjustment.list</field>
+        <field name="model">vas.gtgt.deferred.adjustment</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="date_event"/>
+                <field name="kind"/>
+                <field name="invoice_ref"/>
+                <field name="amount_tax"/>
+                <field name="period_date_start"/>
+                <field name="period_date_end"/>
+                <field name="state"/>
+                <field name="confirmed_by"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_vas_gtgt_deferred_adjustment_form" model="ir.ui.view">
+        <field name="name">vas.gtgt.deferred.adjustment.form</field>
+        <field name="model">vas.gtgt.deferred.adjustment</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_confirm" type="object" string="Xác nhận"
+                            invisible="state != 'draft'" class="btn-primary"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="kind"/>
+                            <field name="invoice_ref"/>
+                            <field name="amount_tax"/>
+                            <field name="date_event"/>
+                        </group>
+                        <group>
+                            <field name="period_date_start"/>
+                            <field name="period_date_end"/>
+                            <field name="source_move_line_id"/>
+                            <field name="confirmed_by" readonly="1"/>
+                            <field name="confirmed_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Lý do">
+                        <field name="reason" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_vas_gtgt_deferred_adjustment" model="ir.actions.act_window">
+        <field name="name">Điều chỉnh trả chậm GTGT</field>
+        <field name="res_model">vas.gtgt.deferred.adjustment</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Rà soát mục đích -->
+    <record id="view_vas_gtgt_purpose_review_list" model="ir.ui.view">
+        <field name="name">vas.gtgt.purpose.review.list</field>
+        <field name="model">vas.gtgt.purpose.review</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="invoice_ref"/>
+                <field name="purpose_old"/>
+                <field name="purpose_new"/>
+                <field name="choice"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_vas_gtgt_purpose_review_form" model="ir.ui.view">
+        <field name="name">vas.gtgt.purpose.review.form</field>
+        <field name="model">vas.gtgt.purpose.review</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_set_choice" type="object" string="Ghi lựa chọn"
+                            invisible="state != 'open'" class="btn-primary"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="invoice_ref"/>
+                        <field name="move_line_id"/>
+                        <field name="purpose_old"/>
+                        <field name="purpose_new"/>
+                        <field name="choice"/>
+                        <field name="choice_reason"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_vas_gtgt_purpose_review" model="ir.actions.act_window">
+        <field name="name">Rà soát đổi mục đích GTGT</field>
+        <field name="res_model">vas.gtgt.purpose.review</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Bảng tổng hợp năm -->
+    <record id="view_vas_gtgt_annual_summary_form" model="ir.ui.view">
+        <field name="name">vas.gtgt.annual.summary.form</field>
+        <field name="model">vas.gtgt.annual.summary</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_rebuild" type="object" string="Lập lưới"
+                            class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="year"/>
+                        <field name="period_kind"/>
+                    </group>
+                    <field name="line_ids">
+                        <list decoration-danger="is_carry_mismatch">
+                            <field name="period_label"/>
+                            <field name="amount_22"/>
+                            <field name="amount_35"/>
+                            <field name="amount_24"/>
+                            <field name="amount_25"/>
+                            <field name="amount_40"/>
+                            <field name="amount_42"/>
+                            <field name="amount_43"/>
+                            <field name="prev_43" optional="hide"/>
+                            <field name="is_carry_mismatch"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_vas_gtgt_annual_summary_list" model="ir.ui.view">
+        <field name="name">vas.gtgt.annual.summary.list</field>
+        <field name="model">vas.gtgt.annual.summary</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="year"/>
+                <field name="period_kind"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_vas_gtgt_annual_summary" model="ir.actions.act_window">
+        <field name="name">Tổng hợp GTGT năm</field>
+        <field name="res_model">vas.gtgt.annual.summary</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="ir_cron_vas_gtgt_deferred_scan" model="ir.cron">
+        <field name="name">Connecta VAS: canh hạn trả chậm GTGT</field>
+        <field name="model_id" ref="model_vas_gtgt_deferred_adjustment"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_scan_deferred()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

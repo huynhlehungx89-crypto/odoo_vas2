@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vas_opening_balance_list" model="ir.ui.view">
+        <field name="name">vas.opening.balance.list</field>
+        <field name="model">vas.opening.balance</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="date"/>
+                <field name="amount_debit"/>
+                <field name="amount_credit"/>
+                <field name="amount_diff"/>
+                <field name="state"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_opening_balance_form" model="ir.ui.view">
+        <field name="name">vas.opening.balance.form</field>
+        <field name="model">vas.opening.balance</field>
+        <field name="arch" type="xml">
+            <form string="Số dư đầu kỳ">
+                <header>
+                    <button name="action_confirm" string="Xác nhận" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_open_import_wizard" string="Import Excel/CSV" type="object"
+                            invisible="state != 'draft'"/>
+                    <button name="action_reopen" string="Mở lại" type="object"
+                            invisible="state != 'posted'"
+                            confirm="Đảo bút toán opening cũ và mở lại bộ nháp?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="date" readonly="state != 'draft'"/>
+                            <field name="ref" readonly="state != 'draft'"/>
+                            <field name="regime_id" readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="amount_debit"/>
+                            <field name="amount_credit"/>
+                            <field name="amount_diff"/>
+                            <field name="move_id" readonly="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <field name="line_ids" readonly="state != 'draft'">
+                        <list editable="bottom">
+                            <field name="account_id"/>
+                            <field name="partner_id"/>
+                            <field name="debit"/>
+                            <field name="credit"/>
+                            <field name="regime_id" column_invisible="1"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                    <div class="text-muted">
+                        TK công nợ (131/331/141/138/338…) bắt buộc có Đối tác — mỗi đối tác một dòng.
+                        Tồn kho (156/152/153/155) nhập tổng theo TK, không theo sản phẩm.
+                        Xác nhận chỉ khi Tổng Nợ = Tổng Có; ngày = Ngày bắt đầu ghi sổ công ty.
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_vas_opening_import_wizard_form" model="ir.ui.view">
+        <field name="name">vas.opening.balance.import.wizard.form</field>
+        <field name="model">vas.opening.balance.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import số dư đầu kỳ">
+                <group>
+                    <field name="opening_id" readonly="1"/>
+                    <field name="mode"/>
+                    <field name="data_file" filename="filename"/>
+                    <field name="filename" invisible="1"/>
+                    <field name="template_file" filename="template_filename"/>
+                    <field name="template_filename" invisible="1"/>
+                </group>
+                <footer>
+                    <button name="action_import" string="Import" type="object" class="btn-primary"/>
+                    <button string="Đóng" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_opening_balance" model="ir.actions.act_window">
+        <field name="name">Số dư đầu kỳ</field>
+        <field name="res_model">vas.opening.balance</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_vas_opening_balance"
+              name="Số dư đầu kỳ"
+              parent="menu_vas_catalog_root"
+              action="action_vas_opening_balance"
+              sequence="10"/>
+</odoo>

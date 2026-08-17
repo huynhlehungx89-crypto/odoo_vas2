@@ -1,0 +1,876 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="vas_report_line_b01a_110" model="vas.report.line">
+        <field name="sequence">10</field>
+        <field name="code">110</field>
+        <field name="note_b09_code">V.1.total</field>
+        <field name="name">Tiền và tương đương tiền</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">debit</field>
+        <field name="account_codes">111,1111,1112,112,1121,1122</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">chot_connecta</field>
+        <field name="warn_kind">balance_on_codes</field>
+        <field name="warn_account_codes">1281,1288</field>
+        <field name="warn_message">1281/1288 còn SD — không tự xếp vào 110/122/134 (C1).</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_121" model="vas.report.line">
+        <field name="sequence">30</field>
+        <field name="code">121</field>
+        <field name="note_b09_code">V.2a.total</field>
+        <field name="name">Chứng khoán kinh doanh</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">debit</field>
+        <field name="account_codes">121</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_122" model="vas.report.line">
+        <field name="sequence">40</field>
+        <field name="code">122</field>
+        <field name="note_b09_code">V.2b.total</field>
+        <field name="name">Đầu tư nắm giữ đến ngày đáo hạn</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">debit</field>
+        <field name="account_codes">12811</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">chot_connecta</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_123" model="vas.report.line">
+        <field name="sequence">50</field>
+        <field name="code">123</field>
+        <field name="name">Đầu tư góp vốn vào đơn vị khác</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">debit</field>
+        <field name="account_codes">228,2281,2288</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_124" model="vas.report.line">
+        <field name="sequence">60</field>
+        <field name="code">124</field>
+        <field name="note_b09_code">V.2c.total</field>
+        <field name="name">Dự phòng tổn thất đầu tư tài chính</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">credit</field>
+        <field name="account_codes">2291,2292</field>
+        <field name="sign_negative" eval="True"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">balance_on_codes</field>
+        <field name="warn_account_codes">229</field>
+        <field name="warn_message">TK cha 229 còn SD — không tự gắn nhiều chỉ tiêu dự phòng (124/136/142).</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_131" model="vas.report.line">
+        <field name="sequence">80</field>
+        <field name="code">131</field>
+        <field name="note_b09_code">V.3a.total</field>
+        <field name="name">Phải thu của khách hàng</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">debit</field>
+        <field name="account_codes">131</field>
+        <field name="aggregate_by_partner" eval="True"/>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_132" model="vas.report.line">
+        <field name="sequence">90</field>
+        <field name="code">132</field>
+        <field name="note_b09_code">V.3b.total</field>
+        <field name="name">Trả trước cho người bán</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">debit</field>
+        <field name="account_codes">331</field>
+        <field name="aggregate_by_partner" eval="True"/>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_133" model="vas.report.line">
+        <field name="sequence">100</field>
+        <field name="code">133</field>
+        <field name="name">Vốn kinh doanh ở đơn vị trực thuộc</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">debit</field>
+        <field name="account_codes">1361</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133_chot_connecta</field>
+        <field name="warn_kind">balance_on_codes</field>
+        <field name="warn_account_codes">136,1361</field>
+        <field name="warn_message">136/1361 còn SD — chưa gắn TK cha dùng chung; C6 đa đơn vị.</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_134" model="vas.report.line">
+        <field name="sequence">110</field>
+        <field name="code">134</field>
+        <field name="note_b09_code">V.3c.total</field>
+        <field name="name">Phải thu khác</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">debit</field>
+        <field name="account_codes">1368,1386,1388,334,338,3381,3382,3383,3384,3385,3386,3387,3388,141</field>
+        <field name="aggregate_by_partner" eval="True"/>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133_chot_connecta</field>
+        <field name="warn_kind">balance_on_codes</field>
+        <field name="warn_account_codes">138</field>
+        <field name="warn_message">TK cha 138 còn SD — không tự gắn nhiều chỉ tiêu phải thu khác.</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_135" model="vas.report.line">
+        <field name="sequence">120</field>
+        <field name="code">135</field>
+        <field name="note_b09_code">V.3d.total</field>
+        <field name="name">Tài sản thiếu chờ xử lý</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">debit</field>
+        <field name="account_codes">1381</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_136" model="vas.report.line">
+        <field name="sequence">130</field>
+        <field name="code">136</field>
+        <field name="name">Dự phòng phải thu khó đòi</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">credit</field>
+        <field name="account_codes">2293</field>
+        <field name="sign_negative" eval="True"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_141" model="vas.report.line">
+        <field name="sequence">150</field>
+        <field name="code">141</field>
+        <field name="note_b09_code">V.4.total</field>
+        <field name="name">Hàng tồn kho</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">debit</field>
+        <field name="account_codes">151,152,153,154,155,156,157</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_142" model="vas.report.line">
+        <field name="sequence">160</field>
+        <field name="code">142</field>
+        <field name="name">Dự phòng giảm giá hàng tồn kho</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">credit</field>
+        <field name="account_codes">2294</field>
+        <field name="sign_negative" eval="True"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_151" model="vas.report.line">
+        <field name="sequence">180</field>
+        <field name="code">151</field>
+        <field name="name">Nguyên giá TSCĐ</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">debit</field>
+        <field name="account_codes">211,2111,2112,2113</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_152" model="vas.report.line">
+        <field name="sequence">190</field>
+        <field name="code">152</field>
+        <field name="name">Hao mòn lũy kế TSCĐ</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">credit</field>
+        <field name="account_codes">2141,2142,2143</field>
+        <field name="sign_negative" eval="True"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">balance_on_codes</field>
+        <field name="warn_account_codes">214</field>
+        <field name="warn_message">TK cha 214 còn SD — không tự gắn nhiều chỉ tiêu hao mòn (152/162).</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_161" model="vas.report.line">
+        <field name="sequence">210</field>
+        <field name="code">161</field>
+        <field name="name">Nguyên giá BĐSĐT</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">debit</field>
+        <field name="account_codes">217</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_162" model="vas.report.line">
+        <field name="sequence">220</field>
+        <field name="code">162</field>
+        <field name="name">Hao mòn lũy kế BĐSĐT</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">credit</field>
+        <field name="account_codes">2147</field>
+        <field name="sign_negative" eval="True"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_170" model="vas.report.line">
+        <field name="sequence">230</field>
+        <field name="code">170</field>
+        <field name="note_b09_code">V.7.total</field>
+        <field name="name">Xây dựng cơ bản dở dang</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">debit</field>
+        <field name="account_codes">241,2411,2412,2413</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_181" model="vas.report.line">
+        <field name="sequence">250</field>
+        <field name="code">181</field>
+        <field name="name">Thuế GTGT được khấu trừ</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">debit</field>
+        <field name="account_codes">133,1331,1332</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_182" model="vas.report.line">
+        <field name="sequence">260</field>
+        <field name="code">182</field>
+        <field name="name">Tài sản khác</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">debit</field>
+        <field name="account_codes">242,333,3331,3332,3333,3334,3335,3336,3337,3338,3339,33311,33312,33381,33382</field>
+        <field name="aggregate_by_partner" eval="True"/>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_311" model="vas.report.line">
+        <field name="sequence">290</field>
+        <field name="code">311</field>
+        <field name="note_b09_code">V.9a.total</field>
+        <field name="name">Phải trả người bán</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">credit</field>
+        <field name="account_codes">331</field>
+        <field name="aggregate_by_partner" eval="True"/>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_312" model="vas.report.line">
+        <field name="sequence">300</field>
+        <field name="code">312</field>
+        <field name="note_b09_code">V.9b.total</field>
+        <field name="name">Người mua trả tiền trước</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">credit</field>
+        <field name="account_codes">131</field>
+        <field name="aggregate_by_partner" eval="True"/>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_313" model="vas.report.line">
+        <field name="sequence">310</field>
+        <field name="code">313</field>
+        <field name="name">Thuế và các khoản phải nộp Nhà nước</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">credit</field>
+        <field name="account_codes">333,3331,3332,3333,3334,3335,3336,3337,3338,3339,33311,33312,33381,33382</field>
+        <field name="aggregate_by_partner" eval="True"/>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_314" model="vas.report.line">
+        <field name="sequence">320</field>
+        <field name="code">314</field>
+        <field name="name">Phải trả người lao động</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">credit</field>
+        <field name="account_codes">334</field>
+        <field name="aggregate_by_partner" eval="True"/>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_315" model="vas.report.line">
+        <field name="sequence">330</field>
+        <field name="code">315</field>
+        <field name="note_b09_code">V.9c.total</field>
+        <field name="name">Phải trả khác</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">credit</field>
+        <field name="account_codes">335,3368,338,3381,3382,3383,3384,3385,3386,3387,3388,1388</field>
+        <field name="aggregate_by_partner" eval="True"/>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_316" model="vas.report.line">
+        <field name="sequence">340</field>
+        <field name="code">316</field>
+        <field name="note_b09_code">V.11.total</field>
+        <field name="name">Vay và nợ thuê tài chính</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">credit</field>
+        <field name="account_codes">341,3411,3412</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">chot_connecta</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_317" model="vas.report.line">
+        <field name="sequence">350</field>
+        <field name="code">317</field>
+        <field name="name">Phải trả nội bộ về vốn kinh doanh</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">credit</field>
+        <field name="account_codes">3361</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133_chot_connecta</field>
+        <field name="warn_kind">balance_on_codes</field>
+        <field name="warn_account_codes">336,3361</field>
+        <field name="warn_message">336/3361 còn SD — chưa gắn TK cha dùng chung; C6 đa đơn vị.</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_318" model="vas.report.line">
+        <field name="sequence">360</field>
+        <field name="code">318</field>
+        <field name="note_b09_code">V.12.total</field>
+        <field name="name">Dự phòng phải trả</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">credit</field>
+        <field name="account_codes">352,3521,3522,3524</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_319" model="vas.report.line">
+        <field name="sequence">370</field>
+        <field name="code">319</field>
+        <field name="name">Quỹ khen thưởng, phúc lợi</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">credit</field>
+        <field name="account_codes">353,3531,3532,3533,3534</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_320" model="vas.report.line">
+        <field name="sequence">380</field>
+        <field name="code">320</field>
+        <field name="name">Quỹ phát triển khoa học và công nghệ</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">credit</field>
+        <field name="account_codes">356,3561,3562</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_411" model="vas.report.line">
+        <field name="sequence">400</field>
+        <field name="code">411</field>
+        <field name="name">Vốn góp của chủ sở hữu</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">credit</field>
+        <field name="account_codes">411,4111</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133_chot_connecta</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_412" model="vas.report.line">
+        <field name="sequence">410</field>
+        <field name="code">412</field>
+        <field name="name">Thặng dư vốn cổ phần</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">signed_credit</field>
+        <field name="account_codes">4112</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_413" model="vas.report.line">
+        <field name="sequence">420</field>
+        <field name="code">413</field>
+        <field name="name">Vốn khác của chủ sở hữu</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">credit</field>
+        <field name="account_codes">4118</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_414" model="vas.report.line">
+        <field name="sequence">430</field>
+        <field name="code">414</field>
+        <field name="name">Cổ phiếu quỹ</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">debit</field>
+        <field name="account_codes">419</field>
+        <field name="sign_negative" eval="True"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_415" model="vas.report.line">
+        <field name="sequence">440</field>
+        <field name="code">415</field>
+        <field name="name">Chênh lệch tỷ giá hối đoái</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">force_zero</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">suy_ket_cau</field>
+        <field name="warn_kind">residual_413_vnd</field>
+        <field name="warn_message">Công ty ĐVTT=VND → mã 415=0; nếu 413 còn SD sau KC thì cảnh báo (C5).</field>
+        <field name="force_zero_currency_id" ref="base.VND"/>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_416" model="vas.report.line">
+        <field name="sequence">450</field>
+        <field name="code">416</field>
+        <field name="name">Các quỹ thuộc vốn chủ sở hữu</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">credit</field>
+        <field name="account_codes">418</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_417" model="vas.report.line">
+        <field name="sequence">460</field>
+        <field name="code">417</field>
+        <field name="name">Lợi nhuận sau thuế chưa phân phối</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">detail</field>
+        <field name="amount_source">balance</field>
+        <field name="balance_side">signed_credit</field>
+        <field name="account_codes">421,4211,4212</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="True"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_120" model="vas.report.line">
+        <field name="sequence">20</field>
+        <field name="code">120</field>
+        <field name="name">Đầu tư tài chính ngắn hạn</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">total</field>
+        <field name="amount_source">total</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="child_line_ids" eval="[(6, 0, [ref('vas_report_line_b01a_121'), ref('vas_report_line_b01a_122'), ref('vas_report_line_b01a_123'), ref('vas_report_line_b01a_124')])]"/>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_130" model="vas.report.line">
+        <field name="sequence">70</field>
+        <field name="code">130</field>
+        <field name="name">Các khoản phải thu</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">total</field>
+        <field name="amount_source">total</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="child_line_ids" eval="[(6, 0, [ref('vas_report_line_b01a_131'), ref('vas_report_line_b01a_132'), ref('vas_report_line_b01a_133'), ref('vas_report_line_b01a_134'), ref('vas_report_line_b01a_135'), ref('vas_report_line_b01a_136')])]"/>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_140" model="vas.report.line">
+        <field name="sequence">140</field>
+        <field name="code">140</field>
+        <field name="name">Hàng tồn kho</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">total</field>
+        <field name="amount_source">total</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="child_line_ids" eval="[(6, 0, [ref('vas_report_line_b01a_141'), ref('vas_report_line_b01a_142')])]"/>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_150" model="vas.report.line">
+        <field name="sequence">170</field>
+        <field name="code">150</field>
+        <field name="name">Tài sản cố định</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">total</field>
+        <field name="amount_source">total</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="child_line_ids" eval="[(6, 0, [ref('vas_report_line_b01a_151'), ref('vas_report_line_b01a_152')])]"/>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_160" model="vas.report.line">
+        <field name="sequence">200</field>
+        <field name="code">160</field>
+        <field name="name">Bất động sản đầu tư</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">total</field>
+        <field name="amount_source">total</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="child_line_ids" eval="[(6, 0, [ref('vas_report_line_b01a_161'), ref('vas_report_line_b01a_162')])]"/>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_180" model="vas.report.line">
+        <field name="sequence">240</field>
+        <field name="code">180</field>
+        <field name="name">Tài sản khác</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">total</field>
+        <field name="amount_source">total</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="child_line_ids" eval="[(6, 0, [ref('vas_report_line_b01a_181'), ref('vas_report_line_b01a_182')])]"/>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_300" model="vas.report.line">
+        <field name="sequence">280</field>
+        <field name="code">300</field>
+        <field name="name">Nợ phải trả</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">total</field>
+        <field name="amount_source">total</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="child_line_ids" eval="[(6, 0, [ref('vas_report_line_b01a_311'), ref('vas_report_line_b01a_312'), ref('vas_report_line_b01a_313'), ref('vas_report_line_b01a_314'), ref('vas_report_line_b01a_315'), ref('vas_report_line_b01a_316'), ref('vas_report_line_b01a_317'), ref('vas_report_line_b01a_318'), ref('vas_report_line_b01a_319'), ref('vas_report_line_b01a_320')])]"/>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_400" model="vas.report.line">
+        <field name="sequence">390</field>
+        <field name="code">400</field>
+        <field name="name">Vốn chủ sở hữu</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">total</field>
+        <field name="amount_source">total</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="child_line_ids" eval="[(6, 0, [ref('vas_report_line_b01a_411'), ref('vas_report_line_b01a_412'), ref('vas_report_line_b01a_413'), ref('vas_report_line_b01a_414'), ref('vas_report_line_b01a_415'), ref('vas_report_line_b01a_416'), ref('vas_report_line_b01a_417')])]"/>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_200" model="vas.report.line">
+        <field name="sequence">270</field>
+        <field name="code">200</field>
+        <field name="name">TỔNG CỘNG TÀI SẢN</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">total</field>
+        <field name="amount_source">total</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="child_line_ids" eval="[(6, 0, [ref('vas_report_line_b01a_110'), ref('vas_report_line_b01a_120'), ref('vas_report_line_b01a_130'), ref('vas_report_line_b01a_140'), ref('vas_report_line_b01a_150'), ref('vas_report_line_b01a_160'), ref('vas_report_line_b01a_170'), ref('vas_report_line_b01a_180')])]"/>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="vas_report_line_b01a_500" model="vas.report.line">
+        <field name="sequence">470</field>
+        <field name="code">500</field>
+        <field name="name">TỔNG CỘNG NGUỒN VỐN</field>
+        <field name="form_code">B01a-DNN</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="line_role">total</field>
+        <field name="amount_source">total</field>
+        <field name="sign_negative" eval="False"/>
+        <field name="show_negative_paren" eval="False"/>
+        <field name="basis_kind">trich_tt133</field>
+        <field name="warn_kind">none</field>
+        <field name="child_line_ids" eval="[(6, 0, [ref('vas_report_line_b01a_300'), ref('vas_report_line_b01a_400')])]"/>
+        <field name="is_system" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+</odoo>

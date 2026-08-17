@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="connecta_vas.VasDebtAging">
+        <div class="o_action o_vas_debt_aging">
+            <Layout display="{controlPanel: false}">
+                <div class="o_vas_aging_toolbar d-flex justify-content-between align-items-center px-3 py-2 border-bottom flex-wrap gap-2">
+                    <h2 class="m-0 fs-4" t-esc="state.data ? state.data.kind_label : (kind === 'ar' ? 'Phải thu (131)' : 'Phải trả (331)')"/>
+                    <div class="d-flex align-items-center gap-2">
+                        <label class="small text-muted mb-0">Kỳ</label>
+                        <select class="form-select form-select-sm" style="min-width: 10rem"
+                                t-on-change="onPeriodChange">
+                            <t t-foreach="state.periods" t-as="p" t-key="p.id">
+                                <option t-att-value="p.id"
+                                        t-att-selected="p.id === state.periodId"
+                                        t-esc="p.name"/>
+                            </t>
+                        </select>
+                    </div>
+                </div>
+                <div class="o_content p-3">
+                    <t t-if="state.loading">
+                        <div class="text-muted">Đang tải tuổi nợ…</div>
+                    </t>
+                    <t t-elif="state.error">
+                        <div class="alert alert-danger" t-esc="state.error"/>
+                    </t>
+                    <t t-elif="state.data">
+                        <p class="small text-muted mb-2">
+                            Mốc xếp cột: ngày cuối kỳ
+                            <strong t-esc="state.data.as_of"/>
+                            · Kỳ <t t-esc="state.data.period_name"/>
+                        </p>
+                        <p class="small text-muted mb-3" t-if="state.data.unknown_hint"
+                           t-esc="state.data.unknown_hint"/>
+                        <div t-if="!state.data.match_f01" class="alert alert-warning py-2">
+                            Tổng tuổi nợ lệch số dư F01
+                            (<t t-esc="formatMoney(state.data.totals.total)"/>
+                            ≠
+                            <t t-esc="formatMoney(state.data.f01_total)"/>).
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover o_vas_aging_table">
+                                <thead>
+                                    <tr>
+                                        <th>Đối tác</th>
+                                        <t t-foreach="state.data.columns" t-as="col" t-key="col.key">
+                                            <th class="text-end" t-att-title="col.hint or ''">
+                                                <t t-esc="col.label"/>
+                                            </th>
+                                        </t>
+                                        <th class="text-end">Tổng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-if="!state.data.rows.length">
+                                        <tr>
+                                            <td t-att-colspan="state.data.columns.length + 2"
+                                                class="text-muted">
+                                                Không có số dư công nợ trong kỳ này.
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <t t-foreach="state.data.rows" t-as="row" t-key="row.partner_id or 'none'">
+                                        <tr>
+                                            <td t-esc="row.partner_name"/>
+                                            <t t-foreach="state.data.columns" t-as="col" t-key="col.key">
+                                                <td class="text-end" t-esc="formatMoney(row[col.key])"/>
+                                            </t>
+                                            <td class="text-end fw-bold" t-esc="formatMoney(row.total)"/>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                                <tfoot t-if="state.data.rows.length">
+                                    <tr class="fw-bold">
+                                        <td>Tổng</td>
+                                        <t t-foreach="state.data.columns" t-as="col" t-key="col.key">
+                                            <td class="text-end" t-esc="formatMoney(state.data.totals[col.key])"/>
+                                        </t>
+                                        <td class="text-end" t-esc="formatMoney(state.data.totals.total)"/>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <p class="small text-muted mt-2">
+                            Đối chiếu F01:
+                            <t t-esc="formatMoney(state.data.f01_total)"/>
+                            <t t-if="state.data.match_f01"> — khớp.</t>
+                        </p>
+                    </t>
+                </div>
+            </Layout>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vas_import_vat_list" model="ir.ui.view">
+        <field name="name">vas.import.vat.list</field>
+        <field name="model">vas.import.vat</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="declaration_number" optional="show"/>
+                <field name="date"/>
+                <field name="partner_id" optional="show"/>
+                <field name="amount_vat"/>
+                <field name="state"/>
+                <field name="pending_odoo_payment" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_import_vat_form" model="ir.ui.view">
+        <field name="name">vas.import.vat.form</field>
+        <field name="model">vas.import.vat</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_confirm" type="object"
+                            string="Xác nhận tờ khai"
+                            class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_mark_paid" type="object"
+                            string="Đã nộp (qua Odoo)"
+                            invisible="state != 'confirmed'"/>
+                    <button name="action_cancel" type="object"
+                            string="Hủy tờ khai"
+                            invisible="state != 'confirmed'"
+                            confirm="Hủy tờ khai và đảo bút toán M11-3?"/>
+                    <field name="state" widget="statusbar"
+                            statusbar_visible="draft,confirmed,paid"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="declaration_number"
+                                   readonly="state != 'draft'"/>
+                            <field name="date" readonly="state != 'draft'"/>
+                            <field name="partner_id"
+                                   readonly="state != 'draft'"/>
+                            <field name="ref" readonly="state != 'draft'"/>
+                            <field name="pending_odoo_payment" readonly="1"
+                                   invisible="not pending_odoo_payment"/>
+                        </group>
+                        <group>
+                            <field name="amount_vat"
+                                   readonly="state != 'draft'"/>
+                            <field name="currency_id"
+                                   readonly="state != 'draft'"/>
+                            <field name="regime_id"
+                                   readonly="state != 'draft'"/>
+                            <field name="period_id"/>
+                            <field name="company_id"
+                                   groups="base.group_multi_company"
+                                   readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+                    <group string="Liên kết tra cứu">
+                        <field name="purchase_id"
+                               readonly="state != 'draft'"/>
+                        <field name="picking_ids" widget="many2many_tags"
+                               readonly="state != 'draft'"/>
+                    </group>
+                    <group string="Nộp thuế (M11-7)">
+                        <field name="payment_id"
+                               readonly="state == 'paid'"/>
+                        <field name="payment_date" readonly="1"/>
+                        <field name="amount_paid" readonly="1"/>
+                        <field name="accrual_move_id" readonly="1"/>
+                        <field name="payment_move_id" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_import_vat" model="ir.actions.act_window">
+        <field name="name">GTGT hàng nhập khẩu</field>
+        <field name="res_model">vas.import.vat</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_vas_import_vat"
+              name="GTGT hàng nhập khẩu"
+              parent="menu_vas_ops"
+              action="action_vas_import_vat"
+              sequence="40"/>
+</odoo>

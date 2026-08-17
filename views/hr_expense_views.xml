@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_expense_form_vas_advance" model="ir.ui.view">
+        <field name="name">hr.expense.form.vas.advance</field>
+        <field name="model">hr.expense</field>
+        <field name="inherit_id" ref="hr_expense.hr_expense_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='employee_id']" position="after">
+                <field name="vas_advance_payment_id"/>
+                <field name="vas_advance_residual"
+                       invisible="not vas_advance_payment_id"/>
+                <field name="vas_advance_excess"
+                       invisible="not vas_advance_excess"
+                       decoration-warning="1"/>
+                <field name="company_currency_id" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_expense_list_vas_advance" model="ir.ui.view">
+        <field name="name">hr.expense.list.vas.advance</field>
+        <field name="model">hr.expense</field>
+        <field name="inherit_id" ref="hr_expense.view_expenses_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='employee_id']" position="after">
+                <field name="vas_advance_payment_id" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_expense_search_vas_advance" model="ir.ui.view">
+        <field name="name">hr.expense.search.vas.advance</field>
+        <field name="model">hr.expense</field>
+        <field name="inherit_id" ref="hr_expense.hr_expense_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="vas_advance_payment_id"/>
+                <filter string="Quyết toán tạm ứng" name="vas_has_advance"
+                        domain="[('vas_advance_payment_id', '!=', False)]"/>
+                <filter string="Nhân viên tự bỏ tiền túi" name="vas_no_advance"
+                        domain="[('vas_advance_payment_id', '=', False)]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

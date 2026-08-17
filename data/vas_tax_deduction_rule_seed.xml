@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!--
+      Điều kiện khấu trừ GTGT đầu vào — ngưỡng / hiệu lực / hậu quả là DỮ LIỆU.
+      Nguồn: 305.pdf Điều 14; 181nd Điều 24–26; 144-ndcp Điều 4 (thắng điểm g trả chậm).
+    -->
+    <record id="vas_tax_deduction_cash_payment" model="vas.tax.deduction.rule">
+        <field name="code">CASH_NONCASH</field>
+        <field name="name">Thiếu chứng từ thanh toán không dùng tiền mặt (≥ ngưỡng)</field>
+        <field name="sequence">10</field>
+        <field name="amount_threshold">5000000</field>
+        <field name="threshold_basis">gross_incl_vat</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="consequence">deny_all</field>
+        <field name="check_kind">cash_payment</field>
+        <field name="note">181 Điều 26 tr.32 — từ 05 triệu đã gồm thuế GTGT</field>
+    </record>
+    <record id="vas_tax_deduction_cash_cumulative" model="vas.tax.deduction.rule">
+        <field name="code">CASH_CUMULATIVE</field>
+        <field name="name">Cộng dồn nhiều lần cùng NCC cùng ngày ≥ ngưỡng</field>
+        <field name="sequence">20</field>
+        <field name="amount_threshold">5000000</field>
+        <field name="threshold_basis">gross_incl_vat</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="consequence">deny_all</field>
+        <field name="check_kind">cash_cumulative</field>
+        <field name="note">181 Điều 26 tr.34 — mua nhiều lần cùng ngày cùng người bán</field>
+    </record>
+    <record id="vas_tax_deduction_deferred" model="vas.tax.deduction.rule">
+        <field name="code">DEFERRED_PAYMENT</field>
+        <field name="name">Trả chậm/trả góp — chờ hạn hoặc quá hạn chưa có chứng từ</field>
+        <field name="sequence">30</field>
+        <field name="amount_threshold">5000000</field>
+        <field name="threshold_basis">gross_incl_vat</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="consequence">wait_due</field>
+        <field name="check_kind">deferred_payment</field>
+        <field name="note">181 Điều 26.2.g tr.33; 144 Điều 4 tr.3 thắng (thêm khôi phục khi có chứng từ)</field>
+    </record>
+    <record id="vas_tax_deduction_passenger_car" model="vas.tax.deduction.rule">
+        <field name="code">PASSENGER_CAR</field>
+        <field name="name">Ô tô chở người ≤ 09 chỗ — khấu trừ hạn chế phần ≤ ngưỡng</field>
+        <field name="sequence">40</field>
+        <field name="amount_threshold">1600000000</field>
+        <field name="threshold_basis">untaxed</field>
+        <field name="date_start">2025-07-01</field>
+        <field name="consequence">deny_excess</field>
+        <field name="check_kind">passenger_car</field>
+        <field name="match_product_code">VAS_CAR_LTE9</field>
+        <field name="note">181 Điều 24 tr.31 — khấu trừ tương ứng phần trị giá đến 1,6 tỷ (chưa thuế)</field>
+    </record>
+</odoo>

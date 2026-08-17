@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_vas_account_ledger" model="ir.actions.report">
+        <field name="name">Sổ chi tiết tài khoản</field>
+        <field name="model">vas.account.ledger.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">connecta_vas.report_vas_account_ledger</field>
+        <field name="report_file">connecta_vas.report_vas_account_ledger</field>
+        <field name="print_report_name">'So_chi_tiet_%s' % (object.account_id.code or 'TK')</field>
+    </record>
+
+    <template id="report_vas_account_ledger">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="wiz">
+                <t t-foreach="wiz.get_report_books()" t-as="book">
+                    <div class="page" style="font-size: 11px;">
+                        <div class="row mb-2">
+                            <div class="col-7">
+                                <strong t-esc="wiz.company_id.name"/>
+                            </div>
+                            <div class="col-5 text-end">
+                                Mẫu số: <strong t-esc="wiz.form_code"/>
+                            </div>
+                        </div>
+                        <h4 class="text-center text-uppercase">
+                            <t t-if="wiz.layout == 'ar_ap'">
+                                Sổ chi tiết thanh toán với người mua (người bán)
+                            </t>
+                            <t t-else="">
+                                Sổ chi tiết các tài khoản
+                            </t>
+                        </h4>
+                        <p class="text-center mb-1">
+                            Tài khoản:
+                            <strong t-esc="wiz.account_id.code"/> —
+                            <span t-esc="wiz.account_id.name"/>
+                        </p>
+                        <t t-if="wiz.layout == 'ar_ap'">
+                            <p class="text-center mb-1">
+                                Đối tượng:
+                                <strong t-esc="book['partner'].display_name if book['partner'] else '(Không đối tượng)'"/>
+                            </p>
+                        </t>
+                        <p class="text-center mb-3">
+                            Niên độ: từ
+                            <span t-esc="wiz.period_from_id.name"/>
+                            đến
+                            <span t-esc="wiz.period_to_id.name"/>
+                        </p>
+
+                        <table class="table table-sm table-bordered o_main_table">
+                            <thead>
+                                <tr>
+                                    <th>Ngày ghi sổ</th>
+                                    <th>Số CT</th>
+                                    <th>Ngày CT</th>
+                                    <th>Diễn giải</th>
+                                    <th t-if="wiz.layout == 'ar_ap'">Thời hạn CK</th>
+                                    <th>TK ĐƯ</th>
+                                    <th class="text-end">PS Nợ</th>
+                                    <th class="text-end">PS Có</th>
+                                    <th class="text-end">SD Nợ</th>
+                                    <th class="text-end">SD Có</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="book['lines']" t-as="line"
+                                    t-att-style="'font-weight:bold' if line.row_type in ('opening','total_ps','closing') else ''">
+                                    <td><span t-esc="line.date or ''"/></td>
+                                    <td><span t-esc="line.move_name or ''"/></td>
+                                    <td><span t-esc="line.move_date or ''"/></td>
+                                    <td><span t-esc="line.narration or ''"/></td>
+                                    <td t-if="wiz.layout == 'ar_ap'"></td>
+                                    <td><span t-esc="line.counterpart_code or ''"/></td>
+                                    <td class="text-end">
+                                        <span t-if="line.debit" t-esc="'{:,.0f}'.format(line.debit)"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-if="line.credit" t-esc="'{:,.0f}'.format(line.credit)"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-if="line.balance_debit" t-esc="'{:,.0f}'.format(line.balance_debit)"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-if="line.balance_credit" t-esc="'{:,.0f}'.format(line.balance_credit)"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

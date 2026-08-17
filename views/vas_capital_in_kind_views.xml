@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vas_capital_in_kind_tree" model="ir.ui.view">
+        <field name="name">vas.capital.in.kind.list</field>
+        <field name="model">vas.capital.in.kind</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="date"/>
+                <field name="partner_id"/>
+                <field name="amount"/>
+                <field name="asset_account_id"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_capital_in_kind_form" model="ir.ui.view">
+        <field name="name">vas.capital.in.kind.form</field>
+        <field name="model">vas.capital.in.kind</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_post" type="object" string="Ghi sổ"
+                            invisible="state != 'draft'" class="btn-primary"/>
+                    <button name="action_cancel" type="object" string="Đảo / Hủy"
+                            invisible="state != 'posted'"
+                            confirm="Đảo bút toán góp vốn hiện vật?"/>
+                    <field name="state" widget="statusbar"
+                            statusbar_visible="draft,posted"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="date"/>
+                            <field name="period_id"/>
+                            <field name="partner_id"/>
+                            <field name="amount"/>
+                            <field name="ref"/>
+                        </group>
+                        <group>
+                            <field name="asset_account_id"/>
+                            <field name="equity_account_id"/>
+                            <field name="spawn_asset"/>
+                            <field name="asset_name"
+                                     invisible="not spawn_asset"
+                                     required="spawn_asset"/>
+                            <field name="asset_id" readonly="1"/>
+                            <field name="move_id" readonly="1"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="regime_id"/>
+                            <field name="currency_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vas_capital_in_kind" model="ir.actions.act_window">
+        <field name="name">Góp vốn bằng hiện vật</field>
+        <field name="res_model">vas.capital.in.kind</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_vas_capital_in_kind"
+              name="Góp vốn hiện vật"
+              parent="menu_vas_ops"
+              action="action_vas_capital_in_kind"
+              sequence="80"/>
+</odoo>

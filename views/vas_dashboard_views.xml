@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_vas_dashboard" model="ir.actions.client">
+        <field name="name">Tổng quan</field>
+        <field name="tag">vas_dashboard</field>
+        <field name="path">vas-dashboard</field>
+    </record>
+
+    <!-- Mục cấp một thứ nhất — mở thẳng dashboard, không xổ con -->
+    <menuitem id="menu_vas_dashboard"
+              name="Tổng quan"
+              parent="menu_connecta_vas_root"
+              action="action_vas_dashboard"
+              sequence="1"/>
+</odoo>
