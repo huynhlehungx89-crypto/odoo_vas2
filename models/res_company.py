@@ -263,6 +263,7 @@ class ResCompany(models.Model):
             })
 
         self.env['vas.journal']._ensure_journals_for_company(company)
+        self.env['vas.cost.item']._ensure_system_items_for_company(company)
         journal = self.env['vas.journal'].search([
             ('company_id', '=', company.id), ('code', '=', 'TH'),
         ], limit=1)
@@ -456,6 +457,7 @@ class ResCompany(models.Model):
             })
 
         self.env['vas.journal']._ensure_journals_for_company(company)
+        self.env['vas.cost.item']._ensure_system_items_for_company(company)
         journal = self.env['vas.journal'].search([
             ('company_id', '=', company.id), ('code', '=', 'TH'),
         ], limit=1)

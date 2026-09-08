@@ -27,6 +27,7 @@ EVENT_MOVE_KIND = {
     # chung 'purchase_inv' với R07 thì rule chạy sau bị bỏ qua.
     'purchase_service': 'expense',
     'purchase_refund': 'refund',
+    'purchase_discount': 'refund',
     'purchase_return_stock': 'stock',
     'purchase_price_adjust': 'purchase_inv',
     'stock_issue_production': 'stock',
@@ -69,6 +70,7 @@ EVENT_JOURNAL_CODE = {
     'sale_return_stock': 'KHO',
     'purchase_service': 'MH',
     'purchase_refund': 'MH',
+    'purchase_discount': 'MH',
     'purchase_return_stock': 'KHO',
     'purchase_price_adjust': 'MH',
     'stock_issue_production': 'KHO',
@@ -149,6 +151,10 @@ class VasSync(models.AbstractModel):
                 "Vào Cài đặt → Connecta VAS để đặt mốc cutoff trước khi đồng bộ.",
                 company=company.display_name,
             ))
+        # Công ty phụ (vd. Công ty B): seed chỉ tạo sổ / khoản mục cho main_company
+        # lúc cài module — bổ sung BH/MH/KHO/… và NVLTT/NCTT/CPC/CPD trước khi sync.
+        self.env['vas.journal']._ensure_journals_for_company(company)
+        self.env['vas.cost.item']._ensure_system_items_for_company(company)
         # Cutoff sàn: chứng từ ngày < vas_start_date bỏ qua hoàn toàn.
         cutoff = company.vas_start_date
         if date_from:
@@ -286,15 +292,11 @@ class VasSync(models.AbstractModel):
             if self._already_synced(invoice._name, invoice.id, 'sale_inv'):
                 skipped += 1
                 continue
-            status = self._sale_invoice_delivery_status(invoice)
-            if status == 'partial':
-                raise UserError(_(
-                    "Hóa đơn %(inv)s giao từng phần — workbook/kế toán chưa chốt: "
-                    "ghi doanh thu theo tỷ lệ đã giao hay chờ giao đủ? "
-                    "Dừng — không tự đoán. (invoice=%(inv)s)",
-                    inv=invoice.display_name,
-                ))
-            move = self._generate_sale_invoice_move(rule, invoice, company, include_revenue=(status == 'full'))
+            # Policy B: DT theo tỷ lệ đã xuất (gross); thuế đủ; không chặn sync.
+            ratio = self._sale_invoice_delivery_ratio(invoice)
+            move = self._generate_sale_invoice_move(
+                rule, invoice, company, revenue_ratio=ratio,
+            )
             if move:
                 created += 1
         return {'created': created, 'skipped': skipped}
@@ -965,6 +967,7 @@ class VasSync(models.AbstractModel):
         return self._apply_event('sale_return_stock', moves, company)
 
     def _sync_purchase_refunds(self, company, date_from, date_to):
+        """R09 (có trả kho) + R09b giảm giá phi kho (G6/G7 / M09)."""
         domain = [
             ('company_id', '=', company.id),
             ('move_type', '=', 'in_refund'),
@@ -974,8 +977,12 @@ class VasSync(models.AbstractModel):
             domain.append(('date', '>=', date_from))
         if date_to:
             domain.append(('date', '<=', date_to))
-        moves = self.env['account.move'].search(domain)
-        return self._apply_event('purchase_refund', moves, company)
+        refunds = self.env['account.move'].search(domain)
+        with_return = refunds.filtered(self._refund_has_stock_return)
+        without = refunds - with_return
+        s1 = self._apply_event('purchase_refund', with_return, company)
+        s2 = self._apply_event('purchase_discount', without, company)
+        return {'purchase_refund': s1, 'purchase_discount': s2}
 
     def _sync_purchase_return_stocks(self, company, date_from, date_to):
         domain = [
@@ -1097,6 +1104,17 @@ class VasSync(models.AbstractModel):
             lambda l: l.display_type not in ('line_section', 'line_note')
         )
 
+    def _invoice_uses_signed_line_amounts(self, invoice, scope):
+        """Hóa đơn BÁN gốc: dòng âm = chiết khấu cả đơn, phải cộng có dấu.
+
+        Hoàn (`out_refund`), mua, POS refund — giữ abs (độ lớn + chiều Nợ/Có của rule).
+        """
+        return (
+            scope == 'output'
+            and invoice._name == 'account.move'
+            and invoice.move_type == 'out_invoice'
+        )
+
     def _is_goods_invoice_line(self, line):
         """Dòng hóa đơn là HÀNG TỒN KHO (giá trị đi qua stock.move → R06/R07)?
 
@@ -1150,18 +1168,279 @@ class VasSync(models.AbstractModel):
         }.get(amount_selector, 0.0)
 
     def _refund_has_stock_return(self, refund):
-        """Heuristic: refund linked to sale that has customer→internal stock move."""
-        if 'sale_line_ids' in refund.line_ids._fields:
-            sale_orders = refund.line_ids.sale_line_ids.order_id
-            if sale_orders:
-                returns = self.env['stock.move'].search_count([
-                    ('sale_line_id.order_id', 'in', sale_orders.ids),
-                    ('state', '=', 'done'),
-                    ('location_usage', '=', 'customer'),
-                    ('location_dest_usage', '=', 'internal'),
-                ])
-                return bool(returns)
+        """True nếu credit note kèm nhập/xuất trả kho (bán: khách→kho; mua: kho→NCC)."""
+        if refund.move_type == 'out_refund':
+            if 'sale_line_ids' in refund.line_ids._fields:
+                sale_orders = refund.line_ids.sale_line_ids.order_id
+                if sale_orders:
+                    returns = self.env['stock.move'].search_count([
+                        ('sale_line_id.order_id', 'in', sale_orders.ids),
+                        ('state', '=', 'done'),
+                        ('location_usage', '=', 'customer'),
+                        ('location_dest_usage', '=', 'internal'),
+                    ])
+                    return bool(returns)
+            return False
+        if refund.move_type == 'in_refund':
+            po_lines = self.env['purchase.order.line']
+            if 'purchase_line_id' in refund.invoice_line_ids._fields:
+                po_lines = refund.invoice_line_ids.mapped('purchase_line_id')
+            if not po_lines and refund.reversed_entry_id:
+                orig = refund.reversed_entry_id
+                if 'purchase_line_id' in orig.invoice_line_ids._fields:
+                    po_lines = orig.invoice_line_ids.mapped('purchase_line_id')
+            po_lines = po_lines.filtered(lambda l: l)
+            if not po_lines:
+                return False
+            return bool(self.env['stock.move'].search_count([
+                ('purchase_line_id', 'in', po_lines.ids),
+                ('state', '=', 'done'),
+                ('location_dest_usage', '=', 'supplier'),
+            ]))
+            return False
         return False
+
+    def _purchase_line_for_refund_line(self, inv_line):
+        """POL gắn dòng CN, hoặc khớp SP trên hóa đơn gốc bị đảo."""
+        if 'purchase_line_id' in inv_line._fields and inv_line.purchase_line_id:
+            return inv_line.purchase_line_id
+        move = inv_line.move_id
+        if move.reversed_entry_id and inv_line.product_id:
+            orig = move.reversed_entry_id.invoice_line_ids.filtered(
+                lambda l: l.product_id == inv_line.product_id
+                and 'purchase_line_id' in l._fields
+                and l.purchase_line_id
+            )[:1]
+            if orig:
+                return orig.purchase_line_id
+        return self.env['purchase.order.line']
+
+    def _purchase_discount_is_proxy_line(self, inv_line, refund):
+        """Dòng CN dùng SP Discount/dịch vụ thay vì đúng hàng trên HĐ gốc.
+
+        Odoo hay tạo CN giảm giá bằng 1 dòng SP «Discount» (type service) —
+        không có map 156/632 → trước đây rơi TK mặc định.
+        """
+        origin = refund.reversed_entry_id
+        origin_goods = self._goods_lines(origin) if origin else self.env['account.move.line']
+        if not origin_goods:
+            return False
+        product = inv_line.product_id
+        if not product:
+            return True
+        if self._is_goods_invoice_line(inv_line):
+            # Đúng SP lưu kho đã có trên HĐ gốc → không phải proxy.
+            if product in origin_goods.mapped('product_id'):
+                return False
+            return True
+        # Dịch vụ / không lưu kho trên CN trong khi gốc là hàng → coi là CK proxy.
+        return True
+
+    def _purchase_discount_target_rows(self, inv_line, refund, company):
+        """Các cặp (product, pol, untaxed_share) để chọn TK + tỷ lệ tồn.
+
+        Proxy Discount → chia theo trọng số untaxed các dòng hàng trên HĐ gốc.
+        """
+        untaxed = abs(inv_line.price_subtotal or 0.0)
+        if float_is_zero(untaxed, precision_digits=2):
+            return []
+        if not self._purchase_discount_is_proxy_line(inv_line, refund):
+            pol = self._purchase_line_for_refund_line(inv_line)
+            product = (pol.product_id if pol else inv_line.product_id) or inv_line.product_id
+            return [(product, pol, untaxed)]
+
+        origin = refund.reversed_entry_id
+        origin_goods = self._goods_lines(origin)
+        weights = []
+        for g in origin_goods:
+            w = abs(g.price_subtotal or 0.0)
+            if float_is_zero(w, precision_digits=2):
+                w = abs(g.quantity or 0.0) or 1.0
+            pol = g.purchase_line_id if 'purchase_line_id' in g._fields else self.env['purchase.order.line']
+            weights.append((g.product_id, pol, w))
+        total_w = sum(w for _p, _pol, w in weights)
+        if float_is_zero(total_w, precision_digits=2):
+            # Không chia được — gán hết SP đầu.
+            g0 = origin_goods[:1]
+            pol = g0.purchase_line_id if g0 and 'purchase_line_id' in g0._fields else self.env['purchase.order.line']
+            return [(g0.product_id, pol, untaxed)]
+        rows = []
+        allocated = 0.0
+        for idx, (product, pol, w) in enumerate(weights):
+            if idx == len(weights) - 1:
+                part = round(untaxed - allocated, 2)
+            else:
+                part = round(untaxed * (w / total_w), 2)
+                allocated += part
+            if not float_is_zero(part, precision_digits=2):
+                rows.append((product, pol, part))
+        return rows
+
+    def _purchase_discount_stock_fraction_for(self, product, pol, company):
+        """Tỷ lệ ghi vào tồn (156); phần còn lại → 632."""
+        if not product or not getattr(product, 'is_storable', False):
+            return 0.0
+        net_in = 0.0
+        if pol:
+            moves = pol.move_ids.filtered(lambda m: m.state == 'done')
+            incoming = moves.filtered(
+                lambda m: (m.location_id.usage == 'supplier')
+                or (getattr(m, 'location_usage', False) == 'supplier')
+            )
+            returned = moves.filtered(
+                lambda m: (m.location_dest_id.usage == 'supplier')
+                or (getattr(m, 'location_dest_usage', False) == 'supplier')
+            )
+            net_in = sum(incoming.mapped('quantity')) - sum(returned.mapped('quantity'))
+        if float_is_zero(net_in, precision_digits=2):
+            on_hand = product.with_company(company).qty_available
+            return 1.0 if float_compare(on_hand, 0.0, precision_digits=2) > 0 else 0.0
+        on_hand = product.with_company(company).qty_available
+        remaining = min(max(on_hand, 0.0), net_in)
+        return max(0.0, min(1.0, remaining / net_in))
+
+    def _purchase_discount_stock_fraction(self, inv_line, company):
+        """Tương thích test cũ — một dòng CN / một SP đích."""
+        refund = inv_line.move_id
+        rows = self._purchase_discount_target_rows(inv_line, refund, company)
+        if not rows:
+            return 0.0
+        if len(rows) == 1:
+            product, pol, _amt = rows[0]
+            return self._purchase_discount_stock_fraction_for(product, pol, company)
+        # Nhiều đích: trung bình có trọng số theo số tiền.
+        total = sum(a for _p, _pol, a in rows)
+        if float_is_zero(total, precision_digits=2):
+            return 0.0
+        weighted = 0.0
+        for product, pol, amt in rows:
+            weighted += amt * self._purchase_discount_stock_fraction_for(
+                product, pol, company,
+            )
+        return weighted / total
+
+    def _generate_purchase_discount_move(self, rule, refund, company):
+        """R09b / M09: CN giảm giá không trả hàng — phân bổ Có 156 vs Có 632 + Có 1331.
+
+        Dòng SP Discount (proxy) lấy map TK theo **hàng trên HĐ gốc**, không theo
+        SP Discount (tránh cờ tài khoản mặc định).
+        """
+        real_lines = self._real_invoice_lines(refund)
+        stock_by_product = {}
+        cogs_by_product = {}
+        expense_by_product = {}
+        tax_total = 0.0
+        fallbacks = []
+
+        for line in real_lines:
+            untaxed = abs(line.price_subtotal or 0.0)
+            tax_total += abs(line.price_total or 0.0) - untaxed
+            if float_is_zero(untaxed, precision_digits=2):
+                continue
+            targets = self._purchase_discount_target_rows(line, refund, company)
+            if not targets:
+                # Không gắn được gốc — vẫn ghi expense theo SP dòng (có thể default).
+                product = line.product_id
+                expense_by_product[product] = (
+                    expense_by_product.get(product, 0.0) + untaxed
+                )
+                continue
+            for product, pol, part in targets:
+                if float_is_zero(part, precision_digits=2):
+                    continue
+                if product and getattr(product, 'is_storable', False):
+                    frac = self._purchase_discount_stock_fraction_for(
+                        product, pol, company,
+                    )
+                    stock_amt = round(part * frac, 2)
+                    cogs_amt = round(part - stock_amt, 2)
+                    if stock_amt:
+                        stock_by_product[product] = (
+                            stock_by_product.get(product, 0.0) + stock_amt
+                        )
+                    if cogs_amt:
+                        cogs_by_product[product] = (
+                            cogs_by_product.get(product, 0.0) + cogs_amt
+                        )
+                else:
+                    expense_by_product[product] = (
+                        expense_by_product.get(product, 0.0) + part
+                    )
+
+        tax_total = round(tax_total, 2)
+        stock_total = round(sum(stock_by_product.values()), 2)
+        cogs_total = round(sum(cogs_by_product.values()), 2)
+        expense_total = round(sum(expense_by_product.values()), 2)
+        debit_331 = round(stock_total + cogs_total + expense_total + tax_total, 2)
+        if float_is_zero(debit_331, precision_digits=2):
+            return self.env['vas.move']
+
+        regime = company.vas_regime_id
+        acc_331 = self._account_by_code(regime, '331')
+        acc_1331 = self._account_by_code(regime, '1331')
+        if not acc_331 or not acc_1331:
+            raise UserError(_("Missing VAS accounts 331/1331 for purchase discount."))
+
+        lines = []
+        seq = 10
+        partner = refund.partner_id
+        lines.append(Command.create({
+            'sequence': seq, 'account_id': acc_331.id, 'name': rule.name,
+            'debit': debit_331, 'credit': 0.0,
+            'partner_id': partner.id if partner else False,
+            'currency_id': company.currency_id.id,
+        }))
+        seq += 10
+
+        def _credit_splits(amount_map, selector):
+            nonlocal seq
+            for product, amount in amount_map.items():
+                if float_is_zero(amount, precision_digits=2):
+                    continue
+                account = self._product_account(
+                    product, selector, company, fallbacks,
+                )
+                if not account:
+                    raise UserError(_(
+                        "Missing VAS account (%(sel)s) for purchase discount.",
+                        sel=selector,
+                    ))
+                lines.append(Command.create({
+                    'sequence': seq, 'account_id': account.id, 'name': rule.name,
+                    'debit': 0.0, 'credit': amount,
+                    'partner_id': partner.id if partner else False,
+                    'currency_id': company.currency_id.id,
+                }))
+                seq += 10
+
+        _credit_splits(stock_by_product, 'product_inventory')
+        _credit_splits(cogs_by_product, 'product_cogs')
+        _credit_splits(expense_by_product, 'product_expense')
+
+        if not float_is_zero(tax_total, precision_digits=2):
+            lines.append(Command.create({
+                'sequence': seq, 'account_id': acc_1331.id, 'name': rule.name,
+                'debit': 0.0, 'credit': tax_total,
+                'partner_id': partner.id if partner else False,
+                'currency_id': company.currency_id.id,
+            }))
+
+        journal = self._resolve_journal('purchase_discount', refund, company)
+        move = self.env['vas.move'].create({
+            'date': refund.invoice_date or refund.date,
+            'journal_id': journal.id,
+            'regime_id': regime.id,
+            'move_kind': 'refund',
+            'ref': rule.name,
+            'source_model': refund._name,
+            'source_res_id': refund.id,
+            'source_ref': refund.display_name,
+            'company_id': company.id,
+            'currency_id': company.currency_id.id,
+            'line_ids': lines,
+            **self._default_account_flag_vals(fallbacks),
+        })
+        return self._post_or_flag_period_missing(move)
 
     def _purchase_price_adjust_amount(self, bill):
         """untaxed của các DÒNG HÀNG − sum(stock.move.value) của phiếu nhập theo PO.
@@ -1712,52 +1991,130 @@ class VasSync(models.AbstractModel):
     # R01/R02 delivery-aware revenue + R17 residual helpers
     # -------------------------------------------------------------------------
 
-    def _sale_invoice_delivery_status(self, invoice):
-        """Return 'none' | 'full' | 'partial' for storable product lines.
+    def _sale_line_gross_qty_out(self, sale_line):
+        """Số lượng đã xuất đi khách (done), không trừ phiếu trả.
 
-        Service-only invoices → 'full' (no stock required).
+        `qty_delivered` Odoo là net (xuất − trả) → sau trả một phần bị thấp
+        giả và biến HĐ đã giao đủ thành ``partial``. R01/R02 dùng gross.
+        """
+        if not sale_line:
+            return 0.0
+        if hasattr(sale_line, '_get_outgoing_incoming_moves'):
+            outgoing, _incoming = sale_line._get_outgoing_incoming_moves()
+            qty = 0.0
+            uom = sale_line.product_uom_id
+            for move in outgoing:
+                if move.state != 'done':
+                    continue
+                qty += move.product_uom._compute_quantity(
+                    move.quantity, uom, rounding_method='HALF-UP',
+                )
+            return qty
+        return sale_line.qty_delivered or 0.0
+
+    def _invoice_line_sale_lines(self, inv_line):
+        if 'sale_line_ids' in inv_line._fields and inv_line.sale_line_ids:
+            return inv_line.sale_line_ids
+        move = inv_line.move_id
+        if 'sale_line_ids' in move.line_ids._fields:
+            return move.line_ids.sale_line_ids.filtered(
+                lambda s: s.product_id == inv_line.product_id
+            )
+        return self.env['sale.order.line']
+
+    def _sale_invoice_delivery_ratio(self, invoice):
+        """Tỷ lệ DT đã giao (0..1) — xuất gross / SL trên HĐ, cân theo subtotal.
+
+        Dịch vụ / không tồn kho: hệ số 1. HĐ không dòng SP lưu kho → 1.
         """
         product_lines = invoice.invoice_line_ids.filtered(
             lambda l: l.display_type not in ('line_section', 'line_note') and l.product_id
         )
-        storable = product_lines.filtered(lambda l: getattr(l.product_id, 'is_storable', False))
+        if not product_lines:
+            return 1.0
+        storable = product_lines.filtered(
+            lambda l: getattr(l.product_id, 'is_storable', False)
+        )
         if not storable:
-            return 'full'
-        delivered_any = False
-        pending_any = False
-        for line in storable:
-            qty_invoiced = line.quantity or 0.0
-            qty_delivered = 0.0
-            if 'sale_line_ids' in line._fields and line.sale_line_ids:
-                qty_delivered = sum(line.sale_line_ids.mapped('qty_delivered'))
-            elif 'sale_line_ids' in invoice.line_ids._fields:
-                # fallback via move lines
-                sol = invoice.line_ids.sale_line_ids.filtered(
-                    lambda s: s.product_id == line.product_id
-                )
-                qty_delivered = sum(sol.mapped('qty_delivered'))
-            if float_compare(qty_delivered, 0.0, precision_digits=2) > 0:
-                delivered_any = True
-            if float_compare(qty_delivered, qty_invoiced, precision_digits=2) < 0:
-                pending_any = True
-        if not delivered_any:
-            return 'none'
-        if pending_any:
-            return 'partial'
-        return 'full'
+            return 1.0
+        recognized = 0.0
+        total_weight = 0.0
+        for line in product_lines:
+            weight = line.price_subtotal or 0.0
+            total_weight += weight
+            if not getattr(line.product_id, 'is_storable', False):
+                recognized += weight
+                continue
+            qty_inv = line.quantity or 0.0
+            if float_is_zero(qty_inv, precision_digits=2):
+                continue
+            sols = self._invoice_line_sale_lines(line)
+            gross = sum(self._sale_line_gross_qty_out(sol) for sol in sols)
+            factor = min(max(gross, 0.0), qty_inv) / qty_inv
+            recognized += weight * factor
+        if float_is_zero(total_weight, precision_digits=2):
+            # Subtotal 0 (toàn CK) — fallback theo số lượng dòng lưu kho.
+            qty_inv = sum(storable.mapped('quantity'))
+            if float_is_zero(qty_inv, precision_digits=2):
+                return 1.0
+            gross = 0.0
+            for line in storable:
+                sols = self._invoice_line_sale_lines(line)
+                gross += sum(self._sale_line_gross_qty_out(sol) for sol in sols)
+            return max(0.0, min(1.0, gross / qty_inv))
+        ratio = recognized / total_weight
+        if float_compare(ratio, 0.0, precision_digits=4) <= 0:
+            return 0.0
+        if float_compare(ratio, 1.0, precision_digits=4) >= 0:
+            return 1.0
+        return ratio
 
-    def _invoice_has_vas_revenue(self, invoice):
-        moves = self.env['vas.move'].search([
+    def _sale_invoice_delivery_status(self, invoice):
+        """Return 'none' | 'full' | 'partial' (dựa xuất gross, không net trả hàng)."""
+        ratio = self._sale_invoice_delivery_ratio(invoice)
+        if float_is_zero(ratio, precision_digits=4):
+            return 'none'
+        if float_compare(ratio, 1.0, precision_digits=4) >= 0:
+            return 'full'
+        return 'partial'
+
+    def _invoice_vas_revenue_booked(self, invoice):
+        """Tổng Có 511* đã ghi cho HĐ (sale_inv) + DT lúc giao gắn SOL của HĐ."""
+        Move = self.env['vas.move']
+        amount = 0.0
+        inv_moves = Move.search([
             ('source_model', '=', invoice._name),
             ('source_res_id', '=', invoice.id),
-            ('move_kind', 'in', ('sale_inv', 'revenue')),
+            ('move_kind', '=', 'sale_inv'),
             ('state', '=', 'posted'),
             ('is_reversal', '=', False),
         ])
-        return any(
-            (l.account_id.code or '').startswith('511') and l.credit
-            for l in moves.mapped('line_ids')
+        for line in inv_moves.mapped('line_ids'):
+            if (line.account_id.code or '').startswith('511'):
+                amount += line.credit - line.debit
+        sols = self.env['sale.order.line']
+        for aml in invoice.invoice_line_ids:
+            sols |= self._invoice_line_sale_lines(aml)
+        stock_moves = sols.mapped('move_ids').filtered(
+            lambda m: m.state == 'done' and m.location_dest_usage == 'customer'
         )
+        if stock_moves:
+            rev_moves = Move.search([
+                ('source_model', '=', 'stock.move'),
+                ('source_res_id', 'in', stock_moves.ids),
+                ('move_kind', '=', 'revenue'),
+                ('state', '=', 'posted'),
+                ('is_reversal', '=', False),
+            ])
+            for line in rev_moves.mapped('line_ids'):
+                if (line.account_id.code or '').startswith('511'):
+                    amount += line.credit - line.debit
+        return amount
+
+    def _invoice_has_vas_revenue(self, invoice):
+        return float_compare(
+            self._invoice_vas_revenue_booked(invoice), 0.0, precision_digits=2,
+        ) > 0
 
     # -------------------------------------------------------------------------
     # GTGT 1A — khớp thuế suất (dữ liệu vas.tax) + tách dòng sổ theo suất
@@ -1813,26 +2170,83 @@ class VasSync(models.AbstractModel):
                 ordered.append(key)
             bucket = index[key]
             bucket['amls'] |= aml
-            untaxed = abs(aml.price_subtotal or 0.0)
-            total = abs(aml.price_total or 0.0)
+            if self._invoice_uses_signed_line_amounts(invoice, scope):
+                untaxed = aml.price_subtotal or 0.0
+                total = aml.price_total or 0.0
+            else:
+                untaxed = abs(aml.price_subtotal or 0.0)
+                total = abs(aml.price_total or 0.0)
             bucket['untaxed'] += untaxed
             bucket['total'] += total
             bucket['tax_amount'] += total - untaxed
             if warn and not bucket.get('warning'):
                 bucket['warning'] = warn
-        return [index[k] for k in ordered]
+        buckets = [index[k] for k in ordered]
+        if self._invoice_uses_signed_line_amounts(invoice, scope):
+            buckets = self._fold_negative_output_tax_buckets(buckets)
+        return buckets
+
+    def _fold_negative_output_tax_buckets(self, buckets):
+        """Dồn bucket CK (untaxed/thuế âm) vào bucket dương — không ghi Có 511 số âm."""
+        pos = [b for b in buckets if (b['untaxed'] or 0.0) > 0]
+        neg = [b for b in buckets if (b['untaxed'] or 0.0) < 0]
+        neg += [
+            b for b in buckets
+            if b not in neg
+            and float_is_zero(b['untaxed'] or 0.0, precision_digits=2)
+            and (b['tax_amount'] or 0.0) < 0
+        ]
+        if not neg:
+            return buckets
+        if not pos:
+            return buckets
+        pos_untaxed = sum(b['untaxed'] for b in pos)
+        for n in neg:
+            if float_is_zero(pos_untaxed, precision_digits=2):
+                break
+            nu, nt, ntot = n['untaxed'], n['tax_amount'], n['total']
+            allocated_u = allocated_t = allocated_tot = 0.0
+            for p in pos[:-1]:
+                share = p['untaxed'] / pos_untaxed
+                du = round(nu * share, 2)
+                dt = round(nt * share, 2)
+                dtt = round(ntot * share, 2)
+                p['untaxed'] += du
+                p['tax_amount'] += dt
+                p['total'] += dtt
+                allocated_u += du
+                allocated_t += dt
+                allocated_tot += dtt
+            last = pos[-1]
+            last['untaxed'] += nu - allocated_u
+            last['tax_amount'] += nt - allocated_t
+            last['total'] += ntot - allocated_tot
+            n['untaxed'] = n['tax_amount'] = n['total'] = 0.0
+        return [
+            b for b in buckets
+            if not (
+                float_is_zero(b['untaxed'], precision_digits=2)
+                and float_is_zero(b['tax_amount'], precision_digits=2)
+            )
+        ]
 
     def _product_amount_splits_for_amls(
         self, amls, selector, amount_selector, company, amount, fallbacks=None,
-        cost_fallbacks=None,
+        cost_fallbacks=None, positive_weights_only=False,
     ):
         """Như ``_product_amount_splits`` nhưng trên tập AML đã chọn (một suất thuế)."""
         if float_is_zero(amount, precision_digits=2):
             return []
         field = 'price_total' if amount_selector == 'total' else 'price_subtotal'
-        weights = [
-            (line.product_id, abs(line[field] or 0.0)) for line in amls
-        ]
+        weights = []
+        for line in amls:
+            w = line[field] or 0.0
+            if positive_weights_only:
+                if w <= 0:
+                    continue
+                weights.append((line.product_id, w))
+            else:
+                weights.append((line.product_id, abs(w)))
         attach_cost = selector == 'product_expense'
         buckets = {}
         total_weight = 0.0
@@ -1877,6 +2291,7 @@ class VasSync(models.AbstractModel):
 
     def _product_amount_splits_for_amls_industry(
         self, amls, selector, amount_selector, company, amount, fallbacks=None,
+        positive_weights_only=False,
     ):
         """Tách doanh thu theo (TK, nhóm ngành) — gắn chiều trực tiếp lên dòng 511."""
         if float_is_zero(amount, precision_digits=2):
@@ -1886,7 +2301,13 @@ class VasSync(models.AbstractModel):
         total_weight = 0.0
         for aml in amls:
             product = aml.product_id
-            weight = abs(aml[field] or 0.0)
+            raw = aml[field] or 0.0
+            if positive_weights_only:
+                if raw <= 0:
+                    continue
+                weight = raw
+            else:
+                weight = abs(raw)
             account = self._product_account(product, selector, company, fallbacks)
             if not account:
                 continue
@@ -2168,14 +2589,18 @@ class VasSync(models.AbstractModel):
         _logger.info('VAS tax backfill company=%s %s', company.id, result)
         return result
 
-    def _generate_sale_invoice_move(self, rule, invoice, company, include_revenue=True):
-        """R01: tách doanh thu + thuế theo từng thuế suất; gắn tax_id cả dòng DT."""
+    def _generate_sale_invoice_move(self, rule, invoice, company, revenue_ratio=1.0):
+        """R01: tách doanh thu + thuế theo suất; DT = untaxed × ratio (policy B).
+
+        ``revenue_ratio`` 0..1: chưa giao → chỉ thuế; giao từng phần → DT tỷ lệ;
+        giao đủ → DT đủ. Thuế đầu ra luôn theo HĐ (đủ).
+        """
         buckets = self._collect_invoice_tax_buckets(invoice, 'output')
         untaxed = sum(b['untaxed'] for b in buckets)
         tax = sum(b['tax_amount'] for b in buckets)
-        if float_is_zero(tax, precision_digits=2) and (
-            not include_revenue or float_is_zero(untaxed, precision_digits=2)
-        ):
+        ratio = max(0.0, min(1.0, revenue_ratio or 0.0))
+        revenue = round(untaxed * ratio, 2) if untaxed > 0 else 0.0
+        if float_is_zero(tax, precision_digits=2) and float_is_zero(revenue, precision_digits=2):
             return self.env['vas.move']
         regime = company.vas_regime_id
         acc_131 = self._account_by_code(regime, '131')
@@ -2185,8 +2610,8 @@ class VasSync(models.AbstractModel):
         lines = []
         seq = 10
         fallbacks = []
-        debit_131 = tax + (untaxed if include_revenue else 0.0)
-        if not float_is_zero(debit_131, precision_digits=2):
+        debit_131 = tax + revenue
+        if debit_131 > 0 and not float_is_zero(debit_131, precision_digits=2):
             lines.append(Command.create({
                 'sequence': seq, 'account_id': acc_131.id, 'name': rule.name,
                 'debit': debit_131, 'credit': 0.0,
@@ -2195,19 +2620,34 @@ class VasSync(models.AbstractModel):
                 'tax_status': 'none',
             }))
             seq += 10
-        if include_revenue:
-            for bucket in buckets:
-                if float_is_zero(bucket['untaxed'], precision_digits=2):
+        if not float_is_zero(revenue, precision_digits=2):
+            # Chia DT theo bucket; phần làm tròn dồn bucket cuối có untaxed > 0.
+            pos_buckets = [
+                b for b in buckets
+                if b['untaxed'] > 0 and not float_is_zero(b['untaxed'], precision_digits=2)
+            ]
+            allocated_rev = 0.0
+            for idx, bucket in enumerate(pos_buckets):
+                if idx == len(pos_buckets) - 1:
+                    bucket_rev = round(revenue - allocated_rev, 2)
+                else:
+                    bucket_rev = round(revenue * (bucket['untaxed'] / untaxed), 2)
+                    allocated_rev += bucket_rev
+                if float_is_zero(bucket_rev, precision_digits=2):
                     continue
                 tax_vals = self._tax_line_vals(bucket['vas_tax'], bucket['status'])
+                signed = self._invoice_uses_signed_line_amounts(invoice, 'output')
                 for account, part, _cost, industry, ind_status in (
                     self._product_amount_splits_for_amls_industry(
                         bucket['amls'], 'product_revenue', 'untaxed', company,
-                        bucket['untaxed'], fallbacks,
+                        bucket_rev, fallbacks,
+                        positive_weights_only=signed,
                     )
                 ):
                     if not account:
                         raise UserError(_("Missing VAS revenue account for sale invoice."))
+                    if part <= 0:
+                        continue
                     lines.append(Command.create({
                         'sequence': seq, 'account_id': account.id, 'name': rule.name,
                         'debit': 0.0, 'credit': part,
@@ -2219,7 +2659,7 @@ class VasSync(models.AbstractModel):
                     }))
                     seq += 10
         for bucket in buckets:
-            if float_is_zero(bucket['tax_amount'], precision_digits=2):
+            if bucket['tax_amount'] <= 0 or float_is_zero(bucket['tax_amount'], precision_digits=2):
                 continue
             tax_vals = self._tax_line_vals(bucket['vas_tax'], bucket['status'])
             lines.append(Command.create({
@@ -2232,13 +2672,19 @@ class VasSync(models.AbstractModel):
             seq += 10
         if not lines:
             return self.env['vas.move']
+        if float_is_zero(ratio, precision_digits=4):
+            ref_suffix = _(' (thuế — chưa giao)')
+        elif float_compare(ratio, 1.0, precision_digits=4) < 0:
+            ref_suffix = _(' (DT %(pct)s%% đã giao)', pct=int(round(ratio * 100)))
+        else:
+            ref_suffix = ''
         journal = self._resolve_journal('sale_invoice', invoice, company)
         move = self.env['vas.move'].create({
             'date': invoice.invoice_date or invoice.date,
             'journal_id': journal.id,
             'regime_id': regime.id,
             'move_kind': 'sale_inv',
-            'ref': rule.name + ('' if include_revenue else _(' (thuế — chưa giao)')),
+            'ref': rule.name + ref_suffix,
             'source_model': invoice._name,
             'source_res_id': invoice.id,
             'source_ref': invoice.display_name,
@@ -2394,7 +2840,7 @@ class VasSync(models.AbstractModel):
         return self._post_or_flag_period_missing(move)
 
     def _generate_delivery_revenue_move(self, stock_move, company):
-        """R02 add-on: book 5111 on delivery date if invoice tax already posted without revenue."""
+        """R02 add-on: ghi thêm 511 khi tỷ lệ đã giao > phần DT đã book trên HĐ."""
         if self._stock_move_is_pos(stock_move):
             return self.env['vas.move']
         if self._already_synced(stock_move._name, stock_move.id, 'revenue'):
@@ -2406,28 +2852,27 @@ class VasSync(models.AbstractModel):
             )
         if not invoices:
             return self.env['vas.move']
-        # Partial delivery vs invoice → stop
+        to_book = 0.0
+        need = self.env['account.move']
         for inv in invoices:
-            status = self._sale_invoice_delivery_status(inv)
-            if status == 'partial':
-                raise UserError(_(
-                    "Xuất kho %(sm)s liên quan hóa đơn %(inv)s giao từng phần — "
-                    "chưa chốt policy ghi doanh thu tỷ lệ vs chờ đủ. Dừng hỏi.",
-                    sm=stock_move.display_name, inv=inv.display_name,
-                ))
-        need = invoices.filtered(lambda inv: not self._invoice_has_vas_revenue(inv))
-        if not need:
-            return self.env['vas.move']
-        # One delivery booking revenue for related invoices that need it (full only)
-        untaxed = sum(need.mapped('amount_untaxed'))
-        if float_is_zero(untaxed, precision_digits=2):
+            # Chưa có JE thuế/HĐ thì để R01 ghi trước (cùng lượt sync: invoice trước delivery).
+            if not self._already_synced(inv._name, inv.id, 'sale_inv'):
+                continue
+            ratio = self._sale_invoice_delivery_ratio(inv)
+            target = round(max(inv.amount_untaxed or 0.0, 0.0) * ratio, 2)
+            booked = self._invoice_vas_revenue_booked(inv)
+            gap = round(target - booked, 2)
+            if gap > 0 and not float_is_zero(gap, precision_digits=2):
+                to_book += gap
+                need |= inv
+        if not need or float_is_zero(to_book, precision_digits=2):
             return self.env['vas.move']
         regime = company.vas_regime_id
         acc_131 = self._account_by_code(regime, '131')
         journal = self._resolve_journal('sale_delivery', stock_move, company)
         lines = [Command.create({
             'sequence': 10, 'account_id': acc_131.id, 'name': _('DT lúc giao'),
-            'debit': untaxed, 'credit': 0.0,
+            'debit': to_book, 'credit': 0.0,
             'partner_id': stock_move.partner_id.id if stock_move.partner_id else (
                 need[:1].partner_id.id
             ),
@@ -2436,7 +2881,7 @@ class VasSync(models.AbstractModel):
         seq = 20
         fallbacks = []
         for account, part, _cost in self._product_amount_splits(
-            need, 'product_revenue', 'untaxed', company, untaxed, fallbacks,
+            need, 'product_revenue', 'untaxed', company, to_book, fallbacks,
         ):
             lines.append(Command.create({
                 'sequence': seq, 'account_id': account.id, 'name': _('DT lúc giao'),
@@ -3548,6 +3993,8 @@ class VasSync(models.AbstractModel):
             return self._generate_purchase_invoice_tax_split_move(
                 rule, record, company, move_kind, event_type,
             )
+        if record._name == 'account.move' and event_type == 'purchase_discount':
+            return self._generate_purchase_discount_move(rule, record, company)
         line_commands = []
         seq = 10
         fallbacks = []
@@ -3862,6 +4309,13 @@ class VasSync(models.AbstractModel):
                 ('code', '=', code),
             ], limit=1)
         if not journal:
+            # Công ty mới / chưa seed: tạo đủ BH/MH/KHO/… rồi tra lại.
+            self.env['vas.journal']._ensure_journals_for_company(company)
+            journal = self.env['vas.journal'].search([
+                ('company_id', '=', company.id),
+                ('code', '=', code),
+            ], limit=1)
+        if not journal:
             raise UserError(_(
                 "Missing VAS journal code %(code)s for company %(company)s.",
                 code=code,
@@ -3956,10 +4410,13 @@ class VasSync(models.AbstractModel):
             field = (
                 'price_subtotal_incl' if amount_selector == 'total' else 'price_subtotal'
             )
-            return [
-                (line.product_id, abs(line[field] or 0.0))
-                for line in record.lines
-            ]
+            pairs = []
+            for line in record.lines:
+                w = line[field] or 0.0
+                if event_type == 'pos_sale' and w < 0:
+                    continue
+                pairs.append((line.product_id, abs(w)))
+            return pairs
         return []
 
     def _product_amount_splits(
@@ -4147,7 +4604,8 @@ class VasSync(models.AbstractModel):
             }
             return abs(mapping.get(amount_selector, 0.0) or 0.0)
         if event_type in (
-            'sale_invoice', 'sale_refund', 'sale_discount', 'purchase_refund',
+            'sale_invoice', 'sale_refund', 'sale_discount',
+            'purchase_refund', 'purchase_discount',
             'pos_sale', 'pos_refund',
         ):
             if record._name == 'pos.order':

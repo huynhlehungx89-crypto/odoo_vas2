@@ -162,6 +162,9 @@
                     <filter string="Khế ước vay" name="group_loan" context="{'group_by': 'vas_loan_id'}"/>
                     <filter string="Kỳ" name="group_period" context="{'group_by': 'period_id'}"/>
                     <filter string="Ngày" name="group_date" context="{'group_by': 'date'}"/>
+                    <filter string="Công ty" name="group_company"
+                            context="{'group_by': 'company_id'}"
+                            groups="base.group_multi_company"/>
                 </group>
             </search>
         </field>

@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """W4 — biến thể mua/bán (phần nguồn Odoo rõ). B04 cutoff = điểm dừng bắt buộc."""
 from collections import defaultdict
 
@@ -247,14 +247,385 @@ class TestW4BienThe(TransactionCase):
         })
         self.assertEqual(status, 'ĐẠT', diffs)
 
-    def test_w4_b04_partial_delivery_still_stop(self):
-        """B04 policy thuế/DT đã chốt; còn dừng bắt buộc: giao TỪNG PHẦN.
 
-        HĐ 10 ĐV giao 3 rồi 7 — ghi DT tỷ lệ hay chờ đủ? Workbook không nói.
-        """
-        print(
-            "\n=== B04 còn DỪNG: giao từng phần ===\n"
-            "Thuế theo ngày HĐ + DT theo ngày giao (đủ) đã làm. "
-            "Partial delivery → UserError, không tự đoán.\n"
+    def _validate_pick(self, picking, qty=None, cancel_backorder=False):
+        picking = picking.with_context(skip_sms=True, skip_sanity_check=True)
+        picking.action_assign()
+        for move in picking.move_ids:
+            move.quantity = qty if qty is not None else move.product_uom_qty
+            move.picked = True
+        ctx = {'skip_sms': True, 'skip_sanity_check': True}
+        if cancel_backorder:
+            ctx['cancel_backorder'] = True
+        res = picking.with_context(**ctx).button_validate()
+        if isinstance(res, dict) and res.get('res_model') == 'stock.backorder.confirmation':
+            wiz = self.env[res['res_model']].with_context(**res.get('context', {})).create({})
+            if cancel_backorder and hasattr(wiz, 'process_cancel_backorder'):
+                wiz.process_cancel_backorder()
+            else:
+                wiz.process()
+        return picking
+
+    def test_w4_b04_partial_delivery_revenue_ratio(self):
+        """Policy B: HD 10 giao 3 -> DT 30% + thue du; giao not -> du 511."""
+        Sync = self.env['vas.sync']
+        stock_loc = self.env.ref('stock.stock_location_stock')
+        cust = self.env.ref('stock.stock_location_customers')
+        self.env['stock.quant'].with_context(inventory_mode=True).create({
+            'product_id': self.product.id,
+            'location_id': stock_loc.id,
+            'inventory_quantity': 20.0,
+        }).action_apply_inventory()
+        self.product.invoice_policy = 'order'
+
+        so = self.env['sale.order'].create({
+            'partner_id': self.partner.id,
+            'company_id': self.company.id,
+            'order_line': [Command.create({
+                'product_id': self.product.id,
+                'product_uom_qty': 10,
+                'price_unit': 100_000,
+                'tax_ids': [Command.set(self.tax_sale.ids)],
+            })],
+        })
+        so.action_confirm()
+        inv = so._create_invoices()
+        inv.invoice_date = '2099-05-10'
+        inv.date = '2099-05-10'
+        inv.action_post()
+        self.assertAlmostEqual(inv.amount_untaxed, 1_000_000.0)
+
+        picking = so.picking_ids.filtered(lambda p: p.state not in ('done', 'cancel'))[:1]
+        self.assertTrue(picking)
+        self._validate_pick(picking, qty=3.0, cancel_backorder=True)
+
+        self.assertAlmostEqual(Sync._sale_invoice_delivery_ratio(inv), 0.3, places=2)
+        self.assertEqual(Sync._sale_invoice_delivery_status(inv), 'partial')
+        self._sync()
+        sale_moves = self.env['vas.move'].search([
+            ('source_model', '=', 'account.move'),
+            ('source_res_id', '=', inv.id),
+            ('move_kind', '=', 'sale_inv'),
+            ('state', '=', 'posted'),
+        ])
+        self.assertTrue(sale_moves)
+        bal = self._net(sale_moves)
+        self.assertEqual(float_compare(bal.get('33311', 0.0), -100_000.0, 2), 0, bal)
+        self.assertEqual(float_compare(bal.get('5111', 0.0), -300_000.0, 2), 0, bal)
+        self.assertEqual(float_compare(bal.get('131', 0.0), 400_000.0, 2), 0, bal)
+
+        sol = so.order_line[:1]
+        gross = Sync._sale_line_gross_qty_out(sol)
+        if float_compare(gross, 10.0, 2) < 0:
+            need = 10.0 - gross
+            move = self.env['stock.move'].create({
+                'product_id': self.product.id,
+                'product_uom_qty': need,
+                'product_uom': self.product.uom_id.id,
+                'location_id': stock_loc.id,
+                'location_dest_id': cust.id,
+                'company_id': self.company.id,
+                'sale_line_id': sol.id,
+                'picking_type_id': self.env.ref('stock.picking_type_out').id,
+            })
+            move._action_confirm()
+            move.quantity = need
+            move.picked = True
+            move._action_done()
+        else:
+            for pick in so.picking_ids.filtered(lambda p: p.state not in ('done', 'cancel')):
+                self._validate_pick(pick)
+
+        self.assertEqual(Sync._sale_invoice_delivery_status(inv), 'full')
+        self._sync()
+        booked = Sync._invoice_vas_revenue_booked(inv)
+        self.assertEqual(float_compare(booked, 1_000_000.0, 2), 0, f'booked={booked}')
+
+    def test_w4_g2_return_does_not_block_as_partial(self):
+        """G2: giao du roi tra mot phan — gross full, sync khong UserError."""
+        Sync = self.env['vas.sync']
+        stock_loc = self.env.ref('stock.stock_location_stock')
+        self.env['stock.quant'].with_context(inventory_mode=True).create({
+            'product_id': self.product.id,
+            'location_id': stock_loc.id,
+            'inventory_quantity': 20.0,
+        }).action_apply_inventory()
+        self.product.invoice_policy = 'order'
+
+        so = self.env['sale.order'].create({
+            'partner_id': self.partner.id,
+            'company_id': self.company.id,
+            'order_line': [Command.create({
+                'product_id': self.product.id,
+                'product_uom_qty': 5,
+                'price_unit': 100_000,
+                'tax_ids': [Command.set(self.tax_sale.ids)],
+            })],
+        })
+        so.action_confirm()
+        for pick in so.picking_ids.filtered(lambda p: p.state not in ('done', 'cancel')):
+            self._validate_pick(pick)
+
+        inv = so._create_invoices()
+        inv.invoice_date = '2099-05-11'
+        inv.date = '2099-05-11'
+        inv.action_post()
+        self._sync()
+
+        picking = so.picking_ids.filtered(lambda p: p.state == 'done')[:1]
+        self.assertTrue(picking)
+        wiz = self.env['stock.return.picking'].with_context(
+            active_id=picking.id,
+            active_ids=picking.ids,
+            active_model='stock.picking',
+        ).create({})
+        for line in wiz.product_return_moves:
+            if 'quantity' in line._fields:
+                line.quantity = 2.0
+        act = wiz.action_create_returns()
+        ret_picking = self.env['stock.picking'].browse(act['res_id'])
+        for m in ret_picking.move_ids:
+            m.quantity = min(2.0, m.product_uom_qty)
+            m.picked = True
+        ret_picking.with_context(skip_sms=True, skip_sanity_check=True).button_validate()
+
+        sol = so.order_line[:1]
+        self.assertEqual(
+            float_compare(Sync._sale_line_gross_qty_out(sol), 5.0, 2), 0,
+            f'gross={Sync._sale_line_gross_qty_out(sol)} net={sol.qty_delivered}',
         )
-        self.assertTrue(True)
+        self.assertEqual(Sync._sale_invoice_delivery_status(inv), 'full')
+        self._sync()
+
+
+    def _ensure_r09b(self):
+        Rule = self.env['vas.rule']
+        regime = self.company.vas_regime_id
+        if Rule.search([('regime_id', '=', regime.id), ('code', '=', 'R09b')], limit=1):
+            return
+        Rule.create({
+            'code': 'R09b',
+            'name': 'Chiet khau/giam gia mua (phi kho)',
+            'regime_id': regime.id,
+            'event_type': 'purchase_discount',
+            'sequence': 53,
+            'active': True,
+            'line_ids': [
+                Command.create({
+                    'sequence': 10, 'side': 'debit',
+                    'account_selector': 'partner_payable', 'amount_selector': 'total',
+                }),
+                Command.create({
+                    'sequence': 20, 'side': 'credit',
+                    'account_selector': 'product_inventory', 'amount_selector': 'untaxed',
+                }),
+                Command.create({
+                    'sequence': 30, 'side': 'credit',
+                    'account_selector': 'tax_input', 'amount_selector': 'tax',
+                }),
+            ],
+        })
+
+    def _buy_receive_bill(self, qty=10.0, price=20_000.0, date='2099-05-15'):
+        """PO -> nhap kho -> HD mua posted. Tra (po, bill)."""
+        stock_loc = self.env.ref('stock.stock_location_stock')
+        self.env['stock.quant'].with_context(inventory_mode=True).create({
+            'product_id': self.product.id,
+            'location_id': stock_loc.id,
+            'inventory_quantity': qty + 5.0,
+        }).action_apply_inventory()
+        po = self.env['purchase.order'].create({
+            'partner_id': self.partner.id,
+            'company_id': self.company.id,
+            'order_line': [Command.create({
+                'product_id': self.product.id,
+                'name': self.product.name,
+                'product_qty': qty,
+                'price_unit': price,
+                'tax_ids': [Command.set(self.tax_purchase.ids)],
+            })],
+        })
+        po.button_confirm()
+        picking = po.picking_ids.filtered(lambda p: p.state not in ('done', 'cancel'))[:1]
+        self.assertTrue(picking)
+        self._validate_pick(picking)
+        receipt = picking.move_ids.filtered(lambda m: m.state == 'done')[:1]
+        if receipt and float_compare(receipt.value or 0.0, 0.0, 2) == 0:
+            receipt.value = price * qty
+        bill = self.env['account.move'].create({
+            'move_type': 'in_invoice',
+            'partner_id': self.partner.id,
+            'invoice_date': date,
+            'date': date,
+            'journal_id': self.purchase_j.id,
+            'company_id': self.company.id,
+            'invoice_line_ids': [Command.create({
+                'product_id': self.product.id,
+                'name': self.product.name,
+                'quantity': qty,
+                'price_unit': price,
+                'tax_ids': [Command.set(self.tax_purchase.ids)],
+                'purchase_line_id': po.order_line[:1].id,
+            })],
+        })
+        bill.action_post()
+        return po, bill
+
+    def _vendor_credit_note(self, bill, fraction=0.1, date='2099-05-20'):
+        """CN giam gia fraction tren untaxed — khong tra hang."""
+        lines = []
+        for aml in bill.invoice_line_ids.filtered(
+            lambda l: l.display_type not in ('line_section', 'line_note')
+        ):
+            lines.append(Command.create({
+                'product_id': aml.product_id.id,
+                'name': 'Giam gia %s%%' % int(fraction * 100),
+                'quantity': aml.quantity,
+                'price_unit': (aml.price_unit or 0.0) * fraction,
+                'tax_ids': [Command.set(aml.tax_ids.ids)],
+                'purchase_line_id': aml.purchase_line_id.id if aml.purchase_line_id else False,
+            }))
+        cn = self.env['account.move'].create({
+            'move_type': 'in_refund',
+            'partner_id': bill.partner_id.id,
+            'invoice_date': date,
+            'date': date,
+            'journal_id': self.purchase_j.id,
+            'company_id': self.company.id,
+            'reversed_entry_id': bill.id,
+            'invoice_line_ids': lines,
+        })
+        cn.action_post()
+        return cn
+
+    def test_w4_g6_vendor_discount_stock_remaining(self):
+        """G6/M09: CN giam gia, hang con ton -> No 331 / Co 156 + Co 1331."""
+        self._ensure_r09b()
+        _po, bill = self._buy_receive_bill(qty=10.0, price=20_000.0)
+        self._sync()
+        cn = self._vendor_credit_note(bill, fraction=0.1)
+        untaxed = cn.amount_untaxed
+        tax = cn.amount_tax
+        self.assertAlmostEqual(untaxed, 20_000.0)
+        self.assertFalse(self.env['vas.sync']._refund_has_stock_return(cn))
+        self._sync()
+        moves = self.env['vas.move'].search([
+            ('source_model', '=', 'account.move'),
+            ('source_res_id', '=', cn.id),
+            ('move_kind', '=', 'refund'),
+            ('state', '=', 'posted'),
+        ])
+        self.assertTrue(moves, 'R09b phai sinh JE')
+        bal = self._net(moves)
+        self.assertEqual(float_compare(bal.get('331', 0.0), untaxed + tax, 2), 0, bal)
+        self.assertEqual(float_compare(bal.get('156', 0.0), -untaxed, 2), 0, bal)
+        self.assertEqual(float_compare(bal.get('1331', 0.0), -tax, 2), 0, bal)
+        self.assertEqual(float_compare(bal.get('632', 0.0), 0.0, 2), 0, bal)
+
+    def test_w4_g7_vendor_discount_already_sold(self):
+        """G7/M09: CN giam gia, hang da ban het -> No 331 / Co 632 + Co 1331."""
+        self._ensure_r09b()
+        _po, bill = self._buy_receive_bill(qty=10.0, price=20_000.0)
+        self._sync()
+        self.product.invoice_policy = 'order'
+        so = self.env['sale.order'].create({
+            'partner_id': self.partner.id,
+            'company_id': self.company.id,
+            'order_line': [Command.create({
+                'product_id': self.product.id,
+                'product_uom_qty': 10,
+                'price_unit': 100_000,
+                'tax_ids': [Command.set(self.tax_sale.ids)],
+            })],
+        })
+        so.action_confirm()
+        for pick in so.picking_ids.filtered(lambda p: p.state not in ('done', 'cancel')):
+            self._validate_pick(pick)
+        stock_loc = self.env.ref('stock.stock_location_stock')
+        quants = self.env['stock.quant'].search([
+            ('product_id', '=', self.product.id),
+            ('location_id', 'child_of', stock_loc.id),
+        ])
+        for quant in quants:
+            if float_compare(quant.quantity, 0.0, 2) > 0:
+                quant.with_context(inventory_mode=True).write({'inventory_quantity': 0.0})
+                quant.action_apply_inventory()
+
+        cn = self._vendor_credit_note(bill, fraction=0.1)
+        untaxed = cn.amount_untaxed
+        tax = cn.amount_tax
+        Sync = self.env['vas.sync']
+        cn_line = cn.invoice_line_ids.filtered(
+            lambda l: l.display_type not in ('line_section', 'line_note')
+        )[:1]
+        self.assertEqual(
+            float_compare(
+                Sync._purchase_discount_stock_fraction(cn_line, self.company),
+                0.0, 2,
+            ),
+            0,
+        )
+        self._sync()
+        moves = self.env['vas.move'].search([
+            ('source_model', '=', 'account.move'),
+            ('source_res_id', '=', cn.id),
+            ('move_kind', '=', 'refund'),
+            ('state', '=', 'posted'),
+        ])
+        self.assertTrue(moves)
+        bal = self._net(moves)
+        self.assertEqual(float_compare(bal.get('331', 0.0), untaxed + tax, 2), 0, bal)
+        self.assertEqual(float_compare(bal.get('632', 0.0), -untaxed, 2), 0, bal)
+        self.assertEqual(float_compare(bal.get('1331', 0.0), -tax, 2), 0, bal)
+        self.assertEqual(float_compare(bal.get('156', 0.0), 0.0, 2), 0, bal)
+
+    def test_w4_g6_discount_product_uses_origin_goods_account(self):
+        """CN dong SP Discount (service) van lay TK 156 theo hang tren HD goc."""
+        self._ensure_r09b()
+        _po, bill = self._buy_receive_bill(qty=10.0, price=20_000.0)
+        self._sync()
+        disc = self.env['product.product'].create({
+            'name': 'Discount',
+            'type': 'service',
+            'purchase_ok': True,
+            'sale_ok': False,
+            'list_price': 0.0,
+            'supplier_taxes_id': [Command.set(self.tax_purchase.ids)],
+        })
+        cn = self.env['account.move'].create({
+            'move_type': 'in_refund',
+            'partner_id': bill.partner_id.id,
+            'invoice_date': '2099-05-21',
+            'date': '2099-05-21',
+            'journal_id': self.purchase_j.id,
+            'company_id': self.company.id,
+            'reversed_entry_id': bill.id,
+            'invoice_line_ids': [Command.create({
+                'product_id': disc.id,
+                'name': 'Vendor discount 10%',
+                'quantity': 1.0,
+                'price_unit': 20_000.0,
+                'tax_ids': [Command.set(self.tax_purchase.ids)],
+            })],
+        })
+        cn.action_post()
+        Sync = self.env['vas.sync']
+        self.assertTrue(
+            Sync._purchase_discount_is_proxy_line(cn.invoice_line_ids[:1], cn),
+        )
+        self._sync()
+        moves = self.env['vas.move'].search([
+            ('source_model', '=', 'account.move'),
+            ('source_res_id', '=', cn.id),
+            ('move_kind', '=', 'refund'),
+            ('state', '=', 'posted'),
+        ])
+        self.assertTrue(moves)
+        self.assertFalse(
+            moves.vas_has_default_account,
+            'Khong duoc gan co TK mac dinh khi da resolve theo hang goc',
+        )
+        bal = self._net(moves)
+        self.assertEqual(float_compare(bal.get('156', 0.0), -20_000.0, 2), 0, bal)
+        self.assertEqual(float_compare(bal.get('1331', 0.0), -2_000.0, 2), 0, bal)
+        self.assertEqual(float_compare(bal.get('331', 0.0), 22_000.0, 2), 0, bal)

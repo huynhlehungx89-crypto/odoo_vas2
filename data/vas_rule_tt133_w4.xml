@@ -144,6 +144,38 @@
         <field name="amount_selector">tax</field>
     </record>
 
+    <!-- W4 R09b: in_refund KHÔNG trả hàng = giảm giá sau mua (M09 / G6·G7).
+         Engine phân bổ Có 156 (còn tồn) vs Có 632 (đã bán) + Có 1331. -->
+    <record id="vas_rule_tt133_r09b" model="vas.rule">
+        <field name="code">R09b</field>
+        <field name="name">Chiết khấu/giảm giá mua (phi kho)</field>
+        <field name="regime_id" ref="vas_regime_tt133"/>
+        <field name="event_type">purchase_discount</field>
+        <field name="sequence">53</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="vas_rule_tt133_r09b_l1" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r09b"/>
+        <field name="sequence">10</field>
+        <field name="side">debit</field>
+        <field name="account_selector">partner_payable</field>
+        <field name="amount_selector">total</field>
+    </record>
+    <record id="vas_rule_tt133_r09b_l2" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r09b"/>
+        <field name="sequence">20</field>
+        <field name="side">credit</field>
+        <field name="account_selector">product_inventory</field>
+        <field name="amount_selector">untaxed</field>
+    </record>
+    <record id="vas_rule_tt133_r09b_l3" model="vas.rule.line">
+        <field name="rule_id" ref="vas_rule_tt133_r09b"/>
+        <field name="sequence">30</field>
+        <field name="side">credit</field>
+        <field name="account_selector">tax_input</field>
+        <field name="amount_selector">tax</field>
+    </record>
+
     <record id="vas_rule_tt133_r09s" model="vas.rule">
         <field name="code">R09s</field>
         <field name="name">Xuất kho trả NCC</field>

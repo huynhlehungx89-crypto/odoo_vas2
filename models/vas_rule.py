@@ -36,6 +36,7 @@ class VasRule(models.Model):
             ('sale_discount', 'Chiết khấu/giảm giá bán'),
             ('purchase_service', 'Mua dịch vụ'),
             ('purchase_refund', 'Hóa đơn trả lại mua'),
+            ('purchase_discount', 'Chiết khấu/giảm giá mua (phi kho)'),
             ('purchase_return_stock', 'Xuất kho trả NCC'),
             ('purchase_price_adjust', 'Điều chỉnh giá tạm tính mua'),
             ('stock_issue_production', 'Xuất NVL cho sản xuất'),

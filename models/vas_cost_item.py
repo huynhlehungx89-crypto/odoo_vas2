@@ -100,6 +100,14 @@ class VasCostItem(models.Model):
         'company_id', 'is_system',
     })
 
+    # Bốn khoản mục hệ thống — seed XML chỉ tạo cho main_company; công ty khác gọi helper.
+    _SYSTEM_COST_ITEM_SEEDS = (
+        ('NVLTT', 'Nguyên vật liệu trực tiếp', 'material'),
+        ('NCTT', 'Nhân công trực tiếp', 'labor'),
+        ('CPC', 'Chi phí sản xuất chung', 'other'),
+        ('CPD', 'Chưa phân loại', 'other'),
+    )
+
     @api.model
     def _default_account_154(self):
         company = self.env.company
@@ -110,6 +118,38 @@ class VasCostItem(models.Model):
             ('regime_id', '=', regime.id),
             ('code', '=', '154'),
         ], limit=1)
+
+    @api.model
+    def _ensure_system_items_for_company(self, company):
+        """Idempotent: đủ NVLTT/NCTT/CPC/CPD cho một công ty (giống journals)."""
+        company.ensure_one()
+        regime = company.vas_regime_id
+        if not regime:
+            return self.browse()
+        account_154 = self.env['vas.account'].search([
+            ('regime_id', '=', regime.id),
+            ('code', '=', '154'),
+        ], limit=1)
+        if not account_154:
+            return self.browse()
+        created = self.browse()
+        for code, name, factor_group in self._SYSTEM_COST_ITEM_SEEDS:
+            item = self.with_context(active_test=False).search([
+                ('code', '=', code),
+                ('company_id', '=', company.id),
+            ], limit=1)
+            if item:
+                continue
+            created |= self.create({
+                'code': code,
+                'name': name,
+                'factor_group': factor_group,
+                'account_id': account_154.id,
+                'company_id': company.id,
+                'is_system': True,
+                'active': True,
+            })
+        return created
 
     @api.depends('name', 'parent_id.complete_name')
     def _compute_complete_name(self):

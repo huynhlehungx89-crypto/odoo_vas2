@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+      Cách ly hiển thị đa công ty (O1/O4/O5/N5/N6).
+      domain dùng company_ids = các công ty đang bật trên switcher.
+      company_id có thể trống (dòng dùng chung): company_ids + [False].
+    -->
+
+    <!-- ===== Bút toán ===== -->
+    <record id="vas_move_comp_rule" model="ir.rule">
+        <field name="name">vas.move multi-company</field>
+        <field name="model_id" ref="model_vas_move"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_move_line_comp_rule" model="ir.rule">
+        <field name="name">vas.move.line multi-company</field>
+        <field name="model_id" ref="model_vas_move_line"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <!-- ===== Danh mục kỳ / sổ ===== -->
+    <record id="vas_journal_comp_rule" model="ir.rule">
+        <field name="name">vas.journal multi-company</field>
+        <field name="model_id" ref="model_vas_journal"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_fiscalyear_comp_rule" model="ir.rule">
+        <field name="name">vas.fiscalyear multi-company</field>
+        <field name="model_id" ref="model_vas_fiscalyear"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_period_comp_rule" model="ir.rule">
+        <field name="name">vas.period multi-company</field>
+        <field name="model_id" ref="model_vas_period"/>
+        <field name="domain_force">[('fiscalyear_id.company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <!-- ===== Ánh xạ (dòng chung company_id=False vẫn thấy) ===== -->
+    <record id="vas_account_map_comp_rule" model="ir.rule">
+        <field name="name">vas.account.map multi-company</field>
+        <field name="model_id" ref="model_vas_account_map"/>
+        <field name="domain_force">[('company_id', 'in', company_ids + [False])]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_landed_tax_map_comp_rule" model="ir.rule">
+        <field name="name">vas.landed.tax.map multi-company</field>
+        <field name="model_id" ref="model_vas_landed_tax_map"/>
+        <field name="domain_force">[('company_id', 'in', company_ids + [False])]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <!-- ===== Số dư đầu kỳ / kết chuyển / bù trừ ===== -->
+    <record id="vas_opening_balance_comp_rule" model="ir.rule">
+        <field name="name">vas.opening.balance multi-company</field>
+        <field name="model_id" ref="model_vas_opening_balance"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_opening_balance_line_comp_rule" model="ir.rule">
+        <field name="name">vas.opening.balance.line multi-company</field>
+        <field name="model_id" ref="model_vas_opening_balance_line"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_closing_entry_comp_rule" model="ir.rule">
+        <field name="name">vas.closing.entry multi-company</field>
+        <field name="model_id" ref="model_vas_closing_entry"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_closing_entry_line_comp_rule" model="ir.rule">
+        <field name="name">vas.closing.entry.line multi-company</field>
+        <field name="model_id" ref="model_vas_closing_entry_line"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_debt_offset_comp_rule" model="ir.rule">
+        <field name="name">vas.debt.offset multi-company</field>
+        <field name="model_id" ref="model_vas_debt_offset"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_debt_offset_line_comp_rule" model="ir.rule">
+        <field name="name">vas.debt.offset.line multi-company</field>
+        <field name="model_id" ref="model_vas_debt_offset_line"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <!-- ===== Tài sản / vay / vốn ===== -->
+    <record id="vas_asset_comp_rule" model="ir.rule">
+        <field name="name">vas.asset multi-company</field>
+        <field name="model_id" ref="model_vas_asset"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_loan_comp_rule" model="ir.rule">
+        <field name="name">vas.loan multi-company</field>
+        <field name="model_id" ref="model_vas_loan"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_capital_in_kind_comp_rule" model="ir.rule">
+        <field name="name">vas.capital.in.kind multi-company</field>
+        <field name="model_id" ref="model_vas_capital_in_kind"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <!-- ===== GTGT / thuế ===== -->
+    <record id="vas_gtgt_declaration_comp_rule" model="ir.rule">
+        <field name="name">vas.gtgt.declaration multi-company</field>
+        <field name="model_id" ref="model_vas_gtgt_declaration"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_gtgt_listing_comp_rule" model="ir.rule">
+        <field name="name">vas.gtgt.listing multi-company</field>
+        <field name="model_id" ref="model_vas_gtgt_listing"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_inventory_provision_comp_rule" model="ir.rule">
+        <field name="name">vas.inventory.provision multi-company</field>
+        <field name="model_id" ref="model_vas_inventory_provision"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <!-- ===== Giá thành / khoản mục (trước đây thiếu → thấy chéo công ty) ===== -->
+    <record id="vas_cost_item_comp_rule" model="ir.rule">
+        <field name="name">vas.cost.item multi-company</field>
+        <field name="model_id" ref="model_vas_cost_item"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_cost_object_comp_rule" model="ir.rule">
+        <field name="name">vas.cost.object multi-company</field>
+        <field name="model_id" ref="model_vas_cost_object"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_costing_period_comp_rule" model="ir.rule">
+        <field name="name">vas.costing.period multi-company</field>
+        <field name="model_id" ref="model_vas_costing_period"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_costing_warehouse_config_comp_rule" model="ir.rule">
+        <field name="name">vas.costing.warehouse.config multi-company</field>
+        <field name="model_id" ref="model_vas_costing_warehouse_config"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_allocation_config_comp_rule" model="ir.rule">
+        <field name="name">vas.allocation.config multi-company</field>
+        <field name="model_id" ref="model_vas_allocation_config"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_closing_wip_comp_rule" model="ir.rule">
+        <field name="name">vas.closing.wip multi-company</field>
+        <field name="model_id" ref="model_vas_closing_wip"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_variance_sheet_comp_rule" model="ir.rule">
+        <field name="name">vas.variance.sheet multi-company</field>
+        <field name="model_id" ref="model_vas_variance_sheet"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <!-- ===== Giá thành còn thiếu (dở dang đầu kỳ, phân bổ, kết quả, …) ===== -->
+    <record id="vas_opening_wip_comp_rule" model="ir.rule">
+        <field name="name">vas.opening.wip multi-company</field>
+        <field name="model_id" ref="model_vas_opening_wip"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_opening_wip_line_comp_rule" model="ir.rule">
+        <field name="name">vas.opening.wip.line multi-company</field>
+        <field name="model_id" ref="model_vas_opening_wip_line"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_closing_wip_line_comp_rule" model="ir.rule">
+        <field name="name">vas.closing.wip.line multi-company</field>
+        <field name="model_id" ref="model_vas_closing_wip_line"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_allocation_run_comp_rule" model="ir.rule">
+        <field name="name">vas.allocation.run multi-company</field>
+        <field name="model_id" ref="model_vas_allocation_run"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_allocation_result_comp_rule" model="ir.rule">
+        <field name="name">vas.allocation.result multi-company</field>
+        <field name="model_id" ref="model_vas_allocation_result"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_allocation_trace_comp_rule" model="ir.rule">
+        <field name="name">vas.allocation.trace multi-company</field>
+        <field name="model_id" ref="model_vas_allocation_trace"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_allocation_receive_log_comp_rule" model="ir.rule">
+        <field name="name">vas.allocation.receive.log multi-company</field>
+        <field name="model_id" ref="model_vas_allocation_receive_log"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_allocation_config_factor_comp_rule" model="ir.rule">
+        <field name="name">vas.allocation.config.factor multi-company</field>
+        <field name="model_id" ref="model_vas_allocation_config_factor"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_costing_provisional_lot_comp_rule" model="ir.rule">
+        <field name="name">vas.costing.provisional.lot multi-company</field>
+        <field name="model_id" ref="model_vas_costing_provisional_lot"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_costing_result_version_comp_rule" model="ir.rule">
+        <field name="name">vas.costing.result.version multi-company</field>
+        <field name="model_id" ref="model_vas_costing_result_version"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_costing_approval_comp_rule" model="ir.rule">
+        <field name="name">vas.costing.approval multi-company</field>
+        <field name="model_id" ref="model_vas_costing_approval"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_costing_defer_log_comp_rule" model="ir.rule">
+        <field name="name">vas.costing.defer.log multi-company</field>
+        <field name="model_id" ref="model_vas_costing_defer_log"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_variance_account_config_comp_rule" model="ir.rule">
+        <field name="name">vas.variance.account.config multi-company</field>
+        <field name="model_id" ref="model_vas_variance_account_config"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_variance_line_comp_rule" model="ir.rule">
+        <field name="name">vas.variance.line multi-company</field>
+        <field name="model_id" ref="model_vas_variance_line"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_variance_treatment_comp_rule" model="ir.rule">
+        <field name="name">vas.variance.treatment multi-company</field>
+        <field name="model_id" ref="model_vas_variance_treatment"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <!-- ===== Map / phân phối / báo cáo đã lập ===== -->
+    <record id="vas_payroll_department_map_comp_rule" model="ir.rule">
+        <field name="name">vas.payroll.department.map multi-company</field>
+        <field name="model_id" ref="model_vas_payroll_department_map"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_profit_distribution_comp_rule" model="ir.rule">
+        <field name="name">vas.profit.distribution multi-company</field>
+        <field name="model_id" ref="model_vas_profit_distribution"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_report_snapshot_comp_rule" model="ir.rule">
+        <field name="name">vas.report.snapshot multi-company</field>
+        <field name="model_id" ref="model_vas_report_snapshot"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_b09_entry_comp_rule" model="ir.rule">
+        <field name="name">vas.b09.entry multi-company</field>
+        <field name="model_id" ref="model_vas_b09_entry"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_account_map_review_comp_rule" model="ir.rule">
+        <field name="name">vas.account.map.review multi-company</field>
+        <field name="model_id" ref="model_vas_account_map_review"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <!-- Rule hệ thống: company_id trống = dùng chung mọi công ty cùng regime -->
+    <record id="vas_closing_rule_comp_rule" model="ir.rule">
+        <field name="name">vas.closing.rule multi-company</field>
+        <field name="model_id" ref="model_vas_closing_rule"/>
+        <field name="domain_force">[('company_id', 'in', company_ids + [False])]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <!-- ===== Vay / tài sản (dòng con) ===== -->
+    <record id="vas_loan_line_comp_rule" model="ir.rule">
+        <field name="name">vas.loan.line multi-company</field>
+        <field name="model_id" ref="model_vas_loan_line"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_loan_disbursement_comp_rule" model="ir.rule">
+        <field name="name">vas.loan.disbursement multi-company</field>
+        <field name="model_id" ref="model_vas_loan_disbursement"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_asset_line_comp_rule" model="ir.rule">
+        <field name="name">vas.asset.line multi-company</field>
+        <field name="model_id" ref="model_vas_asset_line"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+
+    <!-- ===== GTGT bổ sung ===== -->
+    <record id="vas_gtgt_registration_comp_rule" model="ir.rule">
+        <field name="name">vas.gtgt.registration multi-company</field>
+        <field name="model_id" ref="model_vas_gtgt_registration"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_gtgt_tax_method_comp_rule" model="ir.rule">
+        <field name="name">vas.gtgt.tax.method multi-company</field>
+        <field name="model_id" ref="model_vas_gtgt_tax_method"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_gtgt_annual_summary_comp_rule" model="ir.rule">
+        <field name="name">vas.gtgt.annual.summary multi-company</field>
+        <field name="model_id" ref="model_vas_gtgt_annual_summary"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_gtgt_deferred_adjustment_comp_rule" model="ir.rule">
+        <field name="name">vas.gtgt.deferred.adjustment multi-company</field>
+        <field name="model_id" ref="model_vas_gtgt_deferred_adjustment"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_gtgt_purpose_review_comp_rule" model="ir.rule">
+        <field name="name">vas.gtgt.purpose.review multi-company</field>
+        <field name="model_id" ref="model_vas_gtgt_purpose_review"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_gtgt_reduction_annex_comp_rule" model="ir.rule">
+        <field name="name">vas.gtgt.reduction.annex multi-company</field>
+        <field name="model_id" ref="model_vas_gtgt_reduction_annex"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_gtgt_reduction_warning_comp_rule" model="ir.rule">
+        <field name="name">vas.gtgt.reduction.warning multi-company</field>
+        <field name="model_id" ref="model_vas_gtgt_reduction_warning"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_inventory_provision_line_comp_rule" model="ir.rule">
+        <field name="name">vas.inventory.provision.line multi-company</field>
+        <field name="model_id" ref="model_vas_inventory_provision_line"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+</odoo>

@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """W1 — Bán xương sống: chấm B01/B02/B03/B05 theo khớp hiệu quả."""
 from collections import defaultdict
 
@@ -434,3 +434,42 @@ class TestW1Ban(TransactionCase):
         moves = self._moves_for_sources(delivery, invoice, payment)
         status, _bal, diffs, _ = self._grade('B05', moves, self._expected_full_cycle())
         self.assertEqual(status, 'ĐẠT', diffs)
+
+    def test_w1_order_discount_line_not_abs_inflated(self):
+        """Chiết khấu cả đơn (dòng âm) ghi DT net, không cộng abs thành 100k+3k."""
+        gross = 100_000.0
+        disc = -3_000.0
+        net = 97_000.0
+        tax = net * self.TAX_RATE / 100.0
+        move = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': self.partner.id,
+            'invoice_date': '2099-01-15',
+            'date': '2099-01-15',
+            'journal_id': self.sale_journal.id,
+            'company_id': self.company.id,
+            'invoice_line_ids': [
+                Command.create({
+                    'product_id': self.product.id,
+                    'name': self.product.name,
+                    'quantity': 1.0,
+                    'price_unit': gross,
+                    'tax_ids': [Command.set(self.tax.ids)],
+                }),
+                Command.create({
+                    'name': 'Chiết khấu đơn 3%',
+                    'quantity': 1.0,
+                    'price_unit': disc,
+                    'tax_ids': [Command.set(self.tax.ids)],
+                }),
+            ],
+        })
+        move.action_post()
+        self.assertAlmostEqual(move.amount_untaxed, net)
+        self._sync()
+        vas = self._moves_for_sources(move)
+        self.assertTrue(vas, 'sale invoice phải sinh vas.move')
+        bal = self._net_balances(vas)
+        self.assertEqual(float_compare(bal.get('5111', 0.0), -net, 2), 0, bal)
+        self.assertEqual(float_compare(bal.get('33311', 0.0), -tax, 2), 0, bal)
+        self.assertEqual(float_compare(bal.get('131', 0.0), net + tax, 2), 0, bal)

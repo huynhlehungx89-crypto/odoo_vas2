@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Connecta VAS',
-        'version': '19.0.1.95.0',
+        'version': '19.0.1.101.0',
     'post_init_hook': 'post_init_hook',
     'category': 'Accounting',
     'author': 'Connecta Solutions',
@@ -29,6 +29,7 @@
     'data': [
         'security/vas_import_vat_security.xml',
         'security/vas_costing_security.xml',
+        'security/vas_multi_company_security.xml',
         'security/ir.model.access.csv',
         'data/vas_regime_data.xml',
         'data/vas_journals.xml',
