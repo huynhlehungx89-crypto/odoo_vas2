@@ -78,6 +78,7 @@ access_vas_cost_item_system,vas.cost.item.system,model_vas_cost_item,base.group_
 access_vas_cost_object_system,vas.cost.object.system,model_vas_cost_object,base.group_system,1,1,1,1
 access_vas_cost_object_source_map_system,vas.cost.object.source.map.system,model_vas_cost_object_source_map,base.group_system,1,1,1,1
 access_vas_cost_object_parent_matrix_system,vas.cost.object.parent.matrix.system,model_vas_cost_object_parent_matrix,base.group_system,1,1,1,1
+access_vas_cost_object_assign_queue_system,vas.cost.object.assign.queue.system,model_vas_cost_object_assign_queue,base.group_system,1,1,1,1
 access_vas_costing_period_system,vas.costing.period.system,model_vas_costing_period,base.group_system,1,1,1,1
 access_vas_costing_period_approver,vas.costing.period.approver,model_vas_costing_period,connecta_vas.group_vas_costing_approver,1,1,1,0
 access_vas_costing_result_version_approver,vas.costing.result.version.approver,model_vas_costing_result_version,connecta_vas.group_vas_costing_approver,1,1,0,0
@@ -113,3 +114,6 @@ access_vas_ops_group_user,vas.ops.group.user,model_vas_ops_group,base.group_user
 access_vas_ops_button_user,vas.ops.button.user,model_vas_ops_button,base.group_user,1,0,0,0
 access_vas_ops_group_system,vas.ops.group.system,model_vas_ops_group,base.group_system,1,1,1,1
 access_vas_ops_button_system,vas.ops.button.system,model_vas_ops_button,base.group_system,1,1,1,1
+access_vas_payment_pending113_system,vas.payment.pending113.system,model_vas_payment_pending113,base.group_system,1,1,1,1
+access_vas_bank_statement_import_system,vas.bank.statement.import.system,model_vas_bank_statement_import,base.group_system,1,1,1,1
+access_vas_bank_statement_line_system,vas.bank.statement.line.system,model_vas_bank_statement_line,base.group_system,1,1,1,1

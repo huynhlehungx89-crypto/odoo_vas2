@@ -46,6 +46,26 @@ class ResConfigSettings(models.TransientModel):
         readonly=False,
         string='TK đối ứng hủy hàng',
     )
+    vas_vietqr_bank_bin = fields.Char(
+        related='company_id.vas_vietqr_bank_bin',
+        readonly=False,
+        string='BIN ngân hàng (VietQR)',
+    )
+    vas_vietqr_account_no = fields.Char(
+        related='company_id.vas_vietqr_account_no',
+        readonly=False,
+        string='Số TK nhận VietQR',
+    )
+    vas_vietqr_account_name = fields.Char(
+        related='company_id.vas_vietqr_account_name',
+        readonly=False,
+        string='Tên TK nhận VietQR',
+    )
+    vas_payment_113_stale_days = fields.Integer(
+        related='company_id.vas_payment_113_stale_days',
+        readonly=False,
+        string='Cảnh báo treo 113 (ngày)',
+    )
 
     def action_vas_sync_now(self):
         self.ensure_one()

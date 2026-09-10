@@ -140,6 +140,16 @@ class ResCompany(models.Model):
         help='Bên Nợ phiếu hủy hàng (stock.scrap). Trống = 811 + cờ mặc định, '
              'chặn khóa kỳ. Không tự chọn 632/154/138.',
     )
+    vas_vietqr_bank_bin = fields.Char(
+        string='BIN ngân hàng (VietQR)',
+        help='Mã BIN Napas (VD 970422 = MB). Dùng sinh QR động.',
+    )
+    vas_vietqr_account_no = fields.Char(string='Số TK nhận VietQR')
+    vas_vietqr_account_name = fields.Char(string='Tên TK nhận VietQR')
+    vas_payment_113_stale_days = fields.Integer(
+        string='Cảnh báo treo 113 (ngày)',
+        default=5,
+    )
 
     def _vas_gtgt_taxable_revenue_ratio(self, on_date):
         """Tỷ lệ DT chịu thuế / tổng DT bán ra trong kỳ chứa on_date.

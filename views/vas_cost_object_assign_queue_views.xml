@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_vas_cost_object_assign_queue_list" model="ir.ui.view">
+        <field name="name">vas.cost.object.assign.queue.list</field>
+        <field name="model">vas.cost.object.assign.queue</field>
+        <field name="arch" type="xml">
+            <list string="Đối tượng NVLTT chưa gắn"
+                  decoration-danger="state == 'pending'"
+                  decoration-muted="state in ('done', 'skipped')">
+                <header>
+                    <button name="action_auto_resolve"
+                            type="object"
+                            string="Thử gắn tự động"
+                            display="always"
+                            class="btn-secondary"/>
+                    <button name="action_skip"
+                            type="object"
+                            string="Bỏ qua"
+                            display="always"
+                            class="btn-secondary"/>
+                </header>
+                <field name="move_id"/>
+                <field name="production_name" optional="show"/>
+                <field name="suggested_product_id"/>
+                <field name="reason"/>
+                <field name="amount" sum="Tổng"/>
+                <field name="cost_object_id"/>
+                <field name="state"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vas_cost_object_assign_queue_form" model="ir.ui.view">
+        <field name="name">vas.cost.object.assign.queue.form</field>
+        <field name="model">vas.cost.object.assign.queue</field>
+        <field name="arch" type="xml">
+            <form string="Gắn đối tượng NVLTT">
+                <header>
+                    <button name="action_assign"
+                            type="object"
+                            string="Gắn đối tượng"
+                            class="btn-primary"
+                            invisible="state != 'pending'"/>
+                    <button name="action_auto_resolve"
+                            type="object"
+                            string="Thử gắn tự động"
+                            invisible="state != 'pending'"/>
+                    <button name="action_skip"
+                            type="object"
+                            string="Bỏ qua"
+                            invisible="state != 'pending'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="pending,done,skipped"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="move_id" readonly="1"/>
+                            <field name="move_line_id" readonly="1"/>
+                            <field name="stock_move_id" readonly="1"/>
+                            <field name="production_name" readonly="1"/>
+                            <field name="suggested_product_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="amount" readonly="1"/>
+                            <field name="reason" readonly="1"/>
+                            <field name="cost_object_id"
+                                     readonly="state != 'pending'"/>
+                            <field name="company_id"
+                                     groups="base.group_multi_company"
+                                     readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Xử lý" invisible="state == 'pending'">
+                        <field name="resolved_uid" readonly="1"/>
+                        <field name="resolved_date" readonly="1"/>
+                        <field name="note" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_vas_cost_object_assign_queue_search" model="ir.ui.view">
+        <field name="name">vas.cost.object.assign.queue.search</field>
+        <field name="model">vas.cost.object.assign.queue</field>
+        <field name="arch" type="xml">
+            <search string="Hàng chờ đối tượng NVLTT">
+                <field name="move_id"/>
+                <field name="suggested_product_id"/>
+                <field name="reason"/>
+                <filter string="Chờ gắn" name="pending"
+                        domain="[('state', '=', 'pending')]"/>
+                <filter string="Đã gắn" name="done"
+                        domain="[('state', '=', 'done')]"/>
+                <filter string="Bỏ qua" name="skipped"
+                        domain="[('state', '=', 'skipped')]"/>
+                <group>
+                    <filter string="Công ty" name="group_company"
+                            context="{'group_by': 'company_id'}"
+                            groups="base.group_multi_company"/>
+                    <filter string="Trạng thái" name="group_state"
+                            context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_vas_cost_object_assign_queue" model="ir.actions.act_window">
+        <field name="name">Đối tượng NVLTT chưa gắn</field>
+        <field name="res_model">vas.cost.object.assign.queue</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_pending': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Không còn dòng xuất NVL (NVLTT) thiếu đối tượng tập hợp.
+            </p>
+            <p>
+                Khi đồng bộ R14 không suy ra được đối tượng thành phẩm, máy đưa vào đây.
+                Chọn đối tượng rồi bấm <b>Gắn đối tượng</b>, hoặc
+                <b>Thử gắn tự động</b> sau khi đã khai danh mục.
+            </p>
+        </field>
+    </record>
+</odoo>

@@ -63,6 +63,8 @@ from . import vas_b09_entry
 from . import res_config_settings
 from . import vas_cost_item
 from . import vas_cost_object
+from . import vas_cost_object_assign_queue
+from . import vas_payment_reconcile
 from . import vas_costing_period
 from . import vas_allocation_config
 from . import vas_allocation_run

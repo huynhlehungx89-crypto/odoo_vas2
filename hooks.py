@@ -13,7 +13,39 @@ def post_init_hook(env):
         env['vas.variance.account.config']._seed_defaults_tt133()
     except Exception:  # noqa: BLE001 — seed không chặn cài module
         _logger.exception('connecta_vas: seed TK xử lý vượt định mức thất bại')
+    _ensure_account_113(env)
     _ensure_at_install_account_env(env)
+
+
+def _ensure_account_113(env):
+    """Noupdate CoA: bổ sung TK 113 khi nâng cấp DB cũ + cập nhật B01a mã 110."""
+    regime = env.ref('connecta_vas.vas_regime_tt133', raise_if_not_found=False)
+    if not regime:
+        return
+    Account = env['vas.account']
+    if not Account.search([('code', '=', '113'), ('regime_id', '=', regime.id)], limit=1):
+        Account.create({
+            'code': '113',
+            'name': 'Tiền đang chuyển',
+            'regime_id': regime.id,
+            'ending_balance_policy': 'debit',
+            'account_type': 'asset',
+            'reconcile': False,
+            'active': True,
+        })
+        _logger.info('connecta_vas: đã tạo TK 113 Tiền đang chuyển')
+    line = env.ref('connecta_vas.vas_report_line_b01a_110', raise_if_not_found=False)
+    if line and line.account_codes and '113' not in line.account_codes.split(','):
+        codes = [c.strip() for c in line.account_codes.split(',') if c.strip()]
+        if '113' not in codes:
+            # Chèn sau 1122 nếu có
+            if '1122' in codes:
+                idx = codes.index('1122') + 1
+                codes.insert(idx, '113')
+            else:
+                codes.append('113')
+            line.account_codes = ','.join(codes)
+            _logger.info('connecta_vas: B01a mã 110 thêm 113')
 
 
 def _ensure_at_install_account_env(env):

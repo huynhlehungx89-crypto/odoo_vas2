@@ -607,6 +607,22 @@
             <field name="sequence">40</field>
             <field name="action_xmlid">account_accountant.action_bank_statement_line_transactions</field>
         </record>
+        <record id="vas_ops_btn_bank_pending113" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_bank"/>
+            <field name="zone">process</field>
+            <field name="label">Thu đang chuyển (113)</field>
+            <field name="icon">fa-exchange</field>
+            <field name="sequence">45</field>
+            <field name="action_xmlid">connecta_vas.action_vas_payment_pending113</field>
+        </record>
+        <record id="vas_ops_btn_bank_stmt_import" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_bank"/>
+            <field name="zone">process</field>
+            <field name="label">Import sao kê / đối soát 113</field>
+            <field name="icon">fa-upload</field>
+            <field name="sequence">46</field>
+            <field name="action_xmlid">connecta_vas.action_vas_bank_statement_import</field>
+        </record>
         <record id="vas_ops_btn_bank_cat_customer" model="vas.ops.button">
             <field name="group_id" ref="vas_ops_group_bank"/>
             <field name="zone">catalog</field>
@@ -741,6 +757,14 @@
             <field name="icon">fa-sitemap</field>
             <field name="sequence">20</field>
             <field name="action_xmlid">connecta_vas.action_vas_cost_object</field>
+        </record>
+        <record id="vas_ops_btn_cost_cat_object_queue" model="vas.ops.button">
+            <field name="group_id" ref="vas_ops_group_costing"/>
+            <field name="zone">catalog</field>
+            <field name="label">Đối tượng NVLTT chưa gắn</field>
+            <field name="icon">fa-exclamation-triangle</field>
+            <field name="sequence">25</field>
+            <field name="action_xmlid">connecta_vas.action_vas_cost_object_assign_queue</field>
         </record>
         <!-- Báo cáo giá thành: VAS chưa có màn danh sách riêng — để trống -->
 

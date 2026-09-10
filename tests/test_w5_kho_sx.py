@@ -438,6 +438,141 @@ class TestW5KhoSanXuat(TransactionCase):
         self.assertFalse(vas.vas_has_default_account)
 
     # ------------------------------------------------------------------
+    # (i-b) R14 gắn đối tượng SP = thành phẩm MO khi đã khai
+    # ------------------------------------------------------------------
+
+    def test_w5_ib_r14_gan_doi_tuong_thanh_pham(self):
+        if not self.bom:
+            self.skipTest('mrp chưa cài')
+        acc_154 = self._acc('154')
+        cost_obj = self.env['vas.cost.object'].create({
+            'code': 'W5SX-TP',
+            'name': 'Đối tượng TP W5',
+            'object_type': 'product',
+            'company_id': self.company.id,
+            'wip_account_id': acc_154.id,
+            'source_model': 'product.product',
+            'source_res_id': self.p_tp.id,
+        })
+        mo = self._make_mo(self.bom)
+        stats = self._sync()
+        self.assertGreater(stats['stock_issue_production']['created'], 0)
+        self.assertEqual(
+            stats.get('default_account', {}).get('cost_object_unresolved', 0),
+            0,
+        )
+
+        vas = self._vas_for(mo.move_raw_ids)
+        self.assertEqual(len(vas), 1)
+        debit = vas.line_ids.filtered(lambda l: l.debit and l.cost_item_id)
+        self.assertTrue(debit)
+        self.assertEqual(debit.cost_item_id.code, 'NVLTT')
+        self.assertEqual(debit.cost_object_id, cost_obj)
+        self.assertFalse(vas.vas_missing_cost_object)
+        self.assertFalse(self.env['vas.cost.object.assign.queue'].search([
+            ('move_id', '=', vas.id),
+            ('state', '=', 'pending'),
+        ]))
+
+    def test_w5_ic_r14_thieu_doi_tuong_canh_bao(self):
+        """Chưa khai đối tượng SP → vẫn ghi NVLTT, cờ + stats + hàng chờ."""
+        if not self.bom:
+            self.skipTest('mrp chưa cài')
+        # Đảm bảo không còn đối tượng gắn p_tp
+        self.env['vas.cost.object'].search([
+            ('company_id', '=', self.company.id),
+            ('source_model', '=', 'product.product'),
+            ('source_res_id', '=', self.p_tp.id),
+        ]).unlink()
+        mo = self._make_mo(self.bom)
+        stats = self._sync()
+        self.assertGreater(stats['stock_issue_production']['created'], 0)
+        self.assertGreater(
+            stats.get('default_account', {}).get('cost_object_unresolved', 0),
+            0,
+        )
+
+        vas = self._vas_for(mo.move_raw_ids)
+        self.assertEqual(len(vas), 1)
+        debit = vas.line_ids.filtered(lambda l: l.debit and l.cost_item_id)
+        self.assertEqual(debit.cost_item_id.code, 'NVLTT')
+        self.assertFalse(debit.cost_object_id)
+        self.assertTrue(vas.vas_missing_cost_object)
+        self.assertIn('CHƯA GẮN ĐỐI TƯỢNG', vas.narration or '')
+        queue = self.env['vas.cost.object.assign.queue'].search([
+            ('move_line_id', '=', debit.id),
+            ('state', '=', 'pending'),
+        ])
+        self.assertEqual(len(queue), 1)
+        self.assertEqual(queue.suggested_product_id, self.p_tp)
+
+    def test_w5_id_hang_cho_gan_doi_tuong(self):
+        """Phase 1b: gắn tay từ hàng chờ lên JE đã post."""
+        if not self.bom:
+            self.skipTest('mrp chưa cài')
+        self.env['vas.cost.object'].search([
+            ('company_id', '=', self.company.id),
+            ('source_model', '=', 'product.product'),
+            ('source_res_id', '=', self.p_tp.id),
+        ]).unlink()
+        mo = self._make_mo(self.bom)
+        self._sync()
+        vas = self._vas_for(mo.move_raw_ids)
+        debit = vas.line_ids.filtered(lambda l: l.debit and l.cost_item_id)
+        queue = self.env['vas.cost.object.assign.queue'].search([
+            ('move_line_id', '=', debit.id),
+            ('state', '=', 'pending'),
+        ])
+        self.assertTrue(queue)
+        cost_obj = self.env['vas.cost.object'].create({
+            'code': 'W5SX-TP-Q',
+            'name': 'Đối tượng TP queue',
+            'object_type': 'product',
+            'company_id': self.company.id,
+            'wip_account_id': self._acc('154').id,
+            'source_model': 'product.product',
+            'source_res_id': self.p_tp.id,
+        })
+        queue.cost_object_id = cost_obj
+        queue.action_assign()
+        self.assertEqual(queue.state, 'done')
+        self.assertEqual(debit.cost_object_id, cost_obj)
+        self.assertFalse(vas.vas_missing_cost_object)
+
+    def test_w5_ie_backfill_doi_tuong_r14(self):
+        """Phase 1c: backfill gắn khi đối tượng được tạo sau JE."""
+        if not self.bom:
+            self.skipTest('mrp chưa cài')
+        self.env['vas.cost.object'].search([
+            ('company_id', '=', self.company.id),
+            ('source_model', '=', 'product.product'),
+            ('source_res_id', '=', self.p_tp.id),
+        ]).unlink()
+        mo = self._make_mo(self.bom)
+        self._sync()
+        vas = self._vas_for(mo.move_raw_ids)
+        debit = vas.line_ids.filtered(lambda l: l.debit and l.cost_item_id)
+        self.assertFalse(debit.cost_object_id)
+        cost_obj = self.env['vas.cost.object'].create({
+            'code': 'W5SX-TP-BF',
+            'name': 'Đối tượng TP backfill',
+            'object_type': 'product',
+            'company_id': self.company.id,
+            'wip_account_id': self._acc('154').id,
+            'source_model': 'product.product',
+            'source_res_id': self.p_tp.id,
+        })
+        stats = self.env['vas.sync'].backfill_production_cost_objects(self.company)
+        self.assertGreaterEqual(stats.get('filled', 0), 1)
+        self.assertEqual(debit.cost_object_id, cost_obj)
+        self.assertFalse(vas.vas_missing_cost_object)
+        pending = self.env['vas.cost.object.assign.queue'].search([
+            ('move_line_id', '=', debit.id),
+            ('state', '=', 'pending'),
+        ])
+        self.assertFalse(pending)
+
+    # ------------------------------------------------------------------
     # (ii) Không chồng lấn: lệnh SX không kích R02 / R06
     # ------------------------------------------------------------------
 

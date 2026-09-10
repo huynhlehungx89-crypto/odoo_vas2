@@ -95,6 +95,9 @@
                         </page>
                         <page string="Thông tin khác" name="other">
                             <group>
+                                <field name="vas_has_default_account" readonly="1"/>
+                                <field name="vas_has_unclassified_cost" readonly="1"/>
+                                <field name="vas_missing_cost_object" readonly="1"/>
                                 <field name="narration" placeholder="Thêm ghi chú..."/>
                             </group>
                         </page>
@@ -155,6 +158,8 @@
                         domain="[('vas_has_default_account','=',True)]"/>
                 <filter string="Khoản mục chưa phân loại" name="unclassified_cost"
                         domain="[('vas_has_unclassified_cost','=',True)]"/>
+                <filter string="Thiếu đối tượng tập hợp" name="missing_cost_object"
+                        domain="[('vas_missing_cost_object','=',True)]"/>
                 <group>
                     <filter string="Chứng từ gốc" name="group_origin_ref" context="{'group_by': 'origin_ref'}"/>
                     <filter string="Loại bút toán" name="group_move_kind" context="{'group_by': 'move_kind'}"/>

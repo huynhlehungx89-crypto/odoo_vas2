@@ -48,6 +48,24 @@
                             <field name="vas_scrap_account_id"
                                    domain="[('regime_id', '=', vas_regime_id), ('active', '=', True)]"/>
                         </setting>
+                        <setting string="VietQR — BIN ngân hàng"
+                                 company_dependent="1"
+                                 help="Mã BIN Napas (VD 970422). Cùng số TK / tên TK để sinh QR động trên hóa đơn.">
+                            <field name="vas_vietqr_bank_bin" placeholder="970422"/>
+                            <div class="mt-2">
+                                <label for="vas_vietqr_account_no" string="Số TK nhận"/>
+                                <field name="vas_vietqr_account_no"/>
+                            </div>
+                            <div class="mt-2">
+                                <label for="vas_vietqr_account_name" string="Tên TK nhận"/>
+                                <field name="vas_vietqr_account_name"/>
+                            </div>
+                        </setting>
+                        <setting string="Cảnh báo treo TK 113"
+                                 company_dependent="1"
+                                 help="Số ngày treo Nợ 113 chưa đối soát thì đánh dấu quá hạn.">
+                            <field name="vas_payment_113_stale_days"/>
+                        </setting>
                         <setting string="Đồng bộ định khoản" help="Quét hóa đơn bán / xuất kho bán / thu tiền và sinh vas.move theo quy tắc.">
                             <button name="action_vas_sync_now"
                                     type="object"

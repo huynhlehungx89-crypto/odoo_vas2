@@ -12,6 +12,20 @@
                 <field name="vas_prepaid_months" optional="hide"
                          invisible="not vas_is_prepaid or parent.move_type not in ('in_invoice', 'in_refund')"/>
             </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="action_vas_generate_vietqr"
+                        type="object"
+                        string="Sinh VietQR"
+                        invisible="move_type not in ('out_invoice', 'out_receipt') or state != 'posted'"/>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <group string="VietQR / đối soát thanh toán"
+                       invisible="move_type not in ('out_invoice', 'out_receipt')">
+                    <field name="vas_payment_ref_code"/>
+                    <field name="vas_vietqr_image" widget="image" options="{'size': [200, 200]}"/>
+                    <field name="vas_vietqr_payload" widget="url" invisible="not vas_vietqr_payload"/>
+                </group>
+            </xpath>
         </field>
     </record>
 </odoo>

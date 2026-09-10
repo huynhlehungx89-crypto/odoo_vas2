@@ -242,8 +242,40 @@ class VasMove(models.Model):
         help='W12: ít nhất một dòng chi phí rơi về khoản mục hệ thống CPD '
              '«Chưa phân loại». Cùng khuôn cờ TK mặc định: lọc được, chặn khóa kỳ.',
     )
+    vas_missing_cost_object = fields.Boolean(
+        string='Thiếu đối tượng tập hợp',
+        default=False,
+        index=True,
+        copy=False,
+        help='R14 xuất NVL sản xuất: không suy ra được đối tượng thành phẩm '
+             '(chưa khai đối tượng SP / trùng nguồn / thiếu MO). '
+             'JE vẫn ghi NVLTT; cần gắn tay hoặc bổ sung danh mục trước khi tính GT.',
+    )
     narration = fields.Text(string='Ghi chú')
     line_ids = fields.One2many('vas.move.line', 'move_id', string='Dòng bút toán', copy=True)
+
+    def _refresh_missing_cost_object_flag(self, note=None):
+        """Cập nhật cờ thiếu đối tượng sau gắn tay / backfill.
+
+        Còn dòng Nợ NVLTT không đối tượng → giữ cờ; hết → tắt cờ.
+        ``note`` (nếu có) nối vào narration (audit gắn tay).
+        """
+        for move in self:
+            still_missing = bool(move.line_ids.filtered(
+                lambda l: l.debit
+                and l.cost_item_id
+                and l.cost_item_id.code == 'NVLTT'
+                and not l.cost_object_id
+            ))
+            vals = {'vas_missing_cost_object': still_missing}
+            if note:
+                narration = move.narration or ''
+                if note not in narration:
+                    narration = (
+                        (narration + '\n' + note).strip() if narration else note
+                    )
+                    vals['narration'] = narration
+            move.with_context(vas_allow_posted_write=True).write(vals)
 
     # -------------------------------------------------------------------------
     # Compute / onchange

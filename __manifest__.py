@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Connecta VAS',
-        'version': '19.0.1.101.0',
+        'version': '19.0.1.104.0',
     'post_init_hook': 'post_init_hook',
     'category': 'Accounting',
     'author': 'Connecta Solutions',
@@ -64,10 +64,13 @@
         'data/vas_cost_object_matrix.xml',
         'data/vas_variance_data.xml',
         'data/vas_ops_data.xml',
+        'data/vas_payment_reconcile_data.xml',
         'views/vas_catalog_views.xml',
         'views/vas_dashboard_views.xml',
         'views/vas_ops_views.xml',
         'views/vas_costing_views.xml',
+        'views/vas_cost_object_assign_queue_views.xml',
+        'views/vas_payment_reconcile_views.xml',
         'views/vas_allocation_views.xml',
         'views/vas_costing_stage3_views.xml',
         'views/vas_costing_warehouse_views.xml',

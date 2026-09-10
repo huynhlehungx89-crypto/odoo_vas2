@@ -145,6 +145,30 @@
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
         <field name="global" eval="True"/>
     </record>
+    <record id="vas_cost_object_assign_queue_comp_rule" model="ir.rule">
+        <field name="name">vas.cost.object.assign.queue multi-company</field>
+        <field name="model_id" ref="model_vas_cost_object_assign_queue"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_payment_pending113_comp_rule" model="ir.rule">
+        <field name="name">vas.payment.pending113 multi-company</field>
+        <field name="model_id" ref="model_vas_payment_pending113"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_bank_statement_import_comp_rule" model="ir.rule">
+        <field name="name">vas.bank.statement.import multi-company</field>
+        <field name="model_id" ref="model_vas_bank_statement_import"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
+    <record id="vas_bank_statement_line_comp_rule" model="ir.rule">
+        <field name="name">vas.bank.statement.line multi-company</field>
+        <field name="model_id" ref="model_vas_bank_statement_line"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True"/>
+    </record>
     <record id="vas_costing_period_comp_rule" model="ir.rule">
         <field name="name">vas.costing.period multi-company</field>
         <field name="model_id" ref="model_vas_costing_period"/>

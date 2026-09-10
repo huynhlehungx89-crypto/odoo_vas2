@@ -161,10 +161,14 @@ class VasSync(models.AbstractModel):
             date_from = max(fields.Date.to_date(date_from), cutoff)
         else:
             date_from = cutoff
-        # Sổ ghi các move chưa có giá trị / cờ landed, gom suốt lượt đồng bộ rồi
-        # tổng kết một lần ở cuối — cùng đường cảnh báo với nhóm chưa khai ánh xạ.
+        # Sổ ghi các move chưa có giá trị / cờ landed / đối tượng SX chưa gắn,
+        # gom suốt lượt đồng bộ rồi tổng kết một lần ở cuối — cùng đường cảnh báo
+        # với nhóm chưa khai ánh xạ.
         self = self.with_context(
-            vas_unvalued=[], vas_landed_flags=[], vas_period_missing=[],
+            vas_unvalued=[],
+            vas_landed_flags=[],
+            vas_period_missing=[],
+            vas_cost_object_unresolved=[],
         )
         # Cancel-handling TRƯỚC tạo mới: đảo JE nguồn đã chết → mở _already_synced.
         cancel_stats = self._sync_cancel_regressions(company)
@@ -221,6 +225,10 @@ class VasSync(models.AbstractModel):
         stats['direct_industry_backfill'] = self.backfill_direct_industry(
             company, date_from, date_to,
         )
+        # Phase 1c: gắn đối tượng SP lên JE R14 cũ khi đã suy ra được.
+        stats['cost_object_backfill'] = self.backfill_production_cost_objects(
+            company, date_from, date_to,
+        )
         # Chặng 2: máy tự kiểm điều kiện khấu trừ đầu vào (không đổi số tiền sổ).
         stats['tax_deduction_check'] = self.env['vas.move.line'].recompute_input_vat_deduction(
             company=company, as_of_date=date_to or fields.Date.context_today(self),
@@ -242,11 +250,14 @@ class VasSync(models.AbstractModel):
         moves = self.env['vas.move'].search(domain)
         unvalued = self.env.context.get('vas_unvalued') or []
         landed_flags = self.env.context.get('vas_landed_flags') or []
+        cost_object_unresolved = self.env.context.get('vas_cost_object_unresolved') or []
         summary = {
             'moves': len(moves),
             'categories': self.env['vas.account.map.review']._missing_summary(company),
             'unvalued_moves': len(unvalued),
             'landed_flags': len(landed_flags),
+            'cost_object_unresolved': len(cost_object_unresolved),
+            'cost_object_unresolved_sample': list(cost_object_unresolved)[:20],
         }
         if moves:
             _logger.warning(
@@ -262,6 +273,13 @@ class VasSync(models.AbstractModel):
             _logger.warning(
                 'VAS sync company=%s: %s cảnh báo landed cost (thiếu bill / orphan): %s',
                 company.id, len(landed_flags), '; '.join(landed_flags),
+            )
+        if cost_object_unresolved:
+            _logger.warning(
+                'VAS sync company=%s: %s xuất NVL SX chưa gắn đối tượng tập hợp: %s',
+                company.id,
+                len(cost_object_unresolved),
+                '; '.join(cost_object_unresolved[:20]),
             )
         return summary
 
@@ -4000,6 +4018,7 @@ class VasSync(models.AbstractModel):
         fallbacks = []
         cost_fallbacks = []
         notes = []
+        cost_object_misses = []
         allow_zero = event_type in ('sale_return_stock', 'stock_scrap')
         self = self.with_context(
             vas_amount_fallbacks=fallbacks,
@@ -4042,6 +4061,18 @@ class VasSync(models.AbstractModel):
                     vals['credit'] = part
                 if split_cost_item:
                     vals['cost_item_id'] = split_cost_item.id
+                if (
+                    event_type == 'stock_issue_production'
+                    and rline.side == 'debit'
+                    and split_cost_item
+                    and split_cost_item.code == 'NVLTT'
+                    and record._name == 'stock.move'
+                ):
+                    cost_object = self._resolve_production_cost_object(
+                        record, company, cost_object_misses,
+                    )
+                    if cost_object:
+                        vals['cost_object_id'] = cost_object.id
                 line_commands.append(Command.create(vals))
                 seq += 10
 
@@ -4066,9 +4097,12 @@ class VasSync(models.AbstractModel):
             **self._merge_move_flag_vals(
                 self._default_account_flag_vals(fallbacks),
                 self._unclassified_cost_flag_vals(cost_fallbacks),
+                self._missing_cost_object_flag_vals(cost_object_misses),
                 {'narration': '\n'.join(notes)} if notes else {},
             ),
         })
+        if cost_object_misses and record._name == 'stock.move':
+            self._enqueue_missing_cost_objects(move, record, cost_object_misses)
         return self._post_or_flag_period_missing(move)
 
     def _post_or_flag_period_missing(self, move):
@@ -4235,8 +4269,217 @@ class VasSync(models.AbstractModel):
             ),
         }
 
+    def _missing_cost_object_flag_vals(self, misses):
+        """Cờ khi xuất NVL SX (R14) không suy ra được đối tượng tập hợp."""
+        if not misses:
+            return {}
+        seen = []
+        for item in misses:
+            label = item.get('label') or _('(thiếu đối tượng)')
+            if label not in seen:
+                seen.append(label)
+        return {
+            'vas_missing_cost_object': True,
+            'narration': _(
+                'CHƯA GẮN ĐỐI TƯỢNG TẬP HỢP — xuất NVL sản xuất (NVLTT) '
+                'không suy ra được đối tượng thành phẩm:\n%s',
+                '\n'.join(f'- {label}' for label in seen),
+            ),
+        }
+
+    def _resolve_production_cost_object(self, stock_move, company, misses=None):
+        """Đối tượng SP = thành phẩm của MO (xuất NVL R14).
+
+        - Đúng 1 ``vas.cost.object`` (product + source product.product) → gắn.
+        - 0 / >1 / thiếu MO·SP → không gắn; ghi ``misses`` + bucket sync.
+        Không tạo đối tượng mới lúc sync.
+        """
+        CostObject = self.env['vas.cost.object']
+        empty = CostObject.browse()
+        mo = (
+            stock_move.raw_material_production_id
+            if 'raw_material_production_id' in stock_move._fields
+            else False
+        )
+        product = mo.product_id if mo else self.env['product.product']
+        mo_name = mo.display_name if mo else _('(không có MO)')
+        product_name = product.display_name if product else _('(không có SP)')
+
+        def _note(reason):
+            label = _('%(mo)s / %(product)s — %(reason)s',
+                      mo=mo_name, product=product_name, reason=reason)
+            if misses is not None:
+                misses.append({'label': label, 'reason': reason})
+            bucket = self.env.context.get('vas_cost_object_unresolved')
+            if bucket is not None:
+                bucket.append(label)
+
+        if not mo:
+            _note(_('thiếu lệnh sản xuất trên phiếu xuất NVL'))
+            return empty
+        if not product:
+            _note(_('lệnh sản xuất chưa có sản phẩm thành phẩm'))
+            return empty
+
+        objects = CostObject.search([
+            ('company_id', '=', company.id),
+            ('object_type', '=', 'product'),
+            ('source_model', '=', 'product.product'),
+            ('source_res_id', '=', product.id),
+        ])
+        if len(objects) == 1:
+            return objects
+        if not objects:
+            _note(_(
+                'chưa có đối tượng tập hợp loại Sản phẩm gắn %(product)s',
+                product=product_name,
+            ))
+            return empty
+        _note(_(
+            'có %(n)s đối tượng trùng nguồn %(product)s — không tự chọn',
+            n=len(objects),
+            product=product_name,
+        ))
+        return empty
+
+    def _enqueue_missing_cost_objects(self, move, stock_move, misses):
+        """Phase 1b: đưa dòng Nợ NVLTT thiếu đối tượng vào hàng chờ gắn tay."""
+        Queue = self.env['vas.cost.object.assign.queue']
+        mo = (
+            stock_move.raw_material_production_id
+            if 'raw_material_production_id' in stock_move._fields
+            else False
+        )
+        product = mo.product_id if mo else self.env['product.product']
+        reason = (misses[0].get('reason') if misses else '') or _('(không rõ)')
+        lines = move.line_ids.filtered(
+            lambda l: l.debit
+            and l.cost_item_id
+            and l.cost_item_id.code == 'NVLTT'
+            and not l.cost_object_id
+        )
+        for line in lines:
+            Queue._enqueue(
+                company=move.company_id,
+                move_line=line,
+                reason=reason,
+                stock_move=stock_move,
+                production=mo,
+                product=product,
+            )
+
+    def backfill_production_cost_objects(self, company, date_from=None, date_to=None):
+        """Phase 1c: gắn đối tượng SP lên JE R14 cũ khi suy ra được đúng 1 bản ghi.
+
+        Không đổi số tiền / không tạo bút toán mới. Không suy ra được → enqueue
+        (nếu chưa có pending). Trùng / thiếu → bỏ qua gắn, vẫn có thể vào queue.
+        """
+        domain = [
+            ('company_id', '=', company.id),
+            ('state', 'in', ('draft', 'posted')),
+            ('is_reversal', '=', False),
+            ('source_model', '=', 'stock.move'),
+            ('source_res_id', '!=', False),
+            ('move_kind', '=', 'stock'),
+        ]
+        if date_from:
+            domain.append(('date', '>=', date_from))
+        if date_to:
+            domain.append(('date', '<=', date_to))
+        moves = self.env['vas.move'].search(domain)
+        filled = 0
+        unresolved = 0
+        queued = 0
+        Queue = self.env['vas.cost.object.assign.queue']
+        for move in moves:
+            lines = move.line_ids.filtered(
+                lambda l: l.debit
+                and l.cost_item_id
+                and l.cost_item_id.code == 'NVLTT'
+                and not l.cost_object_id
+            )
+            if not lines:
+                continue
+            sm = self.env['stock.move'].browse(move.source_res_id).exists()
+            if not sm:
+                unresolved += len(lines)
+                continue
+            # Chỉ R14 (xuất NVL của MO) — tránh đụng phiếu kho stock khác cùng move_kind.
+            if (
+                'raw_material_production_id' not in sm._fields
+                or not sm.raw_material_production_id
+            ):
+                continue
+            misses = []
+            cost_object = self._resolve_production_cost_object(sm, company, misses)
+            mo = (
+                sm.raw_material_production_id
+                if 'raw_material_production_id' in sm._fields
+                else False
+            )
+            product = mo.product_id if mo else self.env['product.product']
+            reason = (misses[0].get('reason') if misses else '') or _(
+                'chưa suy ra được đối tượng'
+            )
+            if cost_object:
+                for line in lines:
+                    line.with_context(vas_allow_posted_write=True).write({
+                        'cost_object_id': cost_object.id,
+                    })
+                    filled += 1
+                    pending = Queue.search([
+                        ('move_line_id', '=', line.id),
+                        ('state', '=', 'pending'),
+                    ])
+                    if pending:
+                        pending.write({
+                            'cost_object_id': cost_object.id,
+                            'state': 'done',
+                            'resolved_uid': self.env.uid,
+                            'resolved_date': fields.Datetime.now(),
+                            'note': _('Backfill sync — tự gắn đối tượng.'),
+                        })
+                move._refresh_missing_cost_object_flag(
+                    note=_(
+                        'BACKFILL ĐỐI TƯỢNG — đã gắn %(obj)s (R14).',
+                        obj=cost_object.display_name,
+                    ),
+                )
+                continue
+            unresolved += len(lines)
+            for line in lines:
+                before = Queue.search_count([
+                    ('move_line_id', '=', line.id),
+                    ('state', '=', 'pending'),
+                ])
+                Queue._enqueue(
+                    company=company,
+                    move_line=line,
+                    reason=reason,
+                    stock_move=sm,
+                    production=mo,
+                    product=product,
+                )
+                if not before:
+                    queued += 1
+            if not move.vas_missing_cost_object:
+                move.with_context(vas_allow_posted_write=True).write({
+                    'vas_missing_cost_object': True,
+                })
+        summary = {
+            'filled': filled,
+            'unresolved': unresolved,
+            'queued': queued,
+        }
+        if filled or queued:
+            _logger.info(
+                'VAS COST-OBJECT BACKFILL company=%s filled=%s unresolved=%s queued=%s',
+                company.id, filled, unresolved, queued,
+            )
+        return summary
+
     def _merge_move_flag_vals(self, *flag_dicts):
-        """Gộp cờ + narration từ nhiều nguồn (TK mặc định / CPD)."""
+        """Gộp cờ + narration từ nhiều nguồn (TK mặc định / CPD / đối tượng)."""
         out = {}
         notes = []
         for d in flag_dicts:
