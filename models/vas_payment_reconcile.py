@@ -7,6 +7,7 @@ Phase 1: sổ VAS (không thay R17 thu tiền đã về NH). Luồng:
 """
 import base64
 import csv
+import datetime
 import io
 import logging
 import re
@@ -146,6 +147,14 @@ class VasPaymentPending113(models.Model):
     )
     pending_move_id = fields.Many2one('vas.move', string='BT tạm 113/131', readonly=True)
     settle_move_id = fields.Many2one('vas.move', string='BT xác nhận 112/113', readonly=True)
+    native_payment_id = fields.Many2one(
+        'account.payment', string='Payment Odoo (đã đối soát hóa đơn)',
+        readonly=True, copy=False,
+        help='account.payment thật được tạo để đối soát account.move.line của '
+             'hóa đơn gốc — để payment_state trên Kế toán native chuyển đúng '
+             '"Đã thanh toán". Trống nếu phiếu không gắn hóa đơn, hoặc hóa đơn '
+             'đã được thanh toán từ trước bằng đường khác.',
+    )
     match_method = fields.Selection(
         [
             ('reference_code', 'Theo mã CK'),
@@ -334,7 +343,7 @@ class VasPaymentPending113(models.Model):
             'date': fields.Date.context_today(self),
             'journal_id': journal.id,
             'regime_id': self.company_id.vas_regime_id.id,
-            'move_kind': 'payment',
+            'move_kind': 'payment_settle',
             'ref': label,
             'source_model': self._name,
             'source_res_id': self.id,
@@ -359,7 +368,58 @@ class VasPaymentPending113(models.Model):
             ],
         })
         move.with_context(vas_no_redirect_warning=True).action_post()
+        self._reconcile_native_invoice(settle_code)
         return move
+
+    def _reconcile_native_invoice(self, settle_code='112'):
+        """Đối soát account.move.line gốc bằng account.payment thật.
+
+        Sổ VAS (Nợ 112/Có 113) không tự đụng vào kế toán native của Odoo —
+        nếu không làm thêm bước này, hóa đơn gốc mãi mãi đứng "Chưa thanh
+        toán" trên app Kế toán chuẩn dù tiền đã về và đã đối soát xong bên
+        VAS. Dùng lại account.payment.register (wizard gốc của Odoo) để tận
+        dụng đúng cơ chế đối soát chuẩn, không tự ghép account.move.line.
+
+        Bỏ qua (không lỗi) khi: phiếu không gắn hóa đơn, đã có
+        native_payment_id (idempotent), hoặc hóa đơn đã hết dư nợ từ trước
+        (tránh đối soát chồng nếu ai đó lỡ Pay tay song song).
+        """
+        self.ensure_one()
+        if not self.invoice_id or self.native_payment_id:
+            return
+        invoice = self.invoice_id
+        if invoice.payment_state in ('paid', 'in_payment', 'reversed'):
+            _logger.info(
+                'connecta_vas 113: hóa đơn %s đã %s từ trước — bỏ qua đối soát native.',
+                invoice.name, invoice.payment_state,
+            )
+            return
+        journal_type = 'cash' if settle_code == '111' else 'bank'
+        journal = self.env['account.journal'].search([
+            ('company_id', '=', self.company_id.id),
+            ('type', '=', journal_type),
+        ], limit=1)
+        if not journal:
+            _logger.warning(
+                'connecta_vas 113: không có sổ nhật ký Odoo loại %s cho công ty %s '
+                '— hóa đơn %s KHÔNG được đối soát native, payment_state vẫn treo.',
+                journal_type, self.company_id.display_name, invoice.name,
+            )
+            return
+        wizard = self.env['account.payment.register'].with_context(
+            active_model='account.move', active_ids=invoice.ids,
+        ).create({
+            'journal_id': journal.id,
+            'payment_date': fields.Date.context_today(self),
+            'amount': self.amount,
+            'communication': self.reference_code,
+        })
+        payments = wizard._create_payments()
+        self.native_payment_id = payments[:1].id
+        _logger.info(
+            'connecta_vas 113: da doi soat native hoa don %s bang payment %s (%s)',
+            invoice.name, payments.name, journal.name,
+        )
 
     def _apply_match(self, statement_line, method, settle_code='112'):
         self.ensure_one()
@@ -467,11 +527,20 @@ class VasBankStatementImport(models.Model):
         return True
 
     def _parse_generic_csv(self, data_b64):
-        """Parser CSV tối thiểu: date, amount, narration [, balance].
+        """Đọc sao kê ngân hàng: CSV hoặc Excel (.xlsx) đều được — tự nhận
+        diện theo NỘI DUNG file (magic bytes ZIP), không theo đuôi tên, vì
+        trình duyệt/OS đôi khi báo sai đuôi.
 
         Chấp nhận header tiếng Việt/Anh phổ biến; dấu phẩy hoặc chấm phẩy.
         """
         raw = base64.b64decode(data_b64)
+        if raw[:4] == b'PK\x03\x04':
+            table_rows = self._read_xlsx_rows(raw)
+        else:
+            table_rows = self._read_csv_rows(raw)
+        return self._extract_statement_rows(table_rows)
+
+    def _read_csv_rows(self, raw):
         text = raw.decode('utf-8-sig', errors='replace')
         sample = text[:2048]
         try:
@@ -482,7 +551,42 @@ class VasBankStatementImport(models.Model):
         reader = csv.DictReader(io.StringIO(text), dialect=dialect)
         if not reader.fieldnames:
             raise UserError(_('File CSV không có dòng tiêu đề.'))
+        return list(reader)
 
+    def _read_xlsx_rows(self, raw):
+        """Đọc sheet đầu tiên. Dò dòng tiêu đề = dòng đầu tiên có >= 3 ô
+        không rỗng — bỏ qua các dòng mô tả đầu file kiểu "Thời gian: ..."
+        mà nhiều ngân hàng (TPBank...) chèn trước bảng dữ liệu thật.
+        """
+        try:
+            import openpyxl
+        except ImportError as err:
+            raise UserError(_(
+                'Thiếu thư viện openpyxl trên server để đọc file Excel.'
+            )) from err
+        wb = openpyxl.load_workbook(io.BytesIO(raw), data_only=True, read_only=True)
+        ws = wb.worksheets[0]
+        header = None
+        header_idx = None
+        for idx, row in enumerate(ws.iter_rows(min_row=1, max_row=30, values_only=True), start=1):
+            non_empty = [c for c in row if c not in (None, '')]
+            if len(non_empty) >= 3:
+                header = [str(c).strip() if c is not None else '' for c in row]
+                header_idx = idx
+                break
+        if not header:
+            raise UserError(_('Không tìm được dòng tiêu đề trong file Excel.'))
+        table_rows = []
+        for row in ws.iter_rows(min_row=header_idx + 1, values_only=True):
+            if all(c in (None, '') for c in row):
+                continue
+            table_rows.append({
+                header[i]: (row[i] if i < len(row) else None)
+                for i in range(len(header))
+            })
+        return table_rows
+
+    def _extract_statement_rows(self, table_rows):
         def _pick(row, *keys):
             lower = { (k or '').strip().lower(): v for k, v in row.items() }
             for key in keys:
@@ -492,7 +596,7 @@ class VasBankStatementImport(models.Model):
             return None
 
         rows = []
-        for row in reader:
+        for row in table_rows:
             date_raw = _pick(row, 'date', 'ngày', 'ngay', 'transaction date', 'ngày gd')
             amount_raw = _pick(
                 row, 'credit', 'có', 'amount', 'số tiền', 'so tien', 'phát sinh có',
@@ -506,6 +610,7 @@ class VasBankStatementImport(models.Model):
             narr = _pick(
                 row, 'narration', 'nội dung', 'noi dung', 'description',
                 'diễn giải', 'dien giai', 'remark', 'nội dung ck',
+                'mô tả', 'mo ta',
             ) or ''
             bal = _pick(row, 'balance', 'số dư', 'so du')
             if not date_raw or amount_raw in (None, ''):
@@ -517,7 +622,7 @@ class VasBankStatementImport(models.Model):
             rows.append({
                 'date': date,
                 'amount': amount,
-                'narration': narr.strip(),
+                'narration': str(narr).strip(),
                 'balance': self._parse_amount(bal) if bal not in (None, '') else 0.0,
             })
         if not rows:
@@ -528,15 +633,20 @@ class VasBankStatementImport(models.Model):
 
     @api.model
     def _parse_date(self, raw):
+        # openpyxl trả thẳng datetime/date cho ô đã định dạng ngày trong Excel
+        # — không phải chuỗi, không qua được .strip()/strptime bên dưới.
+        if isinstance(raw, datetime.datetime):
+            return fields.Date.to_date(raw.date())
+        if isinstance(raw, datetime.date):
+            return raw
         raw = (raw or '').strip()
         for fmt in ('%Y-%m-%d', '%d/%m/%Y', '%d-%m-%Y', '%d/%m/%y', '%Y/%m/%d'):
             try:
                 return fields.Date.to_date(
-                    __import__('datetime').datetime.strptime(raw[:10], fmt).date()
+                    datetime.datetime.strptime(raw[:10], fmt).date()
                 )
             except ValueError:
                 continue
-        # Excel serial? bỏ — báo lỗi rõ
         raise UserError(_('Không đọc được ngày: %s', raw))
 
     @api.model

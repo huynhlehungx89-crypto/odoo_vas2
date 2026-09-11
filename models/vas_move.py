@@ -94,6 +94,7 @@ class VasMove(models.Model):
             ('cogs', 'Giá vốn'),
             ('revenue', 'Doanh thu (lúc giao)'),
             ('payment', 'Thanh toán'),
+            ('payment_settle', 'Xác nhận tiền về (113→112)'),
             ('refund', 'Hoàn trả'),
             ('expense', 'Chi phí'),
             ('payroll', 'Lương'),

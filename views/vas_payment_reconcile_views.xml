@@ -56,6 +56,7 @@
                         <group>
                             <field name="pending_move_id" readonly="1"/>
                             <field name="settle_move_id" readonly="1"/>
+                            <field name="native_payment_id" readonly="1"/>
                             <field name="match_method" readonly="1"/>
                             <field name="matched_line_id" readonly="1"/>
                             <field name="is_stale" readonly="1"/>
