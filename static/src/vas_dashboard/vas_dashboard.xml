@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="connecta_vas.VasDashboard">
+    <t t-name="odoo_vas2.VasDashboard">
         <div class="o_action o_vas_dashboard">
             <Layout display="{controlPanel: false}">
                 <div class="o_vas_dash_toolbar d-flex justify-content-between align-items-center px-3 py-2 border-bottom flex-wrap gap-2">
                     <h2 class="m-0 fs-4">Tổng quan</h2>
                     <div class="d-flex align-items-center gap-2">
                         <label class="mb-0 text-muted small" for="vas_dash_period">Kỳ</label>
-                        <select id="vas_dash_period" class="form-select form-select-sm o_vas_dash_period"
-                                t-on-change="onPeriodChange"
-                                t-att-disabled="state.loading">
+                        <select id="vas_dash_period" class="form-select form-select-sm o_vas_dash_period" t-on-change="onPeriodChange" t-att-disabled="state.loading">
                             <t t-foreach="state.periods" t-as="p" t-key="p.id">
-                                <option t-att-value="p.id"
-                                        t-att-selected="p.id === state.periodId"
-                                        t-esc="p.name"/>
+                                <option t-att-value="p.id" t-att-selected="p.id === state.periodId" t-esc="p.name"/>
                             </t>
                         </select>
                     </div>
@@ -35,10 +31,22 @@
                                     <p class="o_vas_dash_empty_msg" t-esc="tiles.finance.empty_message"/>
                                 </t>
                                 <t t-else="">
-                                    <div class="o_vas_dash_kv"><span>Tiền mặt (111)</span><strong t-esc="formatMoney(tiles.finance.cash_111)"/></div>
-                                    <div class="o_vas_dash_kv"><span>Tiền gửi (112)</span><strong t-esc="formatMoney(tiles.finance.bank_112)"/></div>
-                                    <div class="o_vas_dash_kv"><span>Tổng tiền</span><strong t-esc="formatMoney(tiles.finance.total_cash)"/></div>
-                                    <div class="o_vas_dash_kv"><span>Hàng tồn kho</span><strong t-esc="formatMoney(tiles.finance.inventory)"/></div>
+                                    <div class="o_vas_dash_kv">
+                                        <span>Tiền mặt (111)</span>
+                                        <strong t-esc="formatMoney(tiles.finance.cash_111)"/>
+                                    </div>
+                                    <div class="o_vas_dash_kv">
+                                        <span>Tiền gửi (112)</span>
+                                        <strong t-esc="formatMoney(tiles.finance.bank_112)"/>
+                                    </div>
+                                    <div class="o_vas_dash_kv">
+                                        <span>Tổng tiền</span>
+                                        <strong t-esc="formatMoney(tiles.finance.total_cash)"/>
+                                    </div>
+                                    <div class="o_vas_dash_kv">
+                                        <span>Hàng tồn kho</span>
+                                        <strong t-esc="formatMoney(tiles.finance.inventory)"/>
+                                    </div>
                                 </t>
                             </div>
 
@@ -48,7 +56,10 @@
                                     <p class="o_vas_dash_empty_msg" t-esc="tiles.ar.empty_message"/>
                                 </t>
                                 <t t-else="">
-                                    <div class="o_vas_dash_kv"><span>Tổng</span><strong t-esc="formatMoney(tiles.ar.total)"/></div>
+                                    <div class="o_vas_dash_kv">
+                                        <span>Tổng</span>
+                                        <strong t-esc="formatMoney(tiles.ar.total)"/>
+                                    </div>
                                     <t t-if="tiles.ar.aging_available and tiles.ar.aging">
                                         <t t-foreach="tiles.ar.aging.columns" t-as="col" t-key="col.key">
                                             <div class="o_vas_dash_kv">
@@ -69,7 +80,10 @@
                                     <p class="o_vas_dash_empty_msg" t-esc="tiles.ap.empty_message"/>
                                 </t>
                                 <t t-else="">
-                                    <div class="o_vas_dash_kv"><span>Tổng</span><strong t-esc="formatMoney(tiles.ap.total)"/></div>
+                                    <div class="o_vas_dash_kv">
+                                        <span>Tổng</span>
+                                        <strong t-esc="formatMoney(tiles.ap.total)"/>
+                                    </div>
                                     <t t-if="tiles.ap.aging_available and tiles.ap.aging">
                                         <t t-foreach="tiles.ap.aging.columns" t-as="col" t-key="col.key">
                                             <div class="o_vas_dash_kv">
@@ -92,9 +106,18 @@
                                 </t>
                                 <t t-else="">
                                     <div class="o_vas_dash_metrics">
-                                        <div><span class="text-muted">Doanh thu</span><div class="fs-5" t-esc="formatMoney(tiles.pnl.revenue)"/></div>
-                                        <div><span class="text-muted">Chi phí</span><div class="fs-5" t-esc="formatMoney(tiles.pnl.expense)"/></div>
-                                        <div><span class="text-muted">Lợi nhuận</span><div class="fs-5" t-esc="formatMoney(tiles.pnl.profit)"/></div>
+                                        <div>
+                                            <span class="text-muted">Doanh thu</span>
+                                            <div class="fs-5" t-esc="formatMoney(tiles.pnl.revenue)"/>
+                                        </div>
+                                        <div>
+                                            <span class="text-muted">Chi phí</span>
+                                            <div class="fs-5" t-esc="formatMoney(tiles.pnl.expense)"/>
+                                        </div>
+                                        <div>
+                                            <span class="text-muted">Lợi nhuận</span>
+                                            <div class="fs-5" t-esc="formatMoney(tiles.pnl.profit)"/>
+                                        </div>
                                     </div>
                                     <div class="o_vas_dash_chart_wrap" t-if="state.chartReady and tiles.pnl.months and tiles.pnl.months.length">
                                         <canvas t-ref="pnlChart"/>
@@ -115,13 +138,11 @@
                                         <t t-foreach="tiles.todos.items" t-as="item" t-key="item.key">
                                             <li class="d-flex justify-content-between align-items-center py-1 border-bottom">
                                                 <span t-esc="item.label"/>
-                                                <span t-att-class="item.done ? 'text-success' : 'text-warning'"
-                                                      t-esc="item.status_label"/>
+                                                <span t-att-class="item.done ? 'text-success' : 'text-warning'" t-esc="item.status_label"/>
                                             </li>
                                         </t>
                                     </ul>
-                                    <button type="button" class="btn btn-primary btn-sm"
-                                            t-on-click="onOpenGeneral">
+                                    <button type="button" class="btn btn-primary btn-sm" t-on-click="onOpenGeneral">
                                         Mở quy trình Tổng hợp
                                     </button>
                                 </t>
@@ -135,9 +156,18 @@
                                 </t>
                                 <t t-else="">
                                     <div class="o_vas_dash_metrics">
-                                        <div><span class="text-muted">Tổng thu</span><div class="fs-5" t-esc="formatMoney(tiles.cashflow.inflow)"/></div>
-                                        <div><span class="text-muted">Tổng chi</span><div class="fs-5" t-esc="formatMoney(tiles.cashflow.outflow)"/></div>
-                                        <div><span class="text-muted">Tồn cuối kỳ</span><div class="fs-5" t-esc="formatMoney(tiles.cashflow.closing)"/></div>
+                                        <div>
+                                            <span class="text-muted">Tổng thu</span>
+                                            <div class="fs-5" t-esc="formatMoney(tiles.cashflow.inflow)"/>
+                                        </div>
+                                        <div>
+                                            <span class="text-muted">Tổng chi</span>
+                                            <div class="fs-5" t-esc="formatMoney(tiles.cashflow.outflow)"/>
+                                        </div>
+                                        <div>
+                                            <span class="text-muted">Tồn cuối kỳ</span>
+                                            <div class="fs-5" t-esc="formatMoney(tiles.cashflow.closing)"/>
+                                        </div>
                                     </div>
                                     <div class="o_vas_dash_chart_wrap" t-if="state.chartReady and tiles.cashflow.months and tiles.cashflow.months.length">
                                         <canvas t-ref="cashChart"/>
@@ -151,8 +181,7 @@
                                     <p class="o_vas_dash_empty_msg" t-esc="tiles.cost_structure.empty_message"/>
                                 </t>
                                 <t t-else="">
-                                    <div class="o_vas_dash_chart_wrap o_vas_dash_chart_pie"
-                                         t-if="state.chartReady and tiles.cost_structure.slices and tiles.cost_structure.slices.length">
+                                    <div class="o_vas_dash_chart_wrap o_vas_dash_chart_pie" t-if="state.chartReady and tiles.cost_structure.slices and tiles.cost_structure.slices.length">
                                         <canvas t-ref="costChart"/>
                                     </div>
                                     <ul class="list-unstyled mt-2 mb-0">
@@ -170,7 +199,8 @@
                             </div>
                         </div>
                         <div class="text-muted small mt-2" t-if="state.data.elapsed_seconds !== undefined">
-                            Thời gian dựng: <t t-esc="state.data.elapsed_seconds"/> giây
+                            Thời gian dựng: <t t-esc="state.data.elapsed_seconds"/>
+ giây
                         </div>
                     </t>
                 </div>

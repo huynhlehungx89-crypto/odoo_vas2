@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="connecta_vas.VasDebtAging">
+    <t t-name="odoo_vas2.VasDebtAging">
         <div class="o_action o_vas_debt_aging">
             <Layout display="{controlPanel: false}">
                 <div class="o_vas_aging_toolbar d-flex justify-content-between align-items-center px-3 py-2 border-bottom flex-wrap gap-2">
                     <h2 class="m-0 fs-4" t-esc="state.data ? state.data.kind_label : (kind === 'ar' ? 'Phải thu (131)' : 'Phải trả (331)')"/>
                     <div class="d-flex align-items-center gap-2">
                         <label class="small text-muted mb-0">Kỳ</label>
-                        <select class="form-select form-select-sm" style="min-width: 10rem"
-                                t-on-change="onPeriodChange">
+                        <select class="form-select form-select-sm" style="min-width: 10rem" t-on-change="onPeriodChange">
                             <t t-foreach="state.periods" t-as="p" t-key="p.id">
-                                <option t-att-value="p.id"
-                                        t-att-selected="p.id === state.periodId"
-                                        t-esc="p.name"/>
+                                <option t-att-value="p.id" t-att-selected="p.id === state.periodId" t-esc="p.name"/>
                             </t>
                         </select>
                     </div>
@@ -30,13 +27,13 @@
                             <strong t-esc="state.data.as_of"/>
                             · Kỳ <t t-esc="state.data.period_name"/>
                         </p>
-                        <p class="small text-muted mb-3" t-if="state.data.unknown_hint"
-                           t-esc="state.data.unknown_hint"/>
+                        <p class="small text-muted mb-3" t-if="state.data.unknown_hint" t-esc="state.data.unknown_hint"/>
                         <div t-if="!state.data.match_f01" class="alert alert-warning py-2">
                             Tổng tuổi nợ lệch số dư F01
-                            (<t t-esc="formatMoney(state.data.totals.total)"/>
+                            (                            <t t-esc="formatMoney(state.data.totals.total)"/>
                             ≠
-                            <t t-esc="formatMoney(state.data.f01_total)"/>).
+                            <t t-esc="formatMoney(state.data.f01_total)"/>
+).
                         </div>
                         <div class="table-responsive">
                             <table class="table table-sm table-hover o_vas_aging_table">
@@ -54,8 +51,7 @@
                                 <tbody>
                                     <t t-if="!state.data.rows.length">
                                         <tr>
-                                            <td t-att-colspan="state.data.columns.length + 2"
-                                                class="text-muted">
+                                            <td t-att-colspan="state.data.columns.length + 2" class="text-muted">
                                                 Không có số dư công nợ trong kỳ này.
                                             </td>
                                         </tr>

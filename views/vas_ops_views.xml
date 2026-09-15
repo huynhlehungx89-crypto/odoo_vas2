@@ -84,74 +84,27 @@
     </record>
 
     <!-- Bốn mục cấp 1 -->
-    <menuitem id="menu_vas_ops"
-              name="Nghiệp vụ"
-              parent="menu_connecta_vas_root"
-              sequence="10"/>
+    <menuitem id="menu_vas_ops" name="Nghiệp vụ" parent="menu_odoo_vas2_root" sequence="10"/>
 
-    <menuitem id="menu_vas_ops_all"
-              name="Tất cả nghiệp vụ"
-              parent="menu_vas_ops"
-              action="action_vas_ops_hub"
-              sequence="1"/>
+    <menuitem id="menu_vas_ops_all" name="Tất cả nghiệp vụ" parent="menu_vas_ops" action="action_vas_ops_hub" sequence="1"/>
 
-    <menuitem id="menu_vas_ops_cash"
-              name="Tiền mặt"
-              parent="menu_vas_ops"
-              action="action_vas_ops_workflow_cash"
-              sequence="2"/>
+    <menuitem id="menu_vas_ops_cash" name="Tiền mặt" parent="menu_vas_ops" action="action_vas_ops_workflow_cash" sequence="2"/>
 
-    <menuitem id="menu_vas_ops_bank"
-              name="Tiền gửi"
-              parent="menu_vas_ops"
-              action="action_vas_ops_workflow_bank"
-              sequence="3"/>
+    <menuitem id="menu_vas_ops_bank" name="Tiền gửi" parent="menu_vas_ops" action="action_vas_ops_workflow_bank" sequence="3"/>
 
-    <menuitem id="menu_vas_ops_purchase"
-              name="Mua hàng"
-              parent="menu_vas_ops"
-              action="action_vas_ops_workflow_purchase"
-              sequence="4"/>
+    <menuitem id="menu_vas_ops_purchase" name="Mua hàng" parent="menu_vas_ops" action="action_vas_ops_workflow_purchase" sequence="4"/>
 
-    <menuitem id="menu_vas_ops_sale"
-              name="Bán hàng"
-              parent="menu_vas_ops"
-              action="action_vas_ops_workflow_sale"
-              sequence="5"/>
+    <menuitem id="menu_vas_ops_sale" name="Bán hàng" parent="menu_vas_ops" action="action_vas_ops_workflow_sale" sequence="5"/>
 
-    <menuitem id="menu_vas_ops_stock"
-              name="Kho"
-              parent="menu_vas_ops"
-              action="action_vas_ops_workflow_stock"
-              sequence="6"/>
+    <menuitem id="menu_vas_ops_stock" name="Kho" parent="menu_vas_ops" action="action_vas_ops_workflow_stock" sequence="6"/>
 
-    <menuitem id="menu_vas_ops_general"
-              name="Tổng hợp"
-              parent="menu_vas_ops"
-              action="action_vas_ops_workflow_general"
-              sequence="7"/>
+    <menuitem id="menu_vas_ops_general" name="Tổng hợp" parent="menu_vas_ops" action="action_vas_ops_workflow_general" sequence="7"/>
 
-    <menuitem id="menu_vas_ops_costing"
-              name="Sản xuất &amp; Giá thành"
-              parent="menu_vas_ops"
-              action="action_vas_ops_workflow_costing"
-              sequence="8"/>
+    <menuitem id="menu_vas_ops_costing" name="Sản xuất &amp; Giá thành" parent="menu_vas_ops" action="action_vas_ops_workflow_costing" sequence="8"/>
 
-    <menuitem id="menu_vas_ops_tax"
-              name="Thuế"
-              parent="menu_vas_ops"
-              action="action_vas_ops_workflow_tax"
-              sequence="9"/>
+    <menuitem id="menu_vas_ops_tax" name="Thuế" parent="menu_vas_ops" action="action_vas_ops_workflow_tax" sequence="9"/>
 
-    <menuitem id="menu_vas_ops_vay"
-              name="Vay"
-              parent="menu_vas_ops"
-              action="action_vas_ops_workflow_vay"
-              sequence="10"/>
+    <menuitem id="menu_vas_ops_vay" name="Vay" parent="menu_vas_ops" action="action_vas_ops_workflow_vay" sequence="10"/>
 
-    <menuitem id="menu_vas_ops_von"
-              name="Vốn"
-              parent="menu_vas_ops"
-              action="action_vas_ops_workflow_von"
-              sequence="11"/>
+    <menuitem id="menu_vas_ops_von" name="Vốn" parent="menu_vas_ops" action="action_vas_ops_workflow_von" sequence="11"/>
 </odoo>

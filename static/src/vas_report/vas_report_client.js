@@ -33,7 +33,7 @@ function rpcErrorKind(error) {
  * Pha 2: xổ/thu theo parent_id, lọc account, look native.
  */
 export class VasReportClient extends Component {
-    static template = "connecta_vas.VasReportClient";
+    static template = "odoo_vas2.VasReportClient";
     static components = { Layout };
     static props = { ...standardActionServiceProps };
 

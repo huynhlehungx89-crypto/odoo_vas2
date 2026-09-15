@@ -9,7 +9,7 @@ import { _t } from "@web/core/l10n/translation";
 import { formatMonetary } from "@web/views/fields/formatters";
 
 export class VasDebtAging extends Component {
-    static template = "connecta_vas.VasDebtAging";
+    static template = "odoo_vas2.VasDebtAging";
     static components = { Layout };
     static props = { ...standardActionServiceProps };
 

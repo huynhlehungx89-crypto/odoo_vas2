@@ -65,8 +65,7 @@
                 <field name="partner_id"/>
                 <field name="deduction_base_untaxed" string="Giá trị"/>
                 <field name="debit" string="Tiền thuế"/>
-                <field name="use_purpose"
-                         column_invisible="not context.get('vas_show_use_purpose')"/>
+                <field name="use_purpose" column_invisible="not context.get('vas_show_use_purpose')"/>
                 <field name="deduction_check"/>
                 <field name="deduction_rule_id" optional="show"/>
                 <field name="deductible_amount"/>
@@ -82,28 +81,22 @@
             <search>
                 <field name="partner_id"/>
                 <field name="move_id"/>
-                <filter name="filter_pass" string="ĐẠT"
-                        domain="[('deduction_check', '=', 'pass')]"/>
-                <filter name="filter_fail" string="KHÔNG ĐẠT"
-                        domain="[('deduction_check', '=', 'fail')]"/>
-                <filter name="filter_wait" string="CHỜ ĐẾN HẠN"
-                        domain="[('deduction_check', '=', 'wait_due')]"/>
-                <filter name="filter_unset" string="Chưa xác định mục đích"
-                        domain="[('use_purpose', '=', 'unset')]"/>
+                <filter name="filter_pass" string="ĐẠT" domain="[('deduction_check', '=', 'pass')]"/>
+                <filter name="filter_fail" string="KHÔNG ĐẠT" domain="[('deduction_check', '=', 'fail')]"/>
+                <filter name="filter_wait" string="CHỜ ĐẾN HẠN" domain="[('deduction_check', '=', 'wait_due')]"/>
+                <filter name="filter_unset" string="Chưa xác định mục đích" domain="[('use_purpose', '=', 'unset')]"/>
                 <group>
-                    <filter name="group_check" string="Điều kiện"
-                            context="{'group_by': 'deduction_check'}"/>
-                    <filter name="group_purpose" string="Mục đích"
-                            context="{'group_by': 'use_purpose'}"/>
+                    <filter name="group_check" string="Điều kiện" context="{'group_by': 'deduction_check'}"/>
+                    <filter name="group_purpose" string="Mục đích" context="{'group_by': 'use_purpose'}"/>
                 </group>
             </search>
         </field>
     </record>
     <record id="action_vas_input_tax_lines" model="ir.actions.server">
-        <field name="name">Phân loại thuế đầu vào</field>
-        <field name="model_id" ref="model_vas_move_line"/>
-        <field name="state">code</field>
-        <field name="code">
+    <field name="name">Phân loại thuế đầu vào</field>
+    <field name="model_id" ref="model_vas_move_line"/>
+    <field name="state">code</field>
+    <field name="code">
 company = env.company
 env['vas.move.line'].recompute_input_vat_deduction(company=company)
 action = {
@@ -111,8 +104,8 @@ action = {
     'name': 'Phân loại thuế đầu vào',
     'res_model': 'vas.move.line',
     'view_mode': 'list',
-    'views': [(env.ref('connecta_vas.view_vas_input_tax_line_list').id, 'list')],
-    'search_view_id': (env.ref('connecta_vas.view_vas_input_tax_line_search').id,),
+    'views': [(env.ref('odoo_vas2.view_vas_input_tax_line_list').id, 'list')],
+    'search_view_id': (env.ref('odoo_vas2.view_vas_input_tax_line_search').id,),
     'domain': [
         ('move_id.company_id', '=', company.id),
         ('move_id.state', '=', 'posted'),
@@ -125,8 +118,8 @@ action = {
         'create': False,
     },
 }
-        </field>
-    </record>
+    </field>
+</record>
 
     <record id="view_vas_input_tax_purpose_wizard_form" model="ir.ui.view">
         <field name="name">vas.input.tax.purpose.wizard.form</field>
@@ -153,9 +146,5 @@ action = {
         <field name="binding_view_types">list</field>
     </record>
 
-    <menuitem id="menu_vas_tax_deduction_rule"
-              name="Điều kiện khấu trừ"
-              parent="menu_vas_catalog_root"
-              action="action_vas_tax_deduction_rule"
-              sequence="83"/>
+    <menuitem id="menu_vas_tax_deduction_rule" name="Điều kiện khấu trừ" parent="menu_vas_catalog_root" action="action_vas_tax_deduction_rule" sequence="83"/>
 </odoo>

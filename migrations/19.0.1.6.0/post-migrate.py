@@ -6,6 +6,7 @@
    `bank`/`cash` cố định phải thành `dest_bank_cash`/`bank_cash`. File dữ liệu
    W3 mang noupdate="1" nên bản ghi cũ không tự cập nhật — sửa tại đây.
 """
+
 import logging
 
 from odoo import SUPERUSER_ID, api
@@ -13,8 +14,8 @@ from odoo import SUPERUSER_ID, api
 _logger = logging.getLogger(__name__)
 
 R20_LINE_SELECTORS = {
-    'vas_rule_tt133_r20_l1': 'dest_bank_cash',
-    'vas_rule_tt133_r20_l2': 'bank_cash',
+    "vas_rule_tt133_r20_l1": "dest_bank_cash",
+    "vas_rule_tt133_r20_l2": "bank_cash",
 }
 
 
@@ -35,17 +36,17 @@ def _migrate_operation_type(cr):
     migrated = cr.rowcount
     cr.execute("ALTER TABLE account_payment DROP COLUMN vas_is_employee_advance")
     _logger.info(
-        'connecta_vas: chuyen %s account.payment sang vas_operation_type=employee_advance',
+        "odoo_vas2: chuyen %s account.payment sang vas_operation_type=employee_advance",
         migrated,
     )
 
 
 def _migrate_r20_rule_lines(env):
     for xmlid, selector in R20_LINE_SELECTORS.items():
-        line = env.ref(f'connecta_vas.{xmlid}', raise_if_not_found=False)
+        line = env.ref(f"odoo_vas2.{xmlid}", raise_if_not_found=False)
         if line and line.account_selector != selector:
             line.account_selector = selector
-            _logger.info('connecta_vas: R20 %s -> %s', xmlid, selector)
+            _logger.info("odoo_vas2: R20 %s -> %s", xmlid, selector)
 
 
 def migrate(cr, version):

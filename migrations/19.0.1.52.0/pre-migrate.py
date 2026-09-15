@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 """Đổi mã/xmlid TRƯỚC khi nạp XML — tránh tạo bản ghi trùng V.3đ cạnh V.3e cũ.
 
-Không import connecta_vas.models (pre-migrate chạy trước khi nạp model mới).
+Không import odoo_vas2.models (pre-migrate chạy trước khi nạp model mới).
 """
 
 CODE_RENAMES = {
-    'V.3e': 'V.3đ',
-    'V.3e.total': 'V.3đ.total',
-    'V.14e': 'V.14đ',
+    "V.3e": "V.3đ",
+    "V.3e.total": "V.3đ.total",
+    "V.14e": "V.14đ",
 }
 XMLID_RENAMES = {
-    'vas_report_line_b09_V_3e': 'vas_report_line_b09_V_3đ',
-    'vas_report_line_b09_V_3e_total': 'vas_report_line_b09_V_3đ_total',
-    'vas_report_line_b09_V_14e': 'vas_report_line_b09_V_14đ',
+    "vas_report_line_b09_V_3e": "vas_report_line_b09_V_3đ",
+    "vas_report_line_b09_V_3e_total": "vas_report_line_b09_V_3đ_total",
+    "vas_report_line_b09_V_14e": "vas_report_line_b09_V_14đ",
 }
 
 
@@ -47,7 +47,7 @@ def migrate(cr, version):
                 [new_ids[0], new, old],
             )
             cr.execute(
-                'DELETE FROM vas_report_line WHERE id = ANY(%s)',
+                "DELETE FROM vas_report_line WHERE id = ANY(%s)",
                 [old_ids],
             )
         elif old_ids:
@@ -82,14 +82,14 @@ def migrate(cr, version):
                    OR coalesce(basis_note, '') LIKE %s
                )
             """,
-            [old, new, old, new, '%' + old + '%', '%' + old + '%'],
+            [old, new, old, new, "%" + old + "%", "%" + old + "%"],
         )
 
     for old_xml, new_xml in XMLID_RENAMES.items():
         cr.execute(
             """
             SELECT id FROM ir_model_data
-             WHERE module = 'connecta_vas' AND name = %s
+             WHERE module = 'odoo_vas2' AND name = %s
             """,
             [new_xml],
         )
@@ -97,7 +97,7 @@ def migrate(cr, version):
             cr.execute(
                 """
                 DELETE FROM ir_model_data
-                 WHERE module = 'connecta_vas'
+                 WHERE module = 'odoo_vas2'
                    AND model = 'vas.report.line'
                    AND name = %s
                 """,
@@ -108,7 +108,7 @@ def migrate(cr, version):
                 """
                 UPDATE ir_model_data
                    SET name = %s
-                 WHERE module = 'connecta_vas'
+                 WHERE module = 'odoo_vas2'
                    AND model = 'vas.report.line'
                    AND name = %s
                 """,

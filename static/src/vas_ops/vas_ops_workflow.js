@@ -8,7 +8,7 @@ import { Layout } from "@web/search/layout";
 import { _t } from "@web/core/l10n/translation";
 
 export class VasOpsWorkflow extends Component {
-    static template = "connecta_vas.VasOpsWorkflow";
+    static template = "odoo_vas2.VasOpsWorkflow";
     static components = { Layout };
     static props = { ...standardActionServiceProps };
 
@@ -91,7 +91,7 @@ export class VasOpsWorkflow extends Component {
     }
 
     async onSeeAllReports() {
-        await this.openXmlid("connecta_vas.action_vas_trial_balance_client");
+        await this.openXmlid("odoo_vas2.action_vas_trial_balance_client");
     }
 }
 

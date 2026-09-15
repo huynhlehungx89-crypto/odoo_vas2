@@ -4,7 +4,8 @@
 View này phải biến mất TRƯỚC khi nạp lại dữ liệu module, nếu không Odoo
 validate arch của form account.payment và báo field không tồn tại.
 """
-OBSOLETE_VIEWS = ('view_account_payment_form_vas_advance',)
+
+OBSOLETE_VIEWS = ("view_account_payment_form_vas_advance",)
 
 
 def migrate(cr, version):
@@ -15,7 +16,7 @@ def migrate(cr, version):
         DELETE FROM ir_ui_view
          WHERE id IN (
             SELECT res_id FROM ir_model_data
-             WHERE module = 'connecta_vas'
+             WHERE module = 'odoo_vas2'
                AND model = 'ir.ui.view'
                AND name IN %s
          )
@@ -25,7 +26,7 @@ def migrate(cr, version):
     cr.execute(
         """
         DELETE FROM ir_model_data
-         WHERE module = 'connecta_vas'
+         WHERE module = 'odoo_vas2'
            AND model = 'ir.ui.view'
            AND name IN %s
         """,

@@ -10,7 +10,7 @@ import { _t } from "@web/core/l10n/translation";
 import { formatMonetary } from "@web/views/fields/formatters";
 
 export class VasDashboard extends Component {
-    static template = "connecta_vas.VasDashboard";
+    static template = "odoo_vas2.VasDashboard";
     static components = { Layout };
     static props = { ...standardActionServiceProps };
 

@@ -2,7 +2,7 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
-from odoo.addons.connecta_vas.models.vas_cash_flow_activity import (
+from odoo.addons.odoo_vas2.models.vas_cash_flow_activity import (
     VAS_OP_DEFAULT_CASH_FLOW,
 )
 
@@ -42,7 +42,7 @@ class AccountPayment(models.Model):
         string='ID phiếu lương Odoo',
         index=True,
         copy=False,
-        help='Soft-link hr.payslip.id (không M2o — connecta_vas không depends hr_payroll).',
+        help='Soft-link hr.payslip.id (không M2o — odoo_vas2 không depends hr_payroll).',
     )
     vas_payroll_remit_account_code = fields.Char(
         string='Mã TK nộp BH (legacy)',

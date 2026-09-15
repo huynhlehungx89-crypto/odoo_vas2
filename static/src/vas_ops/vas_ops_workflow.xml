@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="connecta_vas.VasOpsWorkflow">
+    <t t-name="odoo_vas2.VasOpsWorkflow">
         <div class="o_action o_vas_ops_workflow">
             <Layout display="{controlPanel: false}">
                 <div class="o_vas_ops_toolbar d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
@@ -27,8 +27,7 @@
                                 <t t-if="state.payload.layout === 'tiles'">
                                     <div class="o_vas_ops_process_tiles">
                                         <t t-foreach="state.payload.process" t-as="btn" t-key="btn.id">
-                                            <button type="button" class="btn btn-outline-primary o_vas_ops_step"
-                                                    t-on-click="() => this.onProcessClick(btn)">
+                                            <button type="button" class="btn btn-outline-primary o_vas_ops_step" t-on-click="() => this.onProcessClick(btn)">
                                                 <i t-if="btn.icon" t-attf-class="fa {{ btn.icon }} me-1"/>
                                                 <t t-esc="btn.label"/>
                                             </button>
@@ -45,9 +44,7 @@
                                                     <div class="o_vas_ops_chain_arrow" aria-hidden="true">→</div>
                                                 </t>
                                                 <div class="o_vas_ops_chain_node">
-                                                    <button type="button"
-                                                            t-att-class="btn.is_choice_parent ? 'btn btn-outline-secondary o_vas_ops_step' : 'btn btn-outline-primary o_vas_ops_step'"
-                                                            t-on-click="() => this.onProcessClick(btn)">
+                                                    <button type="button" t-att-class="btn.is_choice_parent ? 'btn btn-outline-secondary o_vas_ops_step' : 'btn btn-outline-primary o_vas_ops_step'" t-on-click="() => this.onProcessClick(btn)">
                                                         <span class="badge text-bg-light me-1" t-esc="btn_index + 1"/>
                                                         <i t-if="btn.icon" t-attf-class="fa {{ btn.icon }} me-1"/>
                                                         <t t-esc="btn.label"/>
@@ -58,9 +55,7 @@
                                                     <t t-if="btn.is_choice_parent and state.expandedId === btn.id">
                                                         <div class="o_vas_ops_choice_panel mt-2">
                                                             <t t-foreach="btn.children" t-as="child" t-key="child.id">
-                                                                <button type="button"
-                                                                        class="btn btn-sm btn-light d-block w-100 text-start mb-1"
-                                                                        t-on-click="() => this.onChildClick(child)">
+                                                                <button type="button" class="btn btn-sm btn-light d-block w-100 text-start mb-1" t-on-click="() => this.onChildClick(child)">
                                                                     <t t-esc="child.label"/>
                                                                 </button>
                                                             </t>
@@ -73,8 +68,7 @@
                                     <t t-if="state.payload.detached and state.payload.detached.length">
                                         <div class="o_vas_ops_detached mt-3">
                                             <t t-foreach="state.payload.detached" t-as="btn" t-key="btn.id">
-                                                <button type="button" class="btn btn-outline-primary o_vas_ops_step"
-                                                        t-on-click="() => this.onProcessClick(btn)">
+                                                <button type="button" class="btn btn-outline-primary o_vas_ops_step" t-on-click="() => this.onProcessClick(btn)">
                                                     <i t-if="btn.icon" t-attf-class="fa {{ btn.icon }} me-1"/>
                                                     <t t-esc="btn.label"/>
                                                 </button>
@@ -87,8 +81,7 @@
                                     <div class="text-muted small mb-2">Danh mục liên quan</div>
                                     <div class="d-flex flex-wrap gap-2">
                                         <t t-foreach="state.payload.catalog" t-as="btn" t-key="btn.id">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary"
-                                                    t-on-click="() => this.openXmlid(btn.action_xmlid)">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" t-on-click="() => this.openXmlid(btn.action_xmlid)">
                                                 <i t-if="btn.icon" t-attf-class="fa {{ btn.icon }} me-1"/>
                                                 <t t-esc="btn.label"/>
                                             </button>
@@ -100,15 +93,11 @@
                             <div class="o_vas_ops_reports border-start ps-3" style="min-width: 200px;">
                                 <div class="text-muted small mb-2">Báo cáo</div>
                                 <t t-foreach="state.payload.report" t-as="btn" t-key="btn.id">
-                                    <button type="button"
-                                            class="btn btn-link btn-sm d-block text-start px-0"
-                                            t-on-click="() => this.openXmlid(btn.action_xmlid)">
+                                    <button type="button" class="btn btn-link btn-sm d-block text-start px-0" t-on-click="() => this.openXmlid(btn.action_xmlid)">
                                         <t t-esc="btn.label"/>
                                     </button>
                                 </t>
-                                <button type="button"
-                                        class="btn btn-link btn-sm d-block text-start px-0 mt-2"
-                                        t-on-click="onSeeAllReports">
+                                <button type="button" class="btn btn-link btn-sm d-block text-start px-0 mt-2" t-on-click="onSeeAllReports">
                                     Xem tất cả báo cáo
                                 </button>
                             </div>

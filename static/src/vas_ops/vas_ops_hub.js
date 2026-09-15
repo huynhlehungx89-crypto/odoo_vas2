@@ -8,7 +8,7 @@ import { Layout } from "@web/search/layout";
 import { _t } from "@web/core/l10n/translation";
 
 export class VasOpsHub extends Component {
-    static template = "connecta_vas.VasOpsHub";
+    static template = "odoo_vas2.VasOpsHub";
     static components = { Layout };
     static props = { ...standardActionServiceProps };
 

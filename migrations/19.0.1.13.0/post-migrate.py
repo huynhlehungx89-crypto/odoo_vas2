@@ -4,9 +4,10 @@
 Nguyên nhân lệch: XML menuitem parent=account.menu_finance; mỗi lần -u trước
 khi bọc noupdate đã đè parent về Invoicing rỗng → menu biến mất khỏi Accounting.
 """
+
 from odoo import SUPERUSER_ID, api
 
-from odoo.addons.connecta_vas.hooks import _reparent_vn_operations_menu
+from odoo.addons.odoo_vas2.hooks import _reparent_vn_operations_menu
 
 
 def migrate(cr, version):

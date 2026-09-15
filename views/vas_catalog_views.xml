@@ -22,7 +22,9 @@
                     <widget name="web_ribbon" title="Đã lưu trữ" bg_color="text-bg-danger" invisible="active"/>
                     <div class="oe_title">
                         <label for="name"/>
-                        <h1><field name="name" placeholder="vd. Thông tư 133/2016"/></h1>
+                        <h1>
+                            <field name="name" placeholder="vd. Thông tư 133/2016"/>
+                        </h1>
                     </div>
                     <group>
                         <group>
@@ -67,10 +69,7 @@
             <form string="Tài khoản">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_view_vas_move_lines"
-                                type="object"
-                                class="oe_stat_button"
-                                icon="fa-book">
+                        <button name="action_view_vas_move_lines" type="object" class="oe_stat_button" icon="fa-book">
                             <div class="o_stat_info">
                                 <span class="o_stat_value">
                                     <field name="vas_balance" widget="monetary"/>
@@ -84,7 +83,9 @@
                     <widget name="web_ribbon" title="Đã lưu trữ" bg_color="text-bg-danger" invisible="active"/>
                     <div class="oe_title">
                         <label for="name"/>
-                        <h1><field name="name" placeholder="vd. Hàng hóa"/></h1>
+                        <h1>
+                            <field name="name" placeholder="vd. Hàng hóa"/>
+                        </h1>
                     </div>
                     <group>
                         <group>
@@ -135,7 +136,9 @@
                 <sheet>
                     <div class="oe_title">
                         <label for="name"/>
-                        <h1><field name="name" placeholder="vd. Sổ bán hàng"/></h1>
+                        <h1>
+                            <field name="name" placeholder="vd. Sổ bán hàng"/>
+                        </h1>
                     </div>
                     <group>
                         <group>
@@ -180,25 +183,16 @@
         <field name="arch" type="xml">
             <form string="Năm tài chính">
                 <header>
-                    <button name="action_generate_periods"
-                            string="Sinh kỳ kế toán"
-                            type="object"
-                            class="btn-primary"
-                            invisible="not date_from or not date_to"/>
-                    <button name="action_rebuild_monthly_periods"
-                            string="Tạo lại kỳ tháng"
-                            type="object"
-                            invisible="not date_from or not date_to"
-                            confirm="Xóa các kỳ hiện có của năm này và tạo lại 12 kỳ tháng. Bút toán đã ghi sổ được giữ và gán lại kỳ theo ngày."/>
-                    <button name="action_assign_orphan_moves"
-                            string="Gán bút toán mồ côi"
-                            type="object"
-                            invisible="not period_ids"/>
+                    <button name="action_generate_periods" string="Sinh kỳ kế toán" type="object" class="btn-primary" invisible="not date_from or not date_to"/>
+                    <button name="action_rebuild_monthly_periods" string="Tạo lại kỳ tháng" type="object" invisible="not date_from or not date_to" confirm="Xóa các kỳ hiện có của năm này và tạo lại 12 kỳ tháng. Bút toán đã ghi sổ được giữ và gán lại kỳ theo ngày."/>
+                    <button name="action_assign_orphan_moves" string="Gán bút toán mồ côi" type="object" invisible="not period_ids"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
                         <label for="name"/>
-                        <h1><field name="name" placeholder="vd. 2026"/></h1>
+                        <h1>
+                            <field name="name" placeholder="vd. 2026"/>
+                        </h1>
                     </div>
                     <group>
                         <group>
@@ -245,7 +239,9 @@
                 <sheet>
                     <div class="oe_title">
                         <label for="name"/>
-                        <h1><field name="name" placeholder="vd. 01/2026"/></h1>
+                        <h1>
+                            <field name="name" placeholder="vd. 01/2026"/>
+                        </h1>
                     </div>
                     <group>
                         <group>
@@ -270,47 +266,19 @@
     </record>
 
     <!-- ========== Menus ========== -->
-    <menuitem id="menu_connecta_vas_root"
-              name="Connecta VAS"
-              sequence="45"/>
+    <menuitem id="menu_odoo_vas2_root" name="Connecta VAS" sequence="45"/>
 
-    <menuitem id="menu_vas_config"
-              name="Cấu hình"
-              parent="menu_connecta_vas_root"
-              sequence="90"/>
+    <menuitem id="menu_vas_config" name="Cấu hình" parent="menu_odoo_vas2_root" sequence="90"/>
 
-    <menuitem id="menu_vas_catalog_root"
-              name="Danh mục &amp; Số dư đầu kỳ"
-              parent="menu_connecta_vas_root"
-              sequence="30"/>
+    <menuitem id="menu_vas_catalog_root" name="Danh mục &amp; Số dư đầu kỳ" parent="menu_odoo_vas2_root" sequence="30"/>
 
-    <menuitem id="menu_vas_regime"
-              name="Chế độ kế toán"
-              parent="menu_vas_config"
-              action="action_vas_regime"
-              sequence="10"/>
+    <menuitem id="menu_vas_regime" name="Chế độ kế toán" parent="menu_vas_config" action="action_vas_regime" sequence="10"/>
 
-    <menuitem id="menu_vas_account"
-              name="Danh mục tài khoản"
-              parent="menu_vas_catalog_root"
-              action="action_vas_account"
-              sequence="20"/>
+    <menuitem id="menu_vas_account" name="Danh mục tài khoản" parent="menu_vas_catalog_root" action="action_vas_account" sequence="20"/>
 
-    <menuitem id="menu_vas_journal"
-              name="Sổ nhật ký"
-              parent="menu_vas_catalog_root"
-              action="action_vas_journal"
-              sequence="30"/>
+    <menuitem id="menu_vas_journal" name="Sổ nhật ký" parent="menu_vas_catalog_root" action="action_vas_journal" sequence="30"/>
 
-    <menuitem id="menu_vas_fiscalyear"
-              name="Năm tài chính"
-              parent="menu_vas_config"
-              action="action_vas_fiscalyear"
-              sequence="40"/>
+    <menuitem id="menu_vas_fiscalyear" name="Năm tài chính" parent="menu_vas_config" action="action_vas_fiscalyear" sequence="40"/>
 
-    <menuitem id="menu_vas_period"
-              name="Kỳ kế toán"
-              parent="menu_vas_config"
-              action="action_vas_period"
-              sequence="50"/>
+    <menuitem id="menu_vas_period" name="Kỳ kế toán" parent="menu_vas_config" action="action_vas_period" sequence="50"/>
 </odoo>

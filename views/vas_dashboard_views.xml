@@ -7,9 +7,5 @@
     </record>
 
     <!-- Mục cấp một thứ nhất — mở thẳng dashboard, không xổ con -->
-    <menuitem id="menu_vas_dashboard"
-              name="Tổng quan"
-              parent="menu_connecta_vas_root"
-              action="action_vas_dashboard"
-              sequence="1"/>
+    <menuitem id="menu_vas_dashboard" name="Tổng quan" parent="menu_odoo_vas2_root" action="action_vas_dashboard" sequence="1"/>
 </odoo>

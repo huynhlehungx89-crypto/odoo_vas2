@@ -3,7 +3,7 @@
 
 
 def migrate(cr, version):
-    from odoo.addons.connecta_vas.models.vas_b09_meta import LINE_META, TABLE_STATUS
+    from odoo.addons.odoo_vas2.models.vas_b09_meta import LINE_META, TABLE_STATUS
 
     for code, info in LINE_META.items():
         cr.execute(
@@ -16,10 +16,10 @@ def migrate(cr, version):
              WHERE form_code = 'B09-DNN' AND code = %s
             """,
             [
-                info['fill_kind'],
-                info.get('gap_reason') or None,
-                info['basis_kind'],
-                info.get('basis_note') or None,
+                info["fill_kind"],
+                info.get("gap_reason") or None,
+                info["basis_kind"],
+                info.get("basis_note") or None,
                 code,
             ],
         )

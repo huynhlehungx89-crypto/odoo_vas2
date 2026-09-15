@@ -4,8 +4,8 @@
         <field name="name">Bảng cân đối số phát sinh</field>
         <field name="model">vas.trial.balance.wizard</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">connecta_vas.report_vas_trial_balance</field>
-        <field name="report_file">connecta_vas.report_vas_trial_balance</field>
+        <field name="report_name">odoo_vas2.report_vas_trial_balance</field>
+        <field name="report_file">odoo_vas2.report_vas_trial_balance</field>
         <field name="print_report_name">'BCDPS_F01_%s_%s' % (object.period_from_id.name or '', object.period_to_id.name or '')</field>
     </record>
 
@@ -14,7 +14,9 @@
             <t t-foreach="docs" t-as="wiz">
                 <div class="page" style="font-size: 10px;">
                     <div class="row mb-2">
-                        <div class="col-7"><strong t-esc="wiz.company_id.name"/></div>
+                        <div class="col-7">
+                            <strong t-esc="wiz.company_id.name"/>
+                        </div>
                         <div class="col-5 text-end">
                             Mẫu số: <strong t-esc="wiz.form_code"/>
                         </div>
@@ -27,8 +29,7 @@
                         <span t-esc="wiz.period_to_id.name"/>
                     </p>
                     <t t-if="wiz.warning_text">
-                        <div class="alert alert-warning" style="white-space: pre-wrap;"
-                             t-esc="wiz.warning_text"/>
+                        <div class="alert alert-warning" style="white-space: pre-wrap;" t-esc="wiz.warning_text"/>
                     </t>
                     <table class="table table-sm table-bordered o_main_table">
                         <thead>
@@ -49,10 +50,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr t-foreach="wiz.get_report_lines()" t-as="line"
-                                t-att-style="'font-weight:bold' if line.row_type == 'total' else ''">
-                                <td><span t-esc="line.account_code or ''"/></td>
-                                <td><span t-esc="line.account_name or ''"/></td>
+                            <tr t-foreach="wiz.get_report_lines()" t-as="line" t-att-style="'font-weight:bold' if line.row_type == 'total' else ''">
+                                <td>
+                                    <span t-esc="line.account_code or ''"/>
+                                </td>
+                                <td>
+                                    <span t-esc="line.account_name or ''"/>
+                                </td>
                                 <td class="text-end">
                                     <span t-esc="'{:,.0f}'.format(line.opening_debit)"/>
                                 </td>

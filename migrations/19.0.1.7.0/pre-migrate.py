@@ -7,13 +7,14 @@ Bảng ánh xạ chuyển sang model `vas.account.map`, nên
 Odoo kiểm tra view trước khi tới post-migrate → phải xóa ở đây, nếu không nâng cấp
 sẽ chết với "Field ... does not exist".
 """
+
 import logging
 
 _logger = logging.getLogger(__name__)
 
 OBSOLETE_VIEWS = (
-    'view_product_category_form_vas',
-    'view_product_template_form_vas',
+    "view_product_category_form_vas",
+    "view_product_template_form_vas",
 )
 
 
@@ -23,7 +24,7 @@ def migrate(cr, version):
     cr.execute(
         """
         SELECT res_id FROM ir_model_data
-         WHERE module = 'connecta_vas'
+         WHERE module = 'odoo_vas2'
            AND model = 'ir.ui.view'
            AND name IN %s
         """,
@@ -36,10 +37,10 @@ def migrate(cr, version):
     cr.execute(
         """
         DELETE FROM ir_model_data
-         WHERE module = 'connecta_vas'
+         WHERE module = 'odoo_vas2'
            AND model = 'ir.ui.view'
            AND name IN %s
         """,
         (OBSOLETE_VIEWS,),
     )
-    _logger.info('connecta_vas: go %s view ke thua cua 3 truong TK cu', len(view_ids))
+    _logger.info("odoo_vas2: go %s view ke thua cua 3 truong TK cu", len(view_ids))

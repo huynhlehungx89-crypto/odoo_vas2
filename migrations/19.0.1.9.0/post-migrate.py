@@ -9,37 +9,40 @@
 
 Cột `expense_account_id` do ORM tự thêm — không cần DDL ở đây.
 """
+
 import logging
 
 from odoo import SUPERUSER_ID, api
 
 _logger = logging.getLogger(__name__)
 
-OLD_R08_ACCOUNT_CODE = '6421'
+OLD_R08_ACCOUNT_CODE = "6421"
 
 
 def _migrate_r08_rule_line(env):
-    line = env.ref('connecta_vas.vas_rule_tt133_r08_l1', raise_if_not_found=False)
+    line = env.ref("odoo_vas2.vas_rule_tt133_r08_l1", raise_if_not_found=False)
     if not line:
-        _logger.warning('connecta_vas: khong tim thay R08 line 1, bo qua')
+        _logger.warning("odoo_vas2: khong tim thay R08 line 1, bo qua")
         return
     _logger.info(
-        'connecta_vas: R08 line TRUOC selector=%s account=%s',
-        line.account_selector, line.account_id.code or '(trong)',
+        "odoo_vas2: R08 line TRUOC selector=%s account=%s",
+        line.account_selector,
+        line.account_id.code or "(trong)",
     )
-    if line.account_selector != 'product_expense':
-        line.write({'account_selector': 'product_expense', 'account_id': False})
+    if line.account_selector != "product_expense":
+        line.write({"account_selector": "product_expense", "account_id": False})
     _logger.info(
-        'connecta_vas: R08 line SAU  selector=%s account=%s',
-        line.account_selector, line.account_id.code or '(trong)',
+        "odoo_vas2: R08 line SAU  selector=%s account=%s",
+        line.account_selector,
+        line.account_id.code or "(trong)",
     )
 
-    rule = env.ref('connecta_vas.vas_rule_tt133_r08', raise_if_not_found=False)
+    rule = env.ref("odoo_vas2.vas_rule_tt133_r08", raise_if_not_found=False)
     # W4 mang noupdate="1" nên tên cũ không tự đổi; đổi ở đây bất kể mã hóa
     # thế nào (DB seed / DB thật đều về cùng một tên chuẩn).
-    if rule and rule.name != 'Chi phí mua ngoài':
-        _logger.info('connecta_vas: R08 doi ten %r -> Chi phí mua ngoài', rule.name)
-        rule.name = 'Chi phí mua ngoài'
+    if rule and rule.name != "Chi phí mua ngoài":
+        _logger.info("odoo_vas2: R08 doi ten %r -> Chi phí mua ngoài", rule.name)
+        rule.name = "Chi phí mua ngoài"
 
 
 def _migrate_r08_move_kind(env):
@@ -49,8 +52,8 @@ def _migrate_r08_move_kind(env):
     không phụ thuộc chuỗi cứng: lấy tên rule từ DB, kể cả tên đã đổi ở bước trên.
     """
     cr = env.cr
-    names = ['Mua dịch vụ', 'Chi phí mua ngoài']
-    rule = env.ref('connecta_vas.vas_rule_tt133_r08', raise_if_not_found=False)
+    names = ["Mua dịch vụ", "Chi phí mua ngoài"]
+    rule = env.ref("odoo_vas2.vas_rule_tt133_r08", raise_if_not_found=False)
     if rule and rule.name not in names:
         names.append(rule.name)
     cr.execute(
@@ -61,7 +64,7 @@ def _migrate_r08_move_kind(env):
         """,
         (tuple(names),),
     )
-    _logger.info('connecta_vas: but toan R08 TRUOC = %s', cr.fetchall())
+    _logger.info("odoo_vas2: but toan R08 TRUOC = %s", cr.fetchall())
     cr.execute(
         """
         UPDATE vas_move SET move_kind = 'expense'
@@ -81,7 +84,9 @@ def _migrate_r08_move_kind(env):
         (tuple(names),),
     )
     _logger.info(
-        'connecta_vas: but toan R08 SAU = %s (doi %s dong)', cr.fetchall(), changed,
+        "odoo_vas2: but toan R08 SAU = %s (doi %s dong)",
+        cr.fetchall(),
+        changed,
     )
 
 

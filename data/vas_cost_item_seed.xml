@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
-    <!-- Bốn khoản mục hệ thống — bảo vệ qua ir.model.data (module=connecta_vas). -->
+    <!-- Bốn khoản mục hệ thống — bảo vệ qua ir.model.data (module=odoo_vas2). -->
     <record id="vas_cost_item_nvltt" model="vas.cost.item">
         <field name="code">NVLTT</field>
         <field name="name">Nguyên vật liệu trực tiếp</field>

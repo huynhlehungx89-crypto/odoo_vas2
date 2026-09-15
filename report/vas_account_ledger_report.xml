@@ -4,8 +4,8 @@
         <field name="name">Sổ chi tiết tài khoản</field>
         <field name="model">vas.account.ledger.wizard</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">connecta_vas.report_vas_account_ledger</field>
-        <field name="report_file">connecta_vas.report_vas_account_ledger</field>
+        <field name="report_name">odoo_vas2.report_vas_account_ledger</field>
+        <field name="report_file">odoo_vas2.report_vas_account_ledger</field>
         <field name="print_report_name">'So_chi_tiet_%s' % (object.account_id.code or 'TK')</field>
     </record>
 
@@ -32,7 +32,8 @@
                         </h4>
                         <p class="text-center mb-1">
                             Tài khoản:
-                            <strong t-esc="wiz.account_id.code"/> —
+                            <strong t-esc="wiz.account_id.code"/>
+ —
                             <span t-esc="wiz.account_id.name"/>
                         </p>
                         <t t-if="wiz.layout == 'ar_ap'">
@@ -64,14 +65,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr t-foreach="book['lines']" t-as="line"
-                                    t-att-style="'font-weight:bold' if line.row_type in ('opening','total_ps','closing') else ''">
-                                    <td><span t-esc="line.date or ''"/></td>
-                                    <td><span t-esc="line.move_name or ''"/></td>
-                                    <td><span t-esc="line.move_date or ''"/></td>
-                                    <td><span t-esc="line.narration or ''"/></td>
+                                <tr t-foreach="book['lines']" t-as="line" t-att-style="'font-weight:bold' if line.row_type in ('opening','total_ps','closing') else ''">
+                                    <td>
+                                        <span t-esc="line.date or ''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line.move_name or ''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line.move_date or ''"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="line.narration or ''"/>
+                                    </td>
                                     <td t-if="wiz.layout == 'ar_ap'"></td>
-                                    <td><span t-esc="line.counterpart_code or ''"/></td>
+                                    <td>
+                                        <span t-esc="line.counterpart_code or ''"/>
+                                    </td>
                                     <td class="text-end">
                                         <span t-if="line.debit" t-esc="'{:,.0f}'.format(line.debit)"/>
                                     </td>
