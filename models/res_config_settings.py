@@ -41,6 +41,11 @@ class ResConfigSettings(models.TransientModel):
         readonly=False,
         string='TK quỹ nộp tiền quầy',
     )
+    vas_pos_io_pending_account_id = fields.Many2one(
+        related='company_id.vas_pos_io_pending_account_id',
+        readonly=False,
+        string='TK tạm rút/nộp két POS',
+    )
     vas_scrap_account_id = fields.Many2one(
         related='company_id.vas_scrap_account_id',
         readonly=False,

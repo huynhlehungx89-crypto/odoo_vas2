@@ -669,6 +669,15 @@ class TestVasPosFlow(TransactionCase):
             limit=1,
         )
 
+    def _vas_1388(self):
+        return self.env["vas.account"].search(
+            [
+                ("regime_id", "=", self.regime.id),
+                ("code", "=", "1388"),
+            ],
+            limit=1,
+        )
+
     def _add_cash_io(self, session, amount, io_date="2099-01-15"):
         self.assertTrue(session.cash_journal_id, "Phiên phải có nhật ký tiền mặt")
         line = (
@@ -803,19 +812,33 @@ class TestVasPosFlow(TransactionCase):
                 ("state", "not in", ("reversed", "cancelled")),
             ]
         )
+        self.assertTrue(self._vas_1388(), "T13: CoA phải có 1388")
         self.assertEqual(len(io_moves), 1, "T13: bút toán riêng rút giữa ca")
+        self.assertEqual(io_moves.state, "draft", "T13: rút giữa ca để nháp")
         self.assertEqual(fields.Date.to_string(io_moves.date), "2099-01-15")
         self.assertEqual(
-            float_compare(self._line_amt(io_moves, "111", "debit"), 200_000, 2),
+            float_compare(self._line_amt(io_moves, "1388", "debit"), 200_000, 2),
+            0,
+            "T13: rút — Nợ TK tạm 1388",
+        )
+        self.assertEqual(
+            float_compare(self._line_amt(io_moves, "111", "credit"), 200_000, 2),
+            0,
+            "T13: rút — Có quỹ 111",
+        )
+        self.assertEqual(
+            float_compare(self._line_amt(io_moves, "131", "debit"), 0.0, 2),
             0,
         )
         self.assertEqual(
-            float_compare(self._line_amt(io_moves, "131", "credit"), 200_000, 2),
+            float_compare(self._line_amt(io_moves, "131", "credit"), 0.0, 2),
             0,
+            "T13: rút không đụng 131",
         )
         self.assertFalse(io_moves.vas_has_default_account)
         cash_close = self._vas_moves(session, "pos_session_cash")
         self.assertEqual(len(cash_close), 1)
+        self.assertEqual(cash_close.state, "posted")
         self.assertEqual(
             float_compare(self._line_amt(cash_close, "111", "debit"), self.TOTAL, 2),
             0,
@@ -844,6 +867,7 @@ class TestVasPosFlow(TransactionCase):
             ]
         )
         self.assertEqual(len(io_moves), 1)
+        self.assertEqual(io_moves.state, "draft")
         self.assertTrue(
             io_moves.vas_has_default_account, "T14: phải mang cờ TK mặc định"
         )
@@ -851,7 +875,12 @@ class TestVasPosFlow(TransactionCase):
         self.assertIn("200", io_moves.narration or "")
         with self.assertRaises(UserError) as err:
             self.period_jan.write({"state": "closed"})
-        self.assertIn("MẶC ĐỊNH", str(err.exception))
+        lock_msg = str(err.exception)
+        self.assertIn("nháp", lock_msg.lower())
+        self.assertTrue(
+            "rút/nộp" in lock_msg or "rút" in lock_msg,
+            lock_msg,
+        )
 
     def test_t15_cash_in_opposite_of_out(self):
         self._skip_if_no_pos()
@@ -872,13 +901,25 @@ class TestVasPosFlow(TransactionCase):
             ]
         )
         self.assertEqual(len(io_moves), 1)
+        self.assertEqual(io_moves.state, "draft")
         self.assertEqual(
-            float_compare(self._line_amt(io_moves, "131", "debit"), 200_000, 2),
+            float_compare(self._line_amt(io_moves, "111", "debit"), 200_000, 2),
+            0,
+            "T15: nộp — Nợ quỹ 111",
+        )
+        self.assertEqual(
+            float_compare(self._line_amt(io_moves, "1388", "credit"), 200_000, 2),
+            0,
+            "T15: nộp — Có TK tạm 1388",
+        )
+        self.assertEqual(
+            float_compare(self._line_amt(io_moves, "131", "debit"), 0.0, 2),
             0,
         )
         self.assertEqual(
-            float_compare(self._line_amt(io_moves, "111", "credit"), 200_000, 2),
+            float_compare(self._line_amt(io_moves, "131", "credit"), 0.0, 2),
             0,
+            "T15: nộp không đụng 131",
         )
 
     def test_t7_unlink_cash_io_open_reverses(self):
@@ -900,12 +941,12 @@ class TestVasPosFlow(TransactionCase):
             limit=1,
         )
         self.assertTrue(io)
-        self.assertEqual(io.state, "posted")
+        self.assertEqual(io.state, "draft")
         line.sudo().unlink()
         stats = self.Sync._sync_cancel_regressions(self.company)
-        self.assertGreaterEqual(stats["reversed"], 1)
-        io.invalidate_recordset()
-        self.assertEqual(io.state, "reversed")
+        self.assertGreaterEqual(stats.get("unlinked", 0), 1)
+        self.assertEqual(stats.get("reversed", 0), 0)
+        self.assertFalse(io.exists())
 
     def test_t8_unlink_cash_io_closed_pending(self):
         self._skip_if_no_pos()
@@ -926,6 +967,7 @@ class TestVasPosFlow(TransactionCase):
             limit=1,
         )
         self.assertTrue(io)
+        self.assertEqual(io.state, "draft")
         # Pattern P02: đóng kỳ SQL để chỉ nghiệm cơ chế hủy, không đụng gate khóa kỳ.
         self.env.cr.execute(
             "UPDATE vas_period SET state='closed' WHERE id=%s",
@@ -937,6 +979,7 @@ class TestVasPosFlow(TransactionCase):
         stats = self.Sync._sync_cancel_regressions(self.company)
         io.invalidate_recordset()
         self.assertGreaterEqual(stats["closed_period_flagged"], 1)
-        self.assertEqual(io.state, "posted")
+        self.assertEqual(io.state, "draft")
         self.assertTrue(io.source_cancel_pending)
         self.assertEqual(stats.get("reversed", 0), 0)
+        self.assertEqual(stats.get("unlinked", 0), 0)

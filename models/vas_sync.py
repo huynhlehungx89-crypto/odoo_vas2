@@ -3383,6 +3383,7 @@ class VasSync(models.AbstractModel):
             'scanned': 0,
             'dead_sources': 0,
             'reversed': 0,
+            'unlinked': 0,
             'closed_period_flagged': 0,
             'errors': 0,
         }
@@ -3435,8 +3436,12 @@ class VasSync(models.AbstractModel):
                     )
                     continue
                 try:
-                    move.action_reverse()
-                    stats['reversed'] += 1
+                    if move.state == 'draft':
+                        move.unlink()
+                        stats['unlinked'] += 1
+                    else:
+                        move.action_reverse()
+                        stats['reversed'] += 1
                 except Exception:
                     stats['errors'] += 1
                     _logger.exception(
@@ -4119,6 +4124,7 @@ class VasSync(models.AbstractModel):
             ('company_id', '=', company.id),
             ('state', '=', 'draft'),
             ('period_missing_pending', '=', True),
+            ('move_kind', '!=', 'pos_cash_io'),
         ]
         if date_from:
             domain.append(('date', '>=', date_from))

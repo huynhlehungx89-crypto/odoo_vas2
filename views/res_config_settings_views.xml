@@ -27,8 +27,11 @@
                         <setting string="Có bán hàng không chịu thuế GTGT" company_dependent="1" help="Tắt: mọi thuế đầu vào = dùng riêng chịu thuế, ẩn cột mục đích. Bật: phân loại mục đích + phân bổ dùng chung.">
                             <field name="vas_has_exempt_sales"/>
                         </setting>
-                        <setting string="TK quỹ nộp tiền quầy" company_dependent="1" help="Bên Nợ kết ca tiền mặt và đối ứng rút/bỏ tiền giữa ca. Trống = 1111 (cờ mặc định, chặn khóa kỳ).">
+                        <setting string="TK quỹ nộp tiền quầy" company_dependent="1" help="Bên Nợ kết ca tiền mặt. Không dùng cho rút/nộp giữa ca. Trống = 1111 (cờ mặc định, chặn khóa kỳ).">
                             <field name="vas_pos_cash_account_id" domain="[('regime_id', '=', vas_regime_id), ('active', '=', True)]"/>
+                        </setting>
+                        <setting string="TK tạm rút/nộp két POS" company_dependent="1" help="Đối ứng nháp rút/nộp giữa ca. Kế toán đổi TK rồi Ghi sổ. Trống = 1388. Không dùng 131.">
+                            <field name="vas_pos_io_pending_account_id" domain="[('regime_id', '=', vas_regime_id), ('active', '=', True)]"/>
                         </setting>
                         <setting string="TK đối ứng hủy hàng" company_dependent="1" help="Bên Nợ phiếu hủy hàng. Trống = 811 + cờ mặc định, chặn khóa kỳ. Không tự chọn 632/154/138.">
                             <field name="vas_scrap_account_id" domain="[('regime_id', '=', vas_regime_id), ('active', '=', True)]"/>

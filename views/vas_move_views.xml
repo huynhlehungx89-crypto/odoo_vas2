@@ -129,6 +129,8 @@
                 <field name="period_id"/>
                 <filter string="Đã ghi sổ" name="posted" domain="[('state','=','posted')]"/>
                 <filter string="Nháp" name="draft" domain="[('state','=','draft')]"/>
+                <filter string="Nháp rút/nộp POS" name="pos_cash_io_draft"
+                        domain="[('move_kind','=','pos_cash_io'),('state','=','draft')]"/>
                 <separator/>
                 <!-- Công tắc hiển thị: BẬT (mặc định) = chỉ còn hiệu lực;
                      TẮT = hiện cả bản đã đảo + bút toán đảo. Không đụng số liệu. -->

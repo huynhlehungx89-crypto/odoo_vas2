@@ -364,6 +364,7 @@ class VasPeriod(models.Model):
                     assigned,
                 )
             closing._check_no_pos_rounding_gap()
+            closing._check_no_pos_cash_io_drafts()
             closing._check_no_default_account_move()
             closing._check_no_unclassified_cost_move()
             closing._check_no_unvalued_stock_move()
@@ -458,6 +459,32 @@ class VasPeriod(models.Model):
                     _('Không khóa được kỳ %s.\n\n', period.display_name)
                     + Sync._pos_rounding_error_message(gaps)
                 )
+
+    def _check_no_pos_cash_io_drafts(self):
+        """HARD: không khóa kỳ khi còn nháp rút/nộp két POS chưa ghi sổ."""
+        for period in self:
+            company = period.fiscalyear_id.company_id
+            drafts = self.env['vas.move'].search([
+                ('company_id', '=', company.id),
+                ('move_kind', '=', 'pos_cash_io'),
+                ('state', '=', 'draft'),
+                ('is_reversal', '=', False),
+                ('date', '>=', period.date_start),
+                ('date', '<=', period.date_end),
+            ])
+            if not drafts:
+                continue
+            names = drafts.mapped('display_name')[:8]
+            raise UserError(_(
+                "Không khóa được kỳ %(period)s: còn %(count)s bút toán nháp "
+                "rút/nộp két POS chưa ghi sổ.\n\n"
+                "Chứng từ: %(moves)s\n\n"
+                "Cách xử lý: mở từng bút toán, đổi TK tạm thành TK chi/nguồn "
+                "đúng, rồi bấm Ghi sổ. Không dùng 131.",
+                period=period.display_name,
+                count=len(drafts),
+                moves=', '.join(names),
+            ))
 
     def _check_no_default_account_move(self):
         """Chốt cứng: không khóa kỳ khi còn bút toán dùng TK mặc định (theo NGÀY).

@@ -131,9 +131,18 @@ class ResCompany(models.Model):
         "vas.account",
         string="TK quỹ nộp tiền quầy",
         ondelete="set null",
-        help="Bên Nợ kết ca tiền mặt và vế đối ứng rút/bỏ tiền giữa ca. "
-        "Trống = 1111 (cờ TK mặc định, chặn khóa kỳ). "
-        "Đổi khai báo khi bật két quầy — không cắm cứng trong adapter.",
+        help="Bên Nợ kết ca tiền mặt (Nợ 1111 / Có 131). "
+        "Không dùng cho đối ứng rút/nộp giữa ca. "
+        "Trống = 1111 (cờ TK mặc định, chặn khóa kỳ).",
+    )
+    vas_pos_io_pending_account_id = fields.Many2one(
+        "vas.account",
+        string="TK tạm rút/nộp két POS",
+        ondelete="set null",
+        help="Đối ứng nháp rút/nộp giữa ca (không ghi sổ tự động). "
+        "Rút: Nợ TK này / Có quỹ. Nộp: Nợ quỹ / Có TK này. "
+        "Kế toán đổi sang TK chi/nguồn đúng rồi Ghi sổ. "
+        "Trống = 1388. Không dùng 131.",
     )
     vas_scrap_account_id = fields.Many2one(
         "vas.account",

@@ -319,6 +319,19 @@ class VasSyncPos(models.AbstractModel):
             return company.vas_pos_cash_account_id
         return self._account_by_code(company.vas_regime_id, '1111')
 
+    def _pos_io_pending_account(self, company):
+        if company.vas_pos_io_pending_account_id:
+            return company.vas_pos_io_pending_account_id
+        acc = self._account_by_code(company.vas_regime_id, '1388')
+        if not acc:
+            raise UserError(_(
+                'Chưa khai TK tạm rút/nộp két POS và không tìm thấy TK 1388 '
+                'trên hệ thống tài khoản %(regime)s. Vào Thiết lập VAS, chọn '
+                '«TK tạm rút/nộp két POS».',
+                regime=company.vas_regime_id.display_name,
+            ))
+        return acc
+
     def _pos_payment_type(self, payment):
         method = payment.payment_method_id
         ptype = getattr(method, 'type', False) or ''
@@ -456,7 +469,10 @@ class VasSyncPos(models.AbstractModel):
         )
 
     def _pos_session_rounding_gap(self, session):
-        """Lệch 131 còn lại sau kết ca và rút/bỏ giữa ca — không ghi vào 511."""
+        """Lệch 131 còn lại sau kết ca — không ghi vào 511.
+
+        Rút/nộp giữa ca không đụng 131 nên không cộng vào lệch này.
+        """
         cash_amt = bank_amt = pay_later = 0.0
         for pay in session.order_ids.mapped('payment_ids'):
             amt = pay.amount or 0.0
@@ -479,8 +495,8 @@ class VasSyncPos(models.AbstractModel):
         ), 2)
         to_clear = float_round(booked_131 - pay_later, 2)
         cleared = float_round(cash_to_111 + bank_amt + shortage - overage, 2)
-        io_net = self._pos_session_io_net(session)
-        return float_round(to_clear - cleared + io_net, 2)
+        # Rút/nộp giữa ca không còn đụng 131 — không cộng io_net vào lệch 131.
+        return float_round(to_clear - cleared, 2)
 
     def _pos_format_amount(self, amount):
         return '{:,.0f}'.format(abs(amount or 0.0)).replace(',', '.')
@@ -504,17 +520,18 @@ class VasSyncPos(models.AbstractModel):
         )
 
     def _sync_pos_cash_in_out(self, session, company):
-        """Rút/bỏ tiền giữa ca: bút toán riêng, đối ứng = TK quỹ nộp tiền quầy.
+        """Rút/nộp giữa ca: nháp 111 ↔ TK tạm (1388), không ghi sổ, không đụng 131.
 
-        Tái dùng ``vas_pos_cash_account_id`` (cùng TK Nợ kết ca / mặc định 1111):
-        tiền rời két về quỹ hoặc bỏ thêm từ quỹ — không đoán TK khác. Trống
-        → vẫn ghi 1111 + cờ mặc định + chặn khóa kỳ.
+        Rút (amt < 0): Nợ tạm / Có quỹ — tiền ra két để chi, chưa biết TK chi.
+        Nộp (amt > 0): Nợ quỹ / Có tạm — tiền vào két, chưa biết nguồn.
+        Kế toán đổi TK tạm rồi Ghi sổ. Kết ca vẫn Nợ 111 / Có 131 (tiền bán).
         """
         created = 0
         acc_111 = self._pos_cash_account(company)
-        acc_131 = self._account_by_code(company.vas_regime_id, '131')
+        acc_pending = self._pos_io_pending_account(company)
         session_vals = self._pos_session_line_vals(session)
         configured = bool(company.vas_pos_cash_account_id)
+        pending_code = acc_pending.code or '1388'
         for line in self._pos_mid_session_cash_lines(session):
             if self._already_synced(line._name, line.id, 'pos_cash_io'):
                 continue
@@ -525,7 +542,7 @@ class VasSyncPos(models.AbstractModel):
             if not configured:
                 fallbacks.append({
                     'label': _(
-                        'Phiên %(session)s — rút/bỏ tiền giữa ca %(amount)s: '
+                        'Phiên %(session)s — rút/nộp giữa ca %(amount)s: '
                         'chưa khai TK quỹ nộp tiền quầy, dùng mặc định 1111',
                         session=session.display_name,
                         amount=self._pos_format_amount(abs_amt),
@@ -533,14 +550,22 @@ class VasSyncPos(models.AbstractModel):
                 })
             if float_compare(amt, 0.0, 2) < 0:
                 ref = _('Rút tiền giữa ca %s') % session.display_name
-                debit_acc, credit_acc = acc_111, acc_131
+                debit_acc, credit_acc = acc_pending, acc_111
             else:
-                ref = _('Bỏ thêm tiền giữa ca %s') % session.display_name
-                debit_acc, credit_acc = acc_131, acc_111
+                ref = _('Nộp tiền giữa ca %s') % session.display_name
+                debit_acc, credit_acc = acc_111, acc_pending
+            hint = _(
+                'NHÁP rút/nộp két POS — chưa vào sổ. Đổi TK %(code)s thành '
+                'TK chi/nguồn đúng (331, 641, 141, 112…) rồi bấm Ghi sổ. '
+                'Không dùng 131.',
+                code=pending_code,
+            )
             move = self._pos_post_pair(
-                company, date, line, 'pos_cash_io', 'pos_session_cash',
+                company, date, line, 'pos_cash_io', 'pos_cash_io',
                 ref, debit_acc, abs_amt, credit_acc, abs_amt, session_vals,
                 fallbacks=fallbacks,
+                keep_draft=True,
+                extra_vals={'narration': hint},
             )
             if move:
                 created += 1
@@ -549,12 +574,16 @@ class VasSyncPos(models.AbstractModel):
     def _pos_post_pair(
         self, company, date, source, move_kind, event_type, ref,
         debit_acc, debit_amt, credit_acc, credit_amt, session_vals,
-        fallbacks=None,
+        fallbacks=None, keep_draft=False, extra_vals=None,
     ):
         if not debit_acc or not credit_acc:
             raise ValueError('POS pair missing account')
         journal = self._resolve_journal(event_type, source, company)
-        move = self.env['vas.move'].create({
+        flag_vals = self._merge_move_flag_vals(
+            self._default_account_flag_vals(fallbacks or []),
+            extra_vals or {},
+        )
+        vals = {
             'date': date,
             'journal_id': journal.id,
             'regime_id': company.vas_regime_id.id,
@@ -565,7 +594,7 @@ class VasSyncPos(models.AbstractModel):
             'source_ref': source.display_name,
             'company_id': company.id,
             'currency_id': company.currency_id.id,
-            **self._default_account_flag_vals(fallbacks or []),
+            **flag_vals,
             'line_ids': [
                 Command.create({
                     'sequence': 10,
@@ -588,5 +617,8 @@ class VasSyncPos(models.AbstractModel):
                     **session_vals,
                 }),
             ],
-        })
+        }
+        move = self.env['vas.move'].create(vals)
+        if keep_draft:
+            return move
         return self._post_or_flag_period_missing(move)
